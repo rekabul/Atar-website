@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "scroll-animations",
+  "owner": "lobbi-docs",
+  "repo": "claude",
+  "path": "plugins/react-animation-studio/skills/scroll-animations",
+  "branch": "main",
+  "sha": "f531233db8fe381b2c66b05067e56ea1c61ce141",
+  "source": "manifest"
+}

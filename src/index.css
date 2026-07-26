@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---- Self-hosted Euclid Circular B (provided by client, licensed) ---- */
+@font-face {
+  font-family: "Euclid Circular B";
+  src: url("./assets/fonts/EuclidCircularB-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Euclid Circular B";
+  src: url("./assets/fonts/EuclidCircularB-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Euclid Circular B";
+  src: url("./assets/fonts/EuclidCircularB-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Euclid Circular B";
+  src: url("./assets/fonts/EuclidCircularB-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Euclid Circular B";
+  src: url("./assets/fonts/EuclidCircularB-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+  /* Match Figma: headings are Euclid Circular B Medium (not bold), tight tracking */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-medium;
+    letter-spacing: -0.02em;
+  }
+  :focus-visible {
+    @apply rounded outline outline-[3px] outline-offset-2 outline-primary;
+  }
+}
+
+@layer utilities {
+  .hero-bg {
+    background:
+      radial-gradient(60% 55% at 50% 0%, #ebf6f8 0%, rgba(235, 246, 248, 0) 70%),
+      linear-gradient(180deg, #ffffff 0%, #fbfefe 100%);
+  }
+  /* Fade masks on the client marquee */
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

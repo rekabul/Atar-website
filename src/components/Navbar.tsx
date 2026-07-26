@@ -43,7 +43,7 @@ export default function Navbar() {
 
   const links: NavTarget[] = [
     { label: t.nav.home, to: "/" },
-    { label: t.nav.features, to: "/#features" },
+    { label: t.nav.features, to: "/features" },
     { label: t.nav.pricing, to: "/pricing" },
     { label: t.nav.about, to: "/about" },
     { label: t.nav.contact, to: "/contact" },

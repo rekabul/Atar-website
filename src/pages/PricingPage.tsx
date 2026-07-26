@@ -184,13 +184,13 @@ export default function PricingPage() {
 
           <div className="mt-10 overflow-x-auto">
             <div className="min-w-[640px]">
-              {/* Sticky plan header */}
-              <div className="sticky top-[104px] z-10 grid grid-cols-[1.6fr_1fr_1fr_1fr] items-center gap-2 rounded-2xl border border-grey-200 bg-white px-4 py-4 shadow-card">
-                <span className="text-sm font-medium text-ink">{pick(compare.chooseYourPlan, locale)}</span>
+              {/* Sticky plan header with improved visual separation */}
+              <div className="sticky top-[104px] z-20 grid grid-cols-[1.6fr_1fr_1fr_1fr] items-center gap-2 rounded-2xl border border-primary/20 bg-gradient-to-b from-white to-grey-50 px-5 py-5 shadow-lg backdrop-blur-sm">
+                <span className="text-xs font-bold uppercase tracking-widest text-ink-muted">{pick(compare.chooseYourPlan, locale)}</span>
                 {plans.map((p) => (
                   <div key={p.id} className="text-center">
-                    <p className="text-sm font-semibold text-ink">{pick(compare.planNames[plans.indexOf(p)], locale)}</p>
-                    <p className="text-xs text-grey-600" dir="ltr">
+                    <p className="text-sm font-bold text-ink">{pick(compare.planNames[plans.indexOf(p)], locale)}</p>
+                    <p className="mt-1 text-xs font-semibold text-primary" dir="ltr">
                       {p.monthly === null
                         ? pick(p.customLabel!, locale)
                         : `SAR ${formatSar(monthlyEquivalent(p.monthly))}`}
@@ -200,7 +200,7 @@ export default function PricingPage() {
               </div>
 
               {/* Categories */}
-              <div className="mt-4 space-y-3">
+              <div className="mt-8 space-y-3">
                 {categories.map((cat, ci) => {
                   const open = openCat[ci];
                   return (

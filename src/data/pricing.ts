@@ -29,6 +29,25 @@ export const billing = {
   popular: L("Most popular", "الأكثر اختياراً"),
 };
 
+/**
+ * Unit calculator — lets visitors drag a slider to estimate pricing based on
+ * portfolio size, similar to usage-based pricing calculators (Resend, Vercel).
+ * Multipliers are illustrative scaling estimates, not final contract pricing.
+ */
+export const unitsCalculator = {
+  title: L("Estimate pricing for your portfolio", "قدّر السعر حسب محفظتك"),
+  subtitle: L(
+    "Drag the slider to match your number of units and see plan pricing update instantly.",
+    "اسحب المؤشر لمطابقة عدد وحداتك وشاهد تحديث السعر فوراً."
+  ),
+  unitsLabel: L("units under management", "وحدة تحت الإدارة"),
+};
+
+export const unitTiers = [1, 5, 10, 25, 50, 100, 250, 500, 1000, 2500];
+export const unitTierLabels = ["1", "5", "10", "25", "50", "100", "250", "500", "1,000", "2,500+"];
+// Illustrative multiplier applied to each plan's base monthly price at every tier.
+export const unitMultipliers = [1, 1, 1.15, 1.6, 2.3, 3.5, 6, 9, 14, 22];
+
 export type Plan = {
   id: string;
   name: LStr;

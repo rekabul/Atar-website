@@ -11,6 +11,10 @@ import {
   categories,
   pricingFaq,
   pick,
+  unitsCalculator,
+  unitTiers,
+  unitTierLabels,
+  unitMultipliers,
 } from "../data/pricing";
 
 function formatSar(n: number) {
@@ -20,6 +24,8 @@ function formatSar(n: number) {
 export default function PricingPage() {
   const { t, locale } = useLocale();
   const [annual, setAnnual] = useState(false);
+  const [unitIndex, setUnitIndex] = useState(0);
+  const [dragging, setDragging] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [openCat, setOpenCat] = useState<Record<number, boolean>>(
     Object.fromEntries(categories.map((_, i) => [i, true]))
@@ -33,13 +39,15 @@ export default function PricingPage() {
     };
   }, []);
 
-  // Annual = 2 months free → pay for 10 of 12 months.
-  const monthlyEquivalent = (m: number) => (annual ? (m * 10) / 12 : m);
+  // Annual = 2 months free → pay for 10 of 12 months. Scaled by portfolio size.
+  const unitMultiplier = unitMultipliers[unitIndex];
+  const monthlyEquivalent = (m: number) => (annual ? (m * 10) / 12 : m) * unitMultiplier;
+  const sliderPercent = (unitIndex / (unitTiers.length - 1)) * 100;
 
   return (
     <>
       {/* Hero */}
-      <section className="hero-bg border-b border-grey-100" aria-labelledby="pricing-title">
+      <section className="hero-bg" aria-labelledby="pricing-title">
         <div className="mx-auto max-w-3xl px-5 py-16 text-center lg:px-8 lg:py-20">
           <Reveal>
             <p className="text-sm font-medium uppercase tracking-wider text-primary">
@@ -85,6 +93,51 @@ export default function PricingPage() {
                   {pick(billing.save, locale)}
                 </span>
               </button>
+            </div>
+
+            {/* Units calculator */}
+            <div className="relative mx-auto mt-10 max-w-2xl" dir="ltr">
+              {dragging && (
+                <div
+                  className="pointer-events-none absolute -top-10 -translate-x-1/2 whitespace-nowrap rounded-lg bg-ink px-3 py-1.5 text-xs font-semibold text-white shadow-lift"
+                  style={{ left: `${sliderPercent}%` }}
+                >
+                  {unitTierLabels[unitIndex]}
+                  <span className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-ink" />
+                </div>
+              )}
+              <input
+                type="range"
+                min={0}
+                max={unitTiers.length - 1}
+                step={1}
+                value={unitIndex}
+                onChange={(e) => setUnitIndex(Number(e.target.value))}
+                onPointerDown={() => setDragging(true)}
+                onPointerUp={() => setDragging(false)}
+                onBlur={() => setDragging(false)}
+                onWheel={(e) => {
+                  e.preventDefault();
+                  const dir = e.deltaY > 0 ? -1 : 1;
+                  setUnitIndex((v) => Math.min(unitTiers.length - 1, Math.max(0, v + dir)));
+                }}
+                className="units-slider"
+                style={{
+                  background: `linear-gradient(to right, #008ea5 ${sliderPercent}%, #E4E7E8 ${sliderPercent}%)`,
+                }}
+                aria-label={pick(unitsCalculator.title, locale)}
+                aria-valuetext={`${unitTierLabels[unitIndex]} ${pick(unitsCalculator.unitsLabel, locale)}`}
+              />
+              <div className="mt-1.5 flex justify-between text-xs text-grey-600">
+                {unitTierLabels.map((label, i) => (
+                  <span
+                    key={label}
+                    className={`transition-colors ${i === unitIndex ? "font-semibold text-primary" : ""}`}
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
             </div>
           </Reveal>
         </div>
@@ -184,9 +237,19 @@ export default function PricingPage() {
 
           <div className="mt-10 overflow-x-auto">
             <div className="min-w-[640px]">
-              {/* Sticky plan header with improved visual separation */}
-              <div className="sticky top-[104px] z-20 grid grid-cols-[1.6fr_1fr_1fr_1fr] items-center gap-2 rounded-2xl border border-primary/20 bg-gradient-to-b from-white to-grey-50 px-5 py-5 shadow-lg backdrop-blur-sm">
-                <span className="text-xs font-bold uppercase tracking-widest text-ink-muted">{pick(compare.chooseYourPlan, locale)}</span>
+              {/* Plan header — a plain (non-sticky) section header */}
+              <div className="grid grid-cols-[1.6fr_1fr_1fr_1fr] items-center gap-2 rounded-2xl border border-grey-200 bg-white px-5 py-5 shadow-card">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-widest text-ink-muted">
+                    {pick(compare.chooseYourPlan, locale)}
+                  </span>
+                  <div className="mt-1.5 flex items-center gap-1.5 text-xs text-ink-soft">
+                    <span className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-primary-lighter text-primary">
+                      <Check size={10} />
+                    </span>
+                    {pick(compare.included, locale)}
+                  </div>
+                </div>
                 {plans.map((p) => (
                   <div key={p.id} className="text-center">
                     <p className="text-sm font-bold text-ink">{pick(compare.planNames[plans.indexOf(p)], locale)}</p>
@@ -200,7 +263,7 @@ export default function PricingPage() {
               </div>
 
               {/* Categories */}
-              <div className="mt-8 space-y-3">
+              <div className="mt-6 space-y-3">
                 {categories.map((cat, ci) => {
                   const open = openCat[ci];
                   return (

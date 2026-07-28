@@ -23,7 +23,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Page header */}
-      <section className="hero-bg border-b border-grey-100" aria-labelledby="contact-page-title">
+      <section className="hero-bg" aria-labelledby="contact-page-title">
         <div className="mx-auto max-w-3xl px-5 py-16 text-center lg:px-8 lg:py-20">
           <Reveal>
             <p className="text-sm font-medium uppercase tracking-wider text-primary">

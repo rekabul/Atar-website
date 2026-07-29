@@ -199,7 +199,9 @@ export default function LoginPage() {
         <LogoMark className="pointer-events-none absolute -end-24 bottom-24 h-72 w-72 rotate-12 text-primary/10 dark:text-white/[0.04]" />
 
         <div className="relative z-10 px-12 pt-14">
-          <Logo light={theme === "dark"} className="h-9 w-auto" />
+          <Link to="/" aria-label="ATAR home" className="inline-block">
+            <Logo light={theme === "dark"} className="h-9 w-auto" />
+          </Link>
         </div>
 
         <div className="relative z-10 mt-16 flex-1 px-12">

@@ -103,9 +103,9 @@ export default function Navbar() {
           </ul>
 
           <div className="hidden items-center gap-4 lg:flex">
-            <a href="#login" className="font-medium text-ink hover:text-primary dark:text-white dark:hover:text-primary-light">
+            <Link to="/login" className="font-medium text-ink hover:text-primary dark:text-white dark:hover:text-primary-light">
               {t.nav.login}
-            </a>
+            </Link>
             <Button href="/contact">{t.nav.getStarted}</Button>
           </div>
 
@@ -136,13 +136,13 @@ export default function Navbar() {
               ))}
             </ul>
             <div className="mt-4 flex flex-col gap-3">
-              <a
-                href="#login"
+              <Link
+                to="/login"
                 onClick={() => setOpen(false)}
                 className="rounded-xl border border-grey-200 px-4 py-3 text-center font-medium text-ink dark:border-white/20 dark:text-white"
               >
                 {t.nav.login}
-              </a>
+              </Link>
               <Button href="/contact" fullWidth>
                 {t.nav.getStarted}
               </Button>

@@ -23,6 +23,15 @@ export function ArrowRight({ size = 18, className = "", ...p }: IconProps) {
   );
 }
 
+/** Directional arrow (back) — flips automatically in RTL via the `rtl:-scale-x-100` utility. */
+export function ArrowLeft({ size = 18, className = "", ...p }: IconProps) {
+  return (
+    <svg {...base(size)} className={`rtl:-scale-x-100 ${className}`} {...p}>
+      <path d="M19 12H5M11 18l-6-6 6-6" />
+    </svg>
+  );
+}
+
 export function Plus({ size = 20, ...p }: IconProps) {
   return (
     <svg {...base(size)} {...p}>
@@ -96,6 +105,39 @@ export function Check({ size = 16, ...p }: IconProps) {
   return (
     <svg {...base(size)} {...p}>
       <path d="M5 12l4 4 10-10" />
+    </svg>
+  );
+}
+
+/** Google's official multi-color "G" mark. */
+export function GoogleLogo({ size = 18, ...p }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" {...p}>
+      <path
+        d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.63h6.47a5.53 5.53 0 01-2.4 3.63v3h3.87c2.27-2.09 3.58-5.17 3.58-8.81z"
+        fill="#4285F4"
+      />
+      <path
+        d="M12 24c3.24 0 5.96-1.07 7.94-2.92l-3.87-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.95H1.28v3.11A12 12 0 0012 24z"
+        fill="#34A853"
+      />
+      <path
+        d="M5.27 14.28A7.2 7.2 0 014.9 12c0-.79.14-1.56.37-2.28V6.61H1.28A12 12 0 000 12c0 1.94.46 3.77 1.28 5.39l3.99-3.11z"
+        fill="#FBBC05"
+      />
+      <path
+        d="M12 4.77c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.28 6.61l3.99 3.11C6.22 6.88 8.87 4.77 12 4.77z"
+        fill="#EA4335"
+      />
+    </svg>
+  );
+}
+
+/** Apple logo silhouette — inherits color via currentColor. */
+export function AppleLogo({ size = 18, ...p }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...p}>
+      <path d="M16.36 1c.12 1.1-.32 2.19-.98 2.98-.68.8-1.79 1.42-2.87 1.33-.14-1.07.38-2.19 1-2.9C14.2 1.6 15.35 1.02 16.36 1zm3.7 16.2c-.42.97-.92 1.9-1.55 2.77-.86 1.19-1.56 2.02-2.75 2.04-1.14.02-1.5-.72-2.8-.72-1.3 0-1.7.7-2.79.74-1.15.04-2.03-1.29-2.9-2.47-1.6-2.19-2.83-6.19-1.18-8.9.82-1.35 2.28-2.2 3.87-2.22 1.13-.02 2.2.76 2.9.76.69 0 1.98-.94 3.34-.8.57.02 2.17.23 3.19 1.75-.08.05-1.9 1.11-1.88 3.31.02 2.63 2.31 3.51 2.34 3.53" />
     </svg>
   );
 }

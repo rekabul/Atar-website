@@ -3,6 +3,14 @@ import { useLocale } from "../i18n/LocaleContext";
 import Reveal from "../components/ui/Reveal";
 import { Check } from "../components/ui/Icon";
 import CTA from "../components/CTA";
+import {
+  FinancialChart,
+  ServiceLog,
+  PropertyDonut,
+  AIPipeline,
+  ComplianceLog,
+  IntegrationsHub,
+} from "../components/FeatureVisuals";
 
 type LStr = { en: string; ar: string };
 
@@ -83,6 +91,15 @@ const featureSections = [
   },
 ];
 
+const visualsById: Record<string, () => JSX.Element> = {
+  financial: FinancialChart,
+  service: ServiceLog,
+  property: PropertyDonut,
+  ai: AIPipeline,
+  compliance: ComplianceLog,
+  integrations: IntegrationsHub,
+};
+
 const roles = [
   { title: { en: "Property Owners", ar: "مالكو العقارات" }, desc: { en: "Maximize income, see performance, reduce vacancy", ar: "زيادة الدخل ورؤية الأداء وتقليل الشغور" } },
   { title: { en: "Managers", ar: "المديرون" }, desc: { en: "Streamline ops, reduce admin by 60%, scale easily", ar: "تبسيط العمليات وتقليل الإدارة بنسبة 60٪" } },
@@ -118,41 +135,48 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      {/* Feature sections */}
+      {/* Feature sections — alternating text + product-screen visual, same
+          pattern as the homepage Features component. */}
       {featureSections.map((section, idx) => {
         const bgClasses = ["bg-white", "bg-grey-50", "bg-grey-100/40", "bg-white", "bg-grey-50", "bg-grey-100/40"];
+        const reversed = idx % 2 === 1;
+        const Visual = visualsById[section.id];
         return (
           <section
             key={section.id}
             className={`py-16 lg:py-20 ${bgClasses[idx]}`}
             aria-labelledby={`feature-${section.id}`}
           >
-            <div className="mx-auto max-w-5xl px-5 lg:px-8">
-              {/* Section header */}
-              <Reveal delay={idx * 100}>
-                <p className="text-sm font-medium uppercase tracking-wider text-primary">
-                  {pick(section.eyebrow, locale)}
-                </p>
-                <h2 id={`feature-${section.id}`} className="mt-3 text-3xl font-medium text-ink lg:text-4xl">
-                  {pick(section.title, locale)}
-                </h2>
-                <p className="mt-3 text-lg font-medium text-primary">
-                  {pick(section.subtitle, locale)}
-                </p>
-              </Reveal>
+            <div className="mx-auto max-w-6xl px-5 lg:px-8">
+              <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+                <Reveal delay={idx * 100} className={reversed ? "lg:order-2" : ""}>
+                  <p className="text-sm font-medium uppercase tracking-wider text-primary">
+                    {pick(section.eyebrow, locale)}
+                  </p>
+                  <h2 id={`feature-${section.id}`} className="mt-3 text-3xl font-medium text-ink lg:text-4xl">
+                    {pick(section.title, locale)}
+                  </h2>
+                  <p className="mt-3 text-lg font-medium text-primary">
+                    {pick(section.subtitle, locale)}
+                  </p>
 
-              {/* Benefits grid */}
-              <div className="mt-12 grid gap-4 sm:grid-cols-2">
-                {section.benefits.map((benefit, benefitIdx) => (
-                  <Reveal key={benefitIdx} delay={(idx * 100) + (benefitIdx * 40)}>
-                    <div className="flex items-start gap-3 rounded-xl border border-grey-100 bg-white p-4 shadow-card hover:shadow-lift transition-shadow">
-                      <div className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary-lighter text-primary">
-                        <Check size={14} />
-                      </div>
-                      <p className="text-sm leading-relaxed text-ink-soft">{pick(benefit, locale)}</p>
-                    </div>
-                  </Reveal>
-                ))}
+                  <ul className="mt-6 space-y-3">
+                    {section.benefits.map((benefit, benefitIdx) => (
+                      <li key={benefitIdx} className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-soft">
+                        <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary-lighter text-primary">
+                          <Check size={12} />
+                        </span>
+                        {pick(benefit, locale)}
+                      </li>
+                    ))}
+                  </ul>
+                </Reveal>
+
+                <Reveal delay={idx * 100 + 60} className={reversed ? "lg:order-1" : ""}>
+                  <div className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card sm:p-7">
+                    <Visual />
+                  </div>
+                </Reveal>
               </div>
             </div>
           </section>

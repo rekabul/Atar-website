@@ -2,6 +2,7 @@ import type { Config } from "tailwindcss";
 
 /** Tokens mirror the Figma "Atar" variable collection. */
 export default {
+  darkMode: "class",
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {

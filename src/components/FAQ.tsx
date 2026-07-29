@@ -27,12 +27,12 @@ export default function FAQ() {
   }
 
   return (
-    <section id="faq" className="scroll-mt-28 bg-white py-16 lg:py-20" aria-labelledby="faq-title">
+    <section id="faq" className="scroll-mt-28 bg-white py-16 dark:bg-secondary-darker lg:py-20" aria-labelledby="faq-title">
       <div className="mx-auto max-w-3xl px-5 text-center lg:px-8">
-        <h2 id="faq-title" className="text-2xl font-medium text-ink lg:text-3xl">
+        <h2 id="faq-title" className="text-2xl font-medium text-ink dark:text-white lg:text-3xl">
           {t.faq.title}
         </h2>
-        <p className="mt-4 text-ink-soft">{t.faq.subtitle}</p>
+        <p className="mt-4 text-ink-soft dark:text-white/70">{t.faq.subtitle}</p>
       </div>
 
       <div className="mx-auto mt-10 max-w-3xl space-y-3 px-5 lg:px-8">
@@ -41,7 +41,7 @@ export default function FAQ() {
           const panelId = `faq-panel-${i}`;
           const btnId = `faq-btn-${i}`;
           return (
-            <div key={item.q} className="overflow-hidden rounded-2xl border border-grey-200 bg-white">
+            <div key={item.q} className="overflow-hidden rounded-2xl border border-grey-200 bg-white dark:border-white/10 dark:bg-white/5">
               <h3>
                 <button
                   id={btnId}
@@ -49,14 +49,14 @@ export default function FAQ() {
                   aria-expanded={isOpen}
                   aria-controls={panelId}
                   onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start font-medium text-ink"
+                  className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start font-medium text-ink dark:text-white"
                 >
                   <span>{item.q}</span>
                   <span className="shrink-0 text-primary">{isOpen ? <Minus /> : <Plus />}</span>
                 </button>
               </h3>
               {isOpen && (
-                <div id={panelId} role="region" aria-labelledby={btnId} className="px-5 pb-4 leading-relaxed text-ink-soft">
+                <div id={panelId} role="region" aria-labelledby={btnId} className="px-5 pb-4 leading-relaxed text-ink-soft dark:text-white/70">
                   {item.a}
                 </div>
               )}
@@ -67,9 +67,9 @@ export default function FAQ() {
 
       {/* Still have questions — email capture */}
       <div id="contact" className="mx-auto mt-8 max-w-3xl scroll-mt-28 px-5 lg:px-8">
-        <div className="rounded-[28px] bg-[#F6F7F8] p-8 text-center">
-          <h3 className="text-xl font-medium text-ink">{t.faq.stillTitle}</h3>
-          <p className="mt-2 text-ink-soft">{t.faq.stillBody}</p>
+        <div className="rounded-[28px] bg-[#F6F7F8] p-8 text-center dark:bg-white/5">
+          <h3 className="text-xl font-medium text-ink dark:text-white">{t.faq.stillTitle}</h3>
+          <p className="mt-2 text-ink-soft dark:text-white/70">{t.faq.stillBody}</p>
 
           <form onSubmit={handleSubmit} noValidate className="mx-auto mt-5 flex max-w-md flex-col gap-3 sm:flex-row">
             <div className="flex-1 text-start">
@@ -91,8 +91,8 @@ export default function FAQ() {
                 aria-invalid={error || undefined}
                 aria-describedby={error ? "faq-email-err" : undefined}
                 placeholder={t.faq.emailPlaceholder}
-                className={`w-full rounded-xl border bg-white px-4 py-3 text-ink placeholder:text-grey-600 focus:border-primary ${
-                  error ? "border-danger" : "border-grey-200"
+                className={`w-full rounded-xl border bg-white px-4 py-3 text-ink placeholder:text-grey-600 focus:border-primary dark:bg-white/10 dark:text-white dark:placeholder:text-white/40 ${
+                  error ? "border-danger" : "border-grey-200 dark:border-white/15"
                 }`}
               />
             </div>

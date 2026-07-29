@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocale } from "../i18n/LocaleContext";
+import { useTheme } from "../theme/ThemeContext";
 import Reveal from "../components/ui/Reveal";
 import { Riyal, Check, Plus, Minus, ArrowRight } from "../components/ui/Icon";
 import {
@@ -23,6 +24,7 @@ function formatSar(n: number) {
 
 export default function PricingPage() {
   const { t, locale } = useLocale();
+  const { theme } = useTheme();
   const [annual, setAnnual] = useState(false);
   const [unitIndex, setUnitIndex] = useState(0);
   const [dragging, setDragging] = useState(false);
@@ -53,16 +55,16 @@ export default function PricingPage() {
             <p className="text-sm font-medium uppercase tracking-wider text-primary">
               {pick(pricingHero.eyebrow, locale)}
             </p>
-            <h1 id="pricing-title" className="mt-3 text-4xl font-medium tracking-tight text-ink sm:text-5xl">
+            <h1 id="pricing-title" className="mt-3 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl">
               {pick(pricingHero.title, locale)}
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-ink-soft">
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-ink-soft dark:text-white/70">
               {pick(pricingHero.subtitle, locale)}
             </p>
 
             {/* Billing toggle */}
             <div
-              className="mt-8 inline-flex items-center gap-1 rounded-full border border-grey-200 bg-white p-1"
+              className="mt-8 inline-flex items-center gap-1 rounded-full border border-grey-200 bg-white p-1 dark:border-white/15 dark:bg-white/5"
               role="group"
               aria-label={pick(billing.monthly, locale) + " / " + pick(billing.annual, locale)}
             >
@@ -71,7 +73,7 @@ export default function PricingPage() {
                 onClick={() => setAnnual(false)}
                 aria-pressed={!annual}
                 className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                  !annual ? "bg-primary text-white" : "text-ink-soft hover:text-primary"
+                  !annual ? "bg-primary text-white" : "text-ink-soft hover:text-primary dark:text-white/70 dark:hover:text-primary-light"
                 }`}
               >
                 {pick(billing.monthly, locale)}
@@ -81,7 +83,7 @@ export default function PricingPage() {
                 onClick={() => setAnnual(true)}
                 aria-pressed={annual}
                 className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                  annual ? "bg-primary text-white" : "text-ink-soft hover:text-primary"
+                  annual ? "bg-primary text-white" : "text-ink-soft hover:text-primary dark:text-white/70 dark:hover:text-primary-light"
                 }`}
               >
                 {pick(billing.annual, locale)}
@@ -123,16 +125,18 @@ export default function PricingPage() {
                 }}
                 className="units-slider"
                 style={{
-                  background: `linear-gradient(to right, #008ea5 ${sliderPercent}%, #E4E7E8 ${sliderPercent}%)`,
+                  background: `linear-gradient(to right, #008ea5 ${sliderPercent}%, ${
+                    theme === "dark" ? "rgba(255,255,255,0.15)" : "#E4E7E8"
+                  } ${sliderPercent}%)`,
                 }}
                 aria-label={pick(unitsCalculator.title, locale)}
                 aria-valuetext={`${unitTierLabels[unitIndex]} ${pick(unitsCalculator.unitsLabel, locale)}`}
               />
-              <div className="mt-1.5 flex justify-between text-xs text-grey-600">
+              <div className="mt-1.5 flex justify-between text-xs text-grey-600 dark:text-white/40">
                 {unitTierLabels.map((label, i) => (
                   <span
                     key={label}
-                    className={`transition-colors ${i === unitIndex ? "font-semibold text-primary" : ""}`}
+                    className={`transition-colors ${i === unitIndex ? "font-semibold text-primary dark:text-primary-light" : ""}`}
                   >
                     {label}
                   </span>
@@ -149,10 +153,10 @@ export default function PricingPage() {
           {plans.map((plan, i) => (
             <Reveal key={plan.id} delay={i * 90} className="h-full">
               <div
-                className={`flex h-full flex-col rounded-[28px] border bg-white p-8 ${
+                className={`flex h-full flex-col rounded-[28px] border bg-white p-8 dark:bg-white/5 ${
                   plan.popular
                     ? "border-primary shadow-lift ring-1 ring-primary/20"
-                    : "border-grey-200 shadow-card"
+                    : "border-grey-200 shadow-card dark:border-white/10"
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -165,24 +169,24 @@ export default function PricingPage() {
                     </span>
                   )}
                 </div>
-                <p className="mt-1 text-sm text-ink-soft">{pick(plan.audience, locale)}</p>
+                <p className="mt-1 text-sm text-ink-soft dark:text-white/70">{pick(plan.audience, locale)}</p>
 
                 <div className="mt-6">
                   {plan.monthly === null ? (
-                    <p className="text-3xl font-medium text-ink">{pick(plan.customLabel!, locale)}</p>
+                    <p className="text-3xl font-medium text-ink dark:text-white">{pick(plan.customLabel!, locale)}</p>
                   ) : (
                     <>
-                      <p className="text-xs uppercase tracking-wide text-grey-600">
+                      <p className="text-xs uppercase tracking-wide text-grey-600 dark:text-white/40">
                         {pick(billing.startingFrom, locale)}
                       </p>
-                      <p className="mt-1 flex items-baseline gap-1.5 text-ink" dir="ltr">
-                        <Riyal className="h-[0.7em] w-auto self-center text-secondary" />
+                      <p className="mt-1 flex items-baseline gap-1.5 text-ink dark:text-white" dir="ltr">
+                        <Riyal className="h-[0.7em] w-auto self-center text-secondary dark:text-primary-light" />
                         <span className="text-4xl font-semibold tracking-tight">
                           {formatSar(monthlyEquivalent(plan.monthly))}
                         </span>
-                        <span className="text-sm text-ink-soft">{pick(billing.perMonth, locale)}</span>
+                        <span className="text-sm text-ink-soft dark:text-white/70">{pick(billing.perMonth, locale)}</span>
                       </p>
-                      <p className="mt-1 text-xs text-grey-600">
+                      <p className="mt-1 text-xs text-grey-600 dark:text-white/40">
                         {pick(billing.exclVat, locale)} · {pick(billing.basedOnUnits, locale)}
                         {annual ? ` · ${pick(billing.annualNote, locale)}` : ""}
                       </p>
@@ -190,11 +194,11 @@ export default function PricingPage() {
                   )}
                 </div>
 
-                <p className="mt-6 text-sm font-medium text-ink">{pick(plan.featuresIntro, locale)}</p>
+                <p className="mt-6 text-sm font-medium text-ink dark:text-white">{pick(plan.featuresIntro, locale)}</p>
                 <ul className="mt-3 flex-1 space-y-3">
                   {plan.features.map((f) => (
-                    <li key={f.en} className="flex items-start gap-2.5 text-sm text-ink-soft">
-                      <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary-lighter text-primary">
+                    <li key={f.en} className="flex items-start gap-2.5 text-sm text-ink-soft dark:text-white/70">
+                      <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light">
                         <Check size={13} />
                       </span>
                       {pick(f, locale)}
@@ -208,7 +212,7 @@ export default function PricingPage() {
                     className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-medium transition-colors ${
                       plan.popular
                         ? "bg-primary text-white hover:bg-secondary"
-                        : "border border-grey-200 text-ink hover:border-primary hover:text-primary"
+                        : "border border-grey-200 text-ink hover:border-primary hover:text-primary dark:border-white/15 dark:text-white"
                     }`}
                   >
                     {pick(plan.primaryCta, locale)}
@@ -216,7 +220,7 @@ export default function PricingPage() {
                   {plan.secondaryCta && (
                     <Link
                       to="/contact"
-                      className="inline-flex items-center justify-center rounded-xl px-5 py-3 font-medium text-ink-soft hover:text-primary"
+                      className="inline-flex items-center justify-center rounded-xl px-5 py-3 font-medium text-ink-soft hover:text-primary dark:text-white/70"
                     >
                       {pick(plan.secondaryCta, locale)}
                     </Link>
@@ -229,22 +233,22 @@ export default function PricingPage() {
       </section>
 
       {/* Compare plans */}
-      <section className="bg-grey-100/40 py-16 lg:py-20" aria-labelledby="compare-title">
+      <section className="bg-grey-100/40 py-16 dark:bg-white/[0.03] lg:py-20" aria-labelledby="compare-title">
         <div className="mx-auto max-w-6xl px-5 lg:px-8">
-          <h2 id="compare-title" className="text-center text-2xl font-medium text-ink lg:text-3xl">
+          <h2 id="compare-title" className="text-center text-2xl font-medium text-ink dark:text-white lg:text-3xl">
             {pick(compare.title, locale)}
           </h2>
 
           <div className="mt-10 overflow-x-auto">
             <div className="min-w-[640px]">
               {/* Plan header — a plain (non-sticky) section header */}
-              <div className="grid grid-cols-[1.6fr_1fr_1fr_1fr] items-center gap-2 rounded-2xl border border-grey-200 bg-white px-5 py-5 shadow-card">
+              <div className="grid grid-cols-[1.6fr_1fr_1fr_1fr] items-center gap-2 rounded-2xl border border-grey-200 bg-white px-5 py-5 shadow-card dark:border-white/10 dark:bg-white/5">
                 <div>
-                  <span className="text-xs font-bold uppercase tracking-widest text-ink-muted">
+                  <span className="text-xs font-bold uppercase tracking-widest text-ink-muted dark:text-white/50">
                     {pick(compare.chooseYourPlan, locale)}
                   </span>
-                  <div className="mt-1.5 flex items-center gap-1.5 text-xs text-ink-soft">
-                    <span className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-primary-lighter text-primary">
+                  <div className="mt-1.5 flex items-center gap-1.5 text-xs text-ink-soft dark:text-white/60">
+                    <span className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light">
                       <Check size={10} />
                     </span>
                     {pick(compare.included, locale)}
@@ -252,8 +256,8 @@ export default function PricingPage() {
                 </div>
                 {plans.map((p) => (
                   <div key={p.id} className="text-center">
-                    <p className="text-sm font-bold text-ink">{pick(compare.planNames[plans.indexOf(p)], locale)}</p>
-                    <p className="mt-1 text-xs font-semibold text-primary" dir="ltr">
+                    <p className="text-sm font-bold text-ink dark:text-white">{pick(compare.planNames[plans.indexOf(p)], locale)}</p>
+                    <p className="mt-1 text-xs font-semibold text-primary dark:text-primary-light" dir="ltr">
                       {p.monthly === null
                         ? pick(p.customLabel!, locale)
                         : `SAR ${formatSar(monthlyEquivalent(p.monthly))}`}
@@ -267,12 +271,12 @@ export default function PricingPage() {
                 {categories.map((cat, ci) => {
                   const open = openCat[ci];
                   return (
-                    <div key={ci} className="overflow-hidden rounded-2xl border border-grey-200 bg-white">
+                    <div key={ci} className="overflow-hidden rounded-2xl border border-grey-200 bg-white dark:border-white/10 dark:bg-white/5">
                       <button
                         type="button"
                         onClick={() => setOpenCat((s) => ({ ...s, [ci]: !s[ci] }))}
                         aria-expanded={open}
-                        className="flex w-full items-center justify-between gap-4 bg-grey-100/60 px-5 py-4 text-start font-semibold text-ink"
+                        className="flex w-full items-center justify-between gap-4 bg-grey-100/60 px-5 py-4 text-start font-semibold text-ink dark:bg-white/5 dark:text-white"
                       >
                         <span>{pick(cat.name, locale)}</span>
                         <span className="shrink-0 text-primary">{open ? <Minus /> : <Plus />}</span>
@@ -282,16 +286,16 @@ export default function PricingPage() {
                           {cat.features.map((f, fi) => (
                             <div
                               key={fi}
-                              className="grid grid-cols-[1.6fr_1fr_1fr_1fr] items-center gap-2 border-t border-grey-100 px-5 py-3.5"
+                              className="grid grid-cols-[1.6fr_1fr_1fr_1fr] items-center gap-2 border-t border-grey-100 px-5 py-3.5 dark:border-white/10"
                             >
-                              <span className="text-sm text-ink">{pick(f.name, locale)}</span>
+                              <span className="text-sm text-ink dark:text-white">{pick(f.name, locale)}</span>
                               {[0, 1, 2].map((pi) => {
                                 const included = f.c[pi] === "1";
                                 return (
                                   <div key={pi} className="flex justify-center">
                                     {included ? (
                                       <span
-                                        className="grid h-6 w-6 place-items-center rounded-full bg-primary-lighter text-primary"
+                                        className="grid h-6 w-6 place-items-center rounded-full bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light"
                                         role="img"
                                         aria-label={pick(compare.yes, locale)}
                                       >
@@ -299,7 +303,7 @@ export default function PricingPage() {
                                       </span>
                                     ) : (
                                       <span
-                                        className="text-grey-600"
+                                        className="text-grey-600 dark:text-white/30"
                                         role="img"
                                         aria-label={pick(compare.no, locale)}
                                       >
@@ -323,9 +327,9 @@ export default function PricingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-16 lg:py-20" aria-labelledby="pricing-faq-title">
+      <section className="bg-white py-16 dark:bg-secondary-darker lg:py-20" aria-labelledby="pricing-faq-title">
         <div className="mx-auto max-w-3xl px-5 text-center lg:px-8">
-          <h2 id="pricing-faq-title" className="text-2xl font-medium text-ink lg:text-3xl">
+          <h2 id="pricing-faq-title" className="text-2xl font-medium text-ink dark:text-white lg:text-3xl">
             {pick(pricingFaq.title, locale)}
           </h2>
         </div>
@@ -335,7 +339,7 @@ export default function PricingPage() {
             const panelId = `pfaq-panel-${i}`;
             const btnId = `pfaq-btn-${i}`;
             return (
-              <div key={i} className="overflow-hidden rounded-2xl border border-grey-200 bg-white">
+              <div key={i} className="overflow-hidden rounded-2xl border border-grey-200 bg-white dark:border-white/10 dark:bg-white/5">
                 <h3>
                   <button
                     id={btnId}
@@ -343,14 +347,14 @@ export default function PricingPage() {
                     aria-expanded={isOpen}
                     aria-controls={panelId}
                     onClick={() => setOpenFaq(isOpen ? null : i)}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start font-medium text-ink"
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start font-medium text-ink dark:text-white"
                   >
                     <span>{pick(item.q, locale)}</span>
                     <span className="shrink-0 text-primary">{isOpen ? <Minus /> : <Plus />}</span>
                   </button>
                 </h3>
                 {isOpen && (
-                  <div id={panelId} role="region" aria-labelledby={btnId} className="px-5 pb-4 leading-relaxed text-ink-soft">
+                  <div id={panelId} role="region" aria-labelledby={btnId} className="px-5 pb-4 leading-relaxed text-ink-soft dark:text-white/70">
                     {pick(item.a, locale)}
                   </div>
                 )}

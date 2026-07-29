@@ -31,11 +31,11 @@ export default function ContactPage() {
             </p>
             <h1
               id="contact-page-title"
-              className="mt-3 text-4xl font-medium tracking-tight text-ink sm:text-5xl"
+              className="mt-3 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl"
             >
               {cp.title}
             </h1>
-            <p className="mx-auto mt-4 max-w-xl text-lg text-ink-soft">{cp.subtitle}</p>
+            <p className="mx-auto mt-4 max-w-xl text-lg text-ink-soft dark:text-white/70">{cp.subtitle}</p>
           </Reveal>
         </div>
       </section>
@@ -44,20 +44,20 @@ export default function ContactPage() {
       <ContactForm hideEyebrow />
 
       {/* Working hours + location */}
-      <section className="pb-16 lg:pb-24" aria-label={cp.hoursTitle}>
+      <section className="bg-white pb-16 dark:bg-secondary-darker lg:pb-24" aria-label={cp.hoursTitle}>
         <div className="mx-auto grid max-w-content gap-6 px-5 lg:grid-cols-2 lg:px-8">
           <Reveal className="h-full">
-            <div className="h-full rounded-[28px] bg-[#F6F7F8] p-8">
-              <h2 className="text-lg font-medium text-ink">{cp.hoursTitle}</h2>
-              <dl className="mt-4 space-y-2 text-ink-soft">
+            <div className="h-full rounded-[28px] bg-[#F6F7F8] p-8 dark:bg-white/5">
+              <h2 className="text-lg font-medium text-ink dark:text-white">{cp.hoursTitle}</h2>
+              <dl className="mt-4 space-y-2 text-ink-soft dark:text-white/70">
                 <div className="flex items-center justify-between gap-4">
                   <dt>{cp.hoursDays}</dt>
-                  <dd className="font-medium text-ink" dir="ltr">
+                  <dd className="font-medium text-ink dark:text-white" dir="ltr">
                     {cp.hoursTime}
                   </dd>
                 </div>
               </dl>
-              <p className="mt-3 text-sm text-ink-soft">{cp.hoursNote}</p>
+              <p className="mt-3 text-sm text-ink-soft dark:text-white/70">{cp.hoursNote}</p>
             </div>
           </Reveal>
 

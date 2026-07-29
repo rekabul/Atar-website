@@ -118,6 +118,23 @@ export function Globe({ size = 18, ...p }: IconProps) {
   );
 }
 
+export function Sun({ size = 16, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
+    </svg>
+  );
+}
+
+export function Moon({ size = 16, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M20 14.5A8.5 8.5 0 019.5 4a8.5 8.5 0 1010.5 10.5z" />
+    </svg>
+  );
+}
+
 export function Target({ size = 28, ...p }: IconProps) {
   return (
     <svg {...base(size)} {...p}>
@@ -127,6 +144,36 @@ export function Target({ size = 28, ...p }: IconProps) {
     </svg>
   );
 }
+
+/** Icons for the Features "Built for Every Role" cards, keyed by name. */
+export const roleIcons: Record<string, (p: IconProps) => ReactElement> = {
+  owner: (p) => (
+    <svg {...base(24)} {...p}>
+      <path d="M4 21V10l8-6 8 6v11" />
+      <path d="M9 21v-6h6v6" />
+    </svg>
+  ),
+  manager: (p) => (
+    <svg {...base(24)} {...p}>
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3 20c0-3 2.7-5 6-5s6 2 6 5" />
+      <circle cx="17.5" cy="9" r="2.2" />
+      <path d="M21 20c0-2.4-1.8-4.2-4-4.7" />
+    </svg>
+  ),
+  tenant: (p) => (
+    <svg {...base(24)} {...p}>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+    </svg>
+  ),
+  accountant: (p) => (
+    <svg {...base(24)} {...p}>
+      <rect x="5" y="3" width="14" height="18" rx="2" />
+      <path d="M9 7h6M8 11h1M11.5 11h1M15 11h1M8 15h1M11.5 15h1M15 15h1" />
+    </svg>
+  ),
+};
 
 /** Icons for the About "Values" cards, keyed by name. */
 export const valueIcons: Record<string, (p: IconProps) => ReactElement> = {

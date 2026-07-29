@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocale } from "../i18n/LocaleContext";
 import Reveal from "../components/ui/Reveal";
-import { Check } from "../components/ui/Icon";
+import { Check, roleIcons } from "../components/ui/Icon";
 import CTA from "../components/CTA";
 import {
   FinancialChart,
@@ -101,10 +101,10 @@ const visualsById: Record<string, () => JSX.Element> = {
 };
 
 const roles = [
-  { title: { en: "Property Owners", ar: "مالكو العقارات" }, desc: { en: "Maximize income, see performance, reduce vacancy", ar: "زيادة الدخل ورؤية الأداء وتقليل الشغور" } },
-  { title: { en: "Managers", ar: "المديرون" }, desc: { en: "Streamline ops, reduce admin by 60%, scale easily", ar: "تبسيط العمليات وتقليل الإدارة بنسبة 60٪" } },
-  { title: { en: "Tenants", ar: "المستأجرون" }, desc: { en: "Fast requests, instant resolutions, full transparency", ar: "طلبات سريعة وحلول فورية وشفافية كاملة" } },
-  { title: { en: "Accountants", ar: "المحاسبون" }, desc: { en: "Auto-categorized data, audit-ready reports, zero errors", ar: "بيانات مصنفة تلقائياً وتقارير جاهزة للتدقيق" } },
+  { icon: "owner", title: { en: "Property Owners", ar: "مالكو العقارات" }, desc: { en: "Maximize income, see performance, reduce vacancy", ar: "زيادة الدخل ورؤية الأداء وتقليل الشغور" } },
+  { icon: "manager", title: { en: "Managers", ar: "المديرون" }, desc: { en: "Streamline ops, reduce admin by 60%, scale easily", ar: "تبسيط العمليات وتقليل الإدارة بنسبة 60٪" } },
+  { icon: "tenant", title: { en: "Tenants", ar: "المستأجرون" }, desc: { en: "Fast requests, instant resolutions, full transparency", ar: "طلبات سريعة وحلول فورية وشفافية كاملة" } },
+  { icon: "accountant", title: { en: "Accountants", ar: "المحاسبون" }, desc: { en: "Auto-categorized data, audit-ready reports, zero errors", ar: "بيانات مصنفة تلقائياً وتقارير جاهزة للتدقيق" } },
 ];
 
 export default function FeaturesPage() {
@@ -125,10 +125,10 @@ export default function FeaturesPage() {
         <div className="mx-auto max-w-3xl px-5 py-16 text-center lg:px-8 lg:py-20">
           <Reveal>
             <p className="text-sm font-medium uppercase tracking-wider text-primary">Enterprise Features</p>
-            <h1 id="features-title" className="mt-3 text-4xl font-medium tracking-tight text-ink sm:text-5xl">
+            <h1 id="features-title" className="mt-3 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl">
               Everything to Scale Your Real Estate Business
             </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-white/70">
               Financial automation, AI-powered insights, compliance, and integrations—all built for Saudi Arabia's property market.
             </p>
           </Reveal>
@@ -138,7 +138,14 @@ export default function FeaturesPage() {
       {/* Feature sections — alternating text + product-screen visual, same
           pattern as the homepage Features component. */}
       {featureSections.map((section, idx) => {
-        const bgClasses = ["bg-white", "bg-grey-50", "bg-grey-100/40", "bg-white", "bg-grey-50", "bg-grey-100/40"];
+        const bgClasses = [
+          "bg-white dark:bg-secondary-darker",
+          "bg-grey-50 dark:bg-white/5",
+          "bg-grey-100/40 dark:bg-white/[0.03]",
+          "bg-white dark:bg-secondary-darker",
+          "bg-grey-50 dark:bg-white/5",
+          "bg-grey-100/40 dark:bg-white/[0.03]",
+        ];
         const reversed = idx % 2 === 1;
         const Visual = visualsById[section.id];
         return (
@@ -153,17 +160,17 @@ export default function FeaturesPage() {
                   <p className="text-sm font-medium uppercase tracking-wider text-primary">
                     {pick(section.eyebrow, locale)}
                   </p>
-                  <h2 id={`feature-${section.id}`} className="mt-3 text-3xl font-medium text-ink lg:text-4xl">
+                  <h2 id={`feature-${section.id}`} className="mt-3 text-3xl font-medium text-ink dark:text-white lg:text-4xl">
                     {pick(section.title, locale)}
                   </h2>
-                  <p className="mt-3 text-lg font-medium text-primary">
+                  <p className="mt-3 text-lg font-medium text-primary dark:text-primary-light">
                     {pick(section.subtitle, locale)}
                   </p>
 
                   <ul className="mt-6 space-y-3">
                     {section.benefits.map((benefit, benefitIdx) => (
-                      <li key={benefitIdx} className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-soft">
-                        <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary-lighter text-primary">
+                      <li key={benefitIdx} className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-soft dark:text-white/70">
+                        <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light">
                           <Check size={12} />
                         </span>
                         {pick(benefit, locale)}
@@ -173,7 +180,7 @@ export default function FeaturesPage() {
                 </Reveal>
 
                 <Reveal delay={idx * 100 + 60} className={reversed ? "lg:order-1" : ""}>
-                  <div className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card sm:p-7">
+                  <div className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card dark:border-white/10 dark:bg-white/5 sm:p-7">
                     <Visual />
                   </div>
                 </Reveal>
@@ -184,39 +191,45 @@ export default function FeaturesPage() {
       })}
 
       {/* Roles section */}
-      <section className="bg-white py-16 lg:py-20" aria-labelledby="roles-title">
+      <section className="bg-white py-16 dark:bg-secondary-darker lg:py-20" aria-labelledby="roles-title">
         <div className="mx-auto max-w-5xl px-5 lg:px-8">
           <Reveal className="text-center">
-            <h2 id="roles-title" className="text-3xl font-medium text-ink lg:text-4xl">
+            <h2 id="roles-title" className="text-3xl font-medium text-ink dark:text-white lg:text-4xl">
               Built for Every Role
             </h2>
-            <p className="mt-3 text-lg text-ink-soft">
+            <p className="mt-3 text-lg text-ink-soft dark:text-white/70">
               Whether you own properties or manage them, ATAR adapts to your needs.
             </p>
           </Reveal>
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {roles.map((role, idx) => (
-              <Reveal key={idx} delay={idx * 75}>
-                <div className="rounded-2xl border border-grey-100 bg-gradient-to-b from-grey-50 to-white p-6 shadow-card hover:shadow-lift transition-shadow">
-                  <h3 className="text-lg font-semibold text-ink">{pick(role.title, locale)}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-ink-soft">{pick(role.desc, locale)}</p>
-                </div>
-              </Reveal>
-            ))}
+            {roles.map((role, idx) => {
+              const RoleIcon = roleIcons[role.icon];
+              return (
+                <Reveal key={idx} delay={idx * 75}>
+                  <div className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card hover:shadow-lift transition-shadow dark:border-white/10 dark:bg-white/5">
+                    <div className="mb-4 grid h-12 w-12 place-items-center rounded-xl bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light">
+                      <RoleIcon size={22} />
+                    </div>
+                    <h3 className="text-lg font-semibold text-ink dark:text-white">{pick(role.title, locale)}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-ink-soft dark:text-white/70">{pick(role.desc, locale)}</p>
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Social proof section */}
-      <section className="bg-grey-50 py-16 lg:py-20">
+      <section className="bg-grey-50 py-16 dark:bg-white/5 lg:py-20">
         <div className="mx-auto max-w-3xl px-5 text-center lg:px-8">
           <Reveal>
             <p className="text-sm font-medium uppercase tracking-wider text-primary">Trusted by Leaders</p>
-            <h2 className="mt-3 text-2xl font-medium text-ink lg:text-3xl">
+            <h2 className="mt-3 text-2xl font-medium text-ink dark:text-white lg:text-3xl">
               1,000+ property professionals use ATAR daily
             </h2>
-            <p className="mt-4 text-lg text-ink-soft">
+            <p className="mt-4 text-lg text-ink-soft dark:text-white/70">
               From small landlords to enterprise portfolios managing 10,000+ units.
             </p>
           </Reveal>
@@ -228,9 +241,9 @@ export default function FeaturesPage() {
               { metric: "99.9%", label: { en: "Uptime SLA", ar: "التوفر" } },
             ].map((stat, idx) => (
               <Reveal key={idx} delay={idx * 75}>
-                <div className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card hover:shadow-lift transition-shadow">
-                  <p className="text-3xl font-semibold text-primary">{stat.metric}</p>
-                  <p className="mt-2 text-sm text-ink-soft">{pick(stat.label, locale)}</p>
+                <div className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card hover:shadow-lift transition-shadow dark:border-white/10 dark:bg-secondary-darker">
+                  <p className="text-3xl font-semibold text-primary dark:text-primary-light">{stat.metric}</p>
+                  <p className="mt-2 text-sm text-ink-soft dark:text-white/70">{pick(stat.label, locale)}</p>
                 </div>
               </Reveal>
             ))}

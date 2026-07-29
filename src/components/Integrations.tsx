@@ -8,10 +8,10 @@ export default function Integrations() {
   return (
     <section id="integrations" className="scroll-mt-28 py-16 lg:py-20" aria-labelledby="integrations-title">
       <div className="mx-auto max-w-3xl px-5 text-center lg:px-8">
-        <h2 id="integrations-title" className="text-2xl font-medium text-ink lg:text-3xl">
+        <h2 id="integrations-title" className="text-2xl font-medium text-ink dark:text-white lg:text-3xl">
           {t.integrations.title}
         </h2>
-        <p className="mt-4 text-ink-soft">{t.integrations.subtitle}</p>
+        <p className="mt-4 text-ink-soft dark:text-white/70">{t.integrations.subtitle}</p>
         <Button href="/contact" className="mt-6" icon={<ArrowRight />}>
           {t.integrations.seeAll}
         </Button>
@@ -29,7 +29,7 @@ export default function Integrations() {
           </li>
         ))}
       </ul>
-      <p className="mt-8 text-center text-sm text-ink-soft">{t.integrations.footnote}</p>
+      <p className="mt-8 text-center text-sm text-ink-soft dark:text-white/60">{t.integrations.footnote}</p>
     </section>
   );
 }

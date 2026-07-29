@@ -61,26 +61,26 @@ export default function ContactForm({ hideEyebrow = false }: { hideEyebrow?: boo
   }
 
   const fieldClass = (err?: string) =>
-    `w-full rounded-xl border px-4 py-3 text-ink placeholder:text-grey-600 focus:border-primary ${
-      err ? "border-danger" : "border-grey-200"
+    `w-full rounded-xl border px-4 py-3 text-ink placeholder:text-grey-600 focus:border-primary dark:bg-white/5 dark:text-white dark:placeholder:text-white/30 ${
+      err ? "border-danger" : "border-grey-200 dark:border-white/15"
     }`;
 
   return (
-    <section id="contact" className="scroll-mt-28 bg-white py-16 lg:py-20" aria-labelledby="contact-title">
+    <section id="contact" className="scroll-mt-28 bg-white py-16 dark:bg-secondary-darker lg:py-20" aria-labelledby="contact-title">
       <div className="mx-auto grid max-w-content gap-10 px-5 lg:grid-cols-2 lg:gap-16 lg:px-8">
         {/* Intro + contact details */}
         <Reveal>
           {!hideEyebrow && (
             <p className="text-sm font-medium uppercase tracking-wider text-primary">{c.eyebrow}</p>
           )}
-          <h2 id="contact-title" className="mt-3 text-3xl font-medium text-ink lg:text-4xl">
+          <h2 id="contact-title" className="mt-3 text-3xl font-medium text-ink dark:text-white lg:text-4xl">
             {c.title}
           </h2>
-          <p className="mt-4 text-lg text-ink-soft">{c.subtitle}</p>
+          <p className="mt-4 text-lg text-ink-soft dark:text-white/70">{c.subtitle}</p>
 
-          <ul className="mt-8 space-y-4 text-ink">
+          <ul className="mt-8 space-y-4 text-ink dark:text-white">
             <li className="flex items-start gap-3">
-              <span className="mt-0.5 grid h-9 w-9 place-items-center rounded-lg bg-primary-lighter text-primary" aria-hidden="true">
+              <span className="mt-0.5 grid h-9 w-9 place-items-center rounded-lg bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light" aria-hidden="true">
                 <Phone size={18} />
               </span>
               <a href={`tel:${t.footer.phone.replace(/\s/g, "")}`} className="hover:text-primary" dir="ltr">
@@ -88,23 +88,23 @@ export default function ContactForm({ hideEyebrow = false }: { hideEyebrow?: boo
               </a>
             </li>
             <li className="flex items-start gap-3">
-              <span className="mt-0.5 grid h-9 w-9 place-items-center rounded-lg bg-primary-lighter text-primary" aria-hidden="true">
+              <span className="mt-0.5 grid h-9 w-9 place-items-center rounded-lg bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light" aria-hidden="true">
                 <Mail size={18} />
               </span>
               <a href={`mailto:${t.footer.email}`} className="hover:text-primary">
                 {t.footer.email}
               </a>
             </li>
-            <li className="text-ink-soft">{t.footer.address}</li>
+            <li className="text-ink-soft dark:text-white/70">{t.footer.address}</li>
           </ul>
         </Reveal>
 
         {/* Form */}
         <Reveal delay={90}>
-        <form onSubmit={handleSubmit} noValidate className="rounded-[28px] bg-[#F6F7F8] p-6 sm:p-8">
+        <form onSubmit={handleSubmit} noValidate className="rounded-[28px] bg-[#F6F7F8] p-6 dark:bg-white/5 sm:p-8">
           <div className="grid gap-5 sm:grid-cols-2">
             <div className="sm:col-span-1">
-              <label htmlFor="cf-name" className="mb-1.5 block text-sm font-medium text-ink">
+              <label htmlFor="cf-name" className="mb-1.5 block text-sm font-medium text-ink dark:text-white">
                 {c.name.label}
               </label>
               <input
@@ -128,7 +128,7 @@ export default function ContactForm({ hideEyebrow = false }: { hideEyebrow?: boo
             </div>
 
             <div className="sm:col-span-1">
-              <label htmlFor="cf-email" className="mb-1.5 block text-sm font-medium text-ink">
+              <label htmlFor="cf-email" className="mb-1.5 block text-sm font-medium text-ink dark:text-white">
                 {c.email.label}
               </label>
               <input
@@ -154,8 +154,8 @@ export default function ContactForm({ hideEyebrow = false }: { hideEyebrow?: boo
             </div>
 
             <div className="sm:col-span-2">
-              <label htmlFor="cf-company" className="mb-1.5 block text-sm font-medium text-ink">
-                {c.company.label} <span className="text-grey-600">{c.company.optional}</span>
+              <label htmlFor="cf-company" className="mb-1.5 block text-sm font-medium text-ink dark:text-white">
+                {c.company.label} <span className="text-grey-600 dark:text-white/40">{c.company.optional}</span>
               </label>
               <input
                 id="cf-company"
@@ -169,7 +169,7 @@ export default function ContactForm({ hideEyebrow = false }: { hideEyebrow?: boo
             </div>
 
             <div className="sm:col-span-2">
-              <label htmlFor="cf-message" className="mb-1.5 block text-sm font-medium text-ink">
+              <label htmlFor="cf-message" className="mb-1.5 block text-sm font-medium text-ink dark:text-white">
                 {c.message.label}
               </label>
               <textarea
@@ -205,7 +205,7 @@ export default function ContactForm({ hideEyebrow = false }: { hideEyebrow?: boo
               {c.success}
             </p>
           )}
-          <p className="mt-4 text-xs text-ink-soft">{c.note}</p>
+          <p className="mt-4 text-xs text-ink-soft dark:text-white/50">{c.note}</p>
         </form>
         </Reveal>
       </div>

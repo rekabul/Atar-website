@@ -9,17 +9,17 @@ export default function Hero() {
   return (
     <section className="hero-bg" aria-labelledby="hero-title">
       <div className="mx-auto max-w-4xl px-5 pt-16 pb-10 text-center lg:px-8 lg:pt-20">
-        <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-medium text-secondary shadow-card">
+        <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white px-4 py-2 text-sm font-medium text-secondary shadow-card dark:border-primary/30 dark:bg-white/5 dark:text-white">
           <span className="h-2 w-2 rounded-full bg-primary" aria-hidden="true" />
           {t.hero.eyebrow}
         </span>
         <h1
           id="hero-title"
-          className="mt-6 text-4xl font-medium leading-[1.1] tracking-tight text-ink sm:text-5xl lg:text-[64px]"
+          className="mt-6 text-4xl font-medium leading-[1.1] tracking-tight text-ink dark:text-white sm:text-5xl lg:text-[64px]"
         >
           {t.hero.title}
         </h1>
-        <p className="mx-auto mt-5 max-w-2xl text-lg text-ink-soft">{t.hero.subtitle}</p>
+        <p className="mx-auto mt-5 max-w-2xl text-lg text-ink-soft dark:text-white/70">{t.hero.subtitle}</p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button href="/contact" fullWidth icon={<ArrowRight />}>
             {t.hero.getStarted}

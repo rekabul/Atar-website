@@ -62,7 +62,7 @@ function Counter({
   const display = comma ? value.toLocaleString("en-US") : String(value);
   return (
     <span dir="ltr" className="inline-flex items-baseline gap-0.5 tabular-nums">
-      {currency && <Riyal className="h-[0.62em] w-auto self-center text-secondary" />}
+      {currency && <Riyal className="h-[0.62em] w-auto self-center text-secondary dark:text-white" />}
       {display}
       {suffix}
     </span>
@@ -79,11 +79,11 @@ export default function Stats() {
         <Reveal>
         <div
           ref={ref}
-          className="rounded-[28px] bg-[#F6F7F8] px-6 py-12 sm:px-10 lg:py-16"
+          className="rounded-[28px] bg-[#F6F7F8] px-6 py-12 dark:bg-white/5 sm:px-10 lg:py-16"
         >
           <h2
             id="stats-title"
-            className="text-center text-2xl font-medium text-secondary lg:text-3xl"
+            className="text-center text-2xl font-medium text-secondary dark:text-white lg:text-3xl"
           >
             {t.stats.title}
           </h2>
@@ -92,13 +92,13 @@ export default function Stats() {
               <div
                 key={i}
                 className={
-                  i === 1 ? "sm:border-x sm:border-grey-200 sm:px-6" : "sm:px-6"
+                  i === 1 ? "sm:border-x sm:border-grey-200 dark:sm:border-white/15 sm:px-6" : "sm:px-6"
                 }
               >
-                <dt className="text-4xl font-semibold tracking-tight text-secondary lg:text-5xl">
+                <dt className="text-4xl font-semibold tracking-tight text-secondary dark:text-white lg:text-5xl">
                   <Counter {...s} active={inView} />
                 </dt>
-                <dd className="mt-3 text-sm text-ink-soft">{t.stats.items[i].label}</dd>
+                <dd className="mt-3 text-sm text-ink-soft dark:text-white/60">{t.stats.items[i].label}</dd>
               </div>
             ))}
           </dl>

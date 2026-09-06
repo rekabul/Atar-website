@@ -3,6 +3,20 @@ import saasIcon from "../assets/illustrations/SaaS.svg";
 import growthIcon from "../assets/illustrations/hockey stick growth.svg";
 import softwareIcon from "../assets/illustrations/Software Companies.svg";
 import networkingIcon from "../assets/illustrations/Networking.svg";
+import commercialOperatorPhoto from "../assets/case-studies/commercial-operator.jpg";
+import pifDeveloperPhoto from "../assets/case-studies/pif-developer.jpg";
+import residentialOperatorPhoto from "../assets/case-studies/residential-operator.jpg";
+import subdivisionDeveloperPhoto from "../assets/case-studies/subdivision-developer.jpg";
+import residentialDeveloperPhoto from "../assets/case-studies/residential-developer.jpg";
+
+/** Real project photography from the Atar Company Profile, one per case study, keyed by id. */
+export const caseStudyPhotos: Record<string, string> = {
+  "commercial-operator": commercialOperatorPhoto,
+  "pif-developer": pifDeveloperPhoto,
+  "residential-operator": residentialOperatorPhoto,
+  "subdivision-developer": subdivisionDeveloperPhoto,
+  "residential-developer": residentialDeveloperPhoto,
+};
 
 /**
  * Maps the REAL exported asset files (cryptic Figma export names) to each

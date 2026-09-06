@@ -11,7 +11,7 @@ export default function Logo({
   return (
     <img
       src={light ? atarLogoLight : atarLogo}
-      alt="ATAR"
+      alt="Atar"
       className={className}
       width={142}
       height={55}

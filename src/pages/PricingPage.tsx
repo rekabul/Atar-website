@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useLocale } from "../i18n/LocaleContext";
 import { useTheme } from "../theme/ThemeContext";
 import Reveal from "../components/ui/Reveal";
+import StaggerReveal from "../components/ui/StaggerReveal";
 import { Riyal, Check, Plus, Minus, ArrowRight } from "../components/ui/Icon";
 import {
   pricingHero,
@@ -35,7 +36,7 @@ export default function PricingPage() {
 
   useEffect(() => {
     const prev = document.title;
-    document.title = "Pricing — ATAR";
+    document.title = "Pricing | Atar";
     return () => {
       document.title = prev;
     };
@@ -149,9 +150,9 @@ export default function PricingPage() {
 
       {/* Plan cards */}
       <section className="py-16 lg:py-20" aria-label={pick(pricingHero.title, locale)}>
-        <div className="mx-auto grid max-w-6xl items-stretch gap-6 px-5 lg:grid-cols-3 lg:px-8">
-          {plans.map((plan, i) => (
-            <Reveal key={plan.id} delay={i * 90} className="h-full">
+        <StaggerReveal className="mx-auto grid max-w-6xl items-stretch gap-6 px-5 lg:grid-cols-3 lg:px-8">
+          {plans.map((plan) => (
+            <div key={plan.id} className="h-full">
               <div
                 className={`flex h-full flex-col rounded-[28px] border bg-white p-8 dark:bg-white/5 ${
                   plan.popular
@@ -227,9 +228,9 @@ export default function PricingPage() {
                   )}
                 </div>
               </div>
-            </Reveal>
+            </div>
           ))}
-        </div>
+        </StaggerReveal>
       </section>
 
       {/* Compare plans */}
@@ -286,7 +287,9 @@ export default function PricingPage() {
                           {cat.features.map((f, fi) => (
                             <div
                               key={fi}
-                              className="grid grid-cols-[1.6fr_1fr_1fr_1fr] items-center gap-2 border-t border-grey-100 px-5 py-3.5 dark:border-white/10"
+                              className={`grid grid-cols-[1.6fr_1fr_1fr_1fr] items-center gap-2 px-5 py-3.5 ${
+                                fi % 2 === 1 ? "bg-grey-50 dark:bg-white/[0.03]" : ""
+                              }`}
                             >
                               <span className="text-sm text-ink dark:text-white">{pick(f.name, locale)}</span>
                               {[0, 1, 2].map((pi) => {
@@ -307,7 +310,7 @@ export default function PricingPage() {
                                         role="img"
                                         aria-label={pick(compare.no, locale)}
                                       >
-                                        –
+                                        <Minus size={14} />
                                       </span>
                                     )}
                                   </div>
@@ -333,7 +336,7 @@ export default function PricingPage() {
             {pick(pricingFaq.title, locale)}
           </h2>
         </div>
-        <div className="mx-auto mt-10 max-w-3xl space-y-3 px-5 lg:px-8">
+        <StaggerReveal className="mx-auto mt-10 max-w-3xl space-y-3 px-5 lg:px-8" y={16}>
           {pricingFaq.items.map((item, i) => {
             const isOpen = openFaq === i;
             const panelId = `pfaq-panel-${i}`;
@@ -361,7 +364,7 @@ export default function PricingPage() {
               </div>
             );
           })}
-        </div>
+        </StaggerReveal>
       </section>
 
       {/* CTA */}

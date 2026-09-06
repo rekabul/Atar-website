@@ -32,6 +32,15 @@ export function ArrowLeft({ size = 18, className = "", ...p }: IconProps) {
   );
 }
 
+/** Small chevron for dropdown/disclosure triggers; rotate with a className when open. */
+export function ChevronDown({ size = 16, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
+
 export function Plus({ size = 20, ...p }: IconProps) {
   return (
     <svg {...base(size)} {...p}>
@@ -97,6 +106,15 @@ export function Riyal({ className = "", ...p }: SVGProps<SVGSVGElement>) {
       {/* two parallel crossbars slanting up to the right */}
       <path d="M4.8 12.6 19 10.4" />
       <path d="M4.8 8.9 19 6.7" />
+    </svg>
+  );
+}
+
+export function Search({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M21 21l-4.3-4.3" />
     </svg>
   );
 }

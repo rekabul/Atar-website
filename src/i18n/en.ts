@@ -6,23 +6,17 @@ export const en = {
   dir: "ltr" as "ltr" | "rtl",
   langToggle: "عربي", // shows the OTHER language
   topbar: { phone: "+966 531 155 105" },
-  nav: {
-    home: "Home",
-    features: "Features",
-    pricing: "Pricing",
-    about: "About Us",
-    contact: "Contact Us",
-    login: "Log In",
-    getStarted: "Get Started",
-  },
+  // Header/footer nav labels now live in data/navigation.ts (bilingual LStr
+  // pattern, shared between the Navbar dropdowns and the repeated footer
+  // columns) — only Login/Sign Up route labels are defined there directly.
   hero: {
     eyebrow: "Leading property management system",
-    title: "The National Real Estate Management Platform",
+    title: "The Operating System for Real Estate",
     subtitle:
-      "Manage everything from leasing to handovers—smarter, faster, and stress-free.",
+      "Manage everything from leasing to handovers, smarter, faster, and stress-free.",
     getStarted: "Get Started",
     getDemo: "Get a Demo",
-    dashboardAlt: "ATAR dashboard showing units, requests and user activity",
+    dashboardAlt: "Atar dashboard showing units, requests and user activity",
   },
   clients: { title: "Our Clients" },
   stats: {
@@ -37,7 +31,7 @@ export const en = {
     title:
       "Experience Effortless Property Management, Backed by Smart Features",
     subtitle:
-      "We designed ATAR to make every task easier—so you can focus on growth, not admin.",
+      "We designed Atar to make every task easier, so you can focus on growth, not admin.",
   },
   features: [
     {
@@ -48,20 +42,20 @@ export const en = {
     {
       eyebrow: "Service Management",
       title: "Keep every service request organized, on time, and under control.",
-      body: "With ATAR's Service Management, property issues are tracked from start to resolution. Tenants can easily submit maintenance requests, while managers assign tasks, monitor progress, and ensure timely completion.",
+      body: "With Atar's Service Management, property issues are tracked from start to resolution. Tenants can easily submit maintenance requests, while managers assign tasks, monitor progress, and ensure timely completion.",
     },
     {
       eyebrow: "Property Management",
       title: "Manage every property with confidence, clarity, and control.",
-      body: "ATAR simplifies the way you manage properties—whether it's one unit or an entire portfolio. Keep track of tenant details, lease agreements, payment status, inspections, and more—all from a centralized dashboard.",
+      body: "Atar simplifies the way you manage properties, whether it's one unit or an entire portfolio. Keep track of tenant details, lease agreements, payment status, inspections, and more, all from a centralized dashboard.",
     },
   ],
   featureCta: "Get Started",
   benefits: {
     title:
-      "Built for Property Managers Who Want Less Stress, More Control, and Real Results — That's ATAR",
+      "Built for Property Managers Who Want Less Stress, More Control, and Real Results. That's Atar",
     subtitle:
-      "From streamlined operations to meaningful insights—ATAR is built for those who expect more from property tech.",
+      "From streamlined operations to meaningful insights, Atar is built for those who expect more from property tech.",
     items: [
       {
         title: "Security & Permissions",
@@ -77,7 +71,7 @@ export const en = {
       },
       {
         title: "Collaborative Tools Built-In",
-        body: "Communicate with tenants, owners, and vendors in one place—no third-party tools required.",
+        body: "Communicate with tenants, owners, and vendors in one place, no third-party tools required.",
       },
     ],
   },
@@ -85,7 +79,7 @@ export const en = {
     title: "Empowering your business with streamlined connectivity",
     subtitle:
       "Optimize your business with our seamless connectivity solutions, unlocking efficiency and collaboration across platforms.",
-    seeAll: "See all integrations",
+    seeAll: "Ask About Integrations",
     footnote: "and more than 100+ tools to integrate",
   },
   faq: {
@@ -100,17 +94,17 @@ export const en = {
       {
         q: "What real estate asset classes does Atar serve?",
         // ASSUMPTION: answer hidden in Figma.
-        a: "ATAR supports residential communities, commercial buildings, mixed-use developments, and individual units—scaling from a single property to an entire portfolio.",
+        a: "Atar supports residential communities, commercial buildings, mixed-use developments, and individual units, scaling from a single property to an entire portfolio.",
       },
       {
         q: "What is Atar property management software?",
         // ASSUMPTION: answer hidden in Figma.
-        a: "ATAR is a national real estate management platform that brings leasing, accounting, service requests, contracts, and reporting into one centralized dashboard for owners, managers, and tenants.",
+        a: "Atar is a national real estate management platform that brings leasing, accounting, service requests, contracts, and reporting into one centralized dashboard for owners, managers, and tenants.",
       },
       {
-        q: "How does ATAR handle payments and accounting?",
+        q: "How does Atar handle payments and accounting?",
         // ASSUMPTION: 4th item de-duplicated from Figma (was a repeat).
-        a: "Automate rent collection, track expenses, and generate detailed financial reports. ATAR integrates with regional payment and e-invoicing tools so your books stay accurate and up to date.",
+        a: "Automate rent collection, track expenses, and generate detailed financial reports. Atar integrates with regional payment and e-invoicing tools so your books stay accurate and up to date.",
       },
     ],
     stillTitle: "Still have questions?",
@@ -148,11 +142,11 @@ export const en = {
   contactPage: {
     title: "Get in touch",
     subtitle:
-      "Questions about the platform, pricing, or a partnership? Reach out and the ATAR team will respond within one business day.",
+      "Questions about the platform, pricing, or a partnership? Reach out and the Atar team will respond within one business day.",
     hoursTitle: "Working hours",
     // ASSUMPTION: standard Saudi business week — confirm actual hours.
-    hoursDays: "Sunday – Thursday",
-    hoursTime: "9:00 AM – 6:00 PM (AST)",
+    hoursDays: "Sunday to Thursday",
+    hoursTime: "9:00 AM to 6:00 PM (AST)",
     hoursNote: "Closed on Fridays and Saturdays.",
     mapLabel: "Find us in Riyadh",
     mapCta: "Open in Google Maps",
@@ -172,10 +166,22 @@ export const en = {
     missionTitle: "Mission",
     missionBody:
       "To create digital communities that cater to the needs of real estate developers, homeowners, tenants and service professionals.",
+    storyEyebrow: "Our Story",
+    storyTitle: "Built inside the problem",
+    storySubtitle:
+      "From founding in 2021 to platform scale in 2025, built alongside the operators who use it.",
+    storyToday: "Today",
+    timeline: [
+      { year: "2021", label: "Founded" },
+      { year: "2022", label: "First commercial deployments" },
+      { year: "2023", label: "Enterprise adoption" },
+      { year: "2024", label: "Scalable operations" },
+      { year: "2025", label: "From product to platform" },
+    ],
     valuesTitle: "Values",
     valuesSubtitle: "The principles behind everything we build.",
     values: [
-      { icon: "check", title: "Responsibility", body: "We own the outcomes for the owners, tenants, and communities who rely on ATAR every day." },
+      { icon: "check", title: "Responsibility", body: "We own the outcomes for the owners, tenants, and communities who rely on Atar every day." },
       { icon: "bulb", title: "Innovation", body: "We keep pushing real estate technology forward with automation and smart, practical tools." },
       { icon: "shield", title: "Security", body: "We protect sensitive property and resident data with rigorous, role-based safeguards." },
       { icon: "rocket", title: "Empowerment", body: "We give every stakeholder the clarity and control to make better decisions, faster." },
@@ -195,21 +201,9 @@ export const en = {
   footer: {
     // ASSUMPTION: Figma blurb was lorem ipsum — replaced with on-brand copy.
     blurb:
-      "The national real estate management platform—leasing, accounting, service, and reporting in one place.",
-    companyTitle: "Company",
-    company: [
-      { label: "Home", href: "/" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "About Us", href: "/about" },
-      { label: "Contact Us", href: "/contact" },
-    ],
-    helpTitle: "Help",
-    help: [
-      { label: "Terms & Conditions", href: "#" },
-      { label: "Privacy Policy", href: "#" },
-      { label: "Return Policy", href: "#" },
-      { label: "Disclaimer", href: "#" },
-    ],
+      "The national real estate management platform for leasing, accounting, service, and reporting in one place.",
+    // Company/Resources/Legal Center columns now come from data/navigation.ts
+    // (footerGroups) so they stay in sync with the header's taxonomy.
     contactTitle: "Contact Details",
     address: "Al Imam Saud Ibn Faysal Rd, Riyadh 13522, Saudi Arabia",
     phone: "+966 53 115 5105",

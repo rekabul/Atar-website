@@ -25,6 +25,7 @@ export default {
           muted: "#647491", // language switch / secondary nav
         },
         grey: {
+          50: "#F6F7F8",
           100: "#F0F0F0",
           200: "#E3E3E3",
           600: "#969798",

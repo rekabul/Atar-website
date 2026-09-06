@@ -10,7 +10,7 @@ export default function ContactPage() {
 
   useEffect(() => {
     const prev = document.title;
-    document.title = "Contact ATAR — The National Real Estate Management Platform";
+    document.title = "Contact Atar | The National Real Estate Management Platform";
     return () => {
       document.title = prev;
     };

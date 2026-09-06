@@ -61,14 +61,10 @@
 
 @layer utilities {
   .hero-bg {
-    background:
-      radial-gradient(60% 55% at 50% 0%, #ebf6f8 0%, rgba(235, 246, 248, 0) 70%),
-      linear-gradient(180deg, #ffffff 0%, #fbfefe 100%);
+    background: #ffffff;
   }
   .dark .hero-bg {
-    background:
-      radial-gradient(60% 55% at 50% 0%, rgba(0, 142, 165, 0.16) 0%, rgba(0, 142, 165, 0) 70%),
-      linear-gradient(180deg, #002a37 0%, #003241 100%);
+    background: #002a37;
   }
   /* Fade masks on the client marquee */
   .marquee-mask {

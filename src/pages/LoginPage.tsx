@@ -13,7 +13,7 @@ const pick = (s: LStr, l: Locale) => s[l];
 
 const copy = {
   eyebrow: { en: "Welcome back", ar: "مرحباً بعودتك" },
-  title: { en: "Sign in to ATAR", ar: "سجّل الدخول إلى أتار" },
+  title: { en: "Sign in to Atar", ar: "سجّل الدخول إلى أتار" },
   subtitlePhone: {
     en: "Enter your phone number and we'll text you a verification code.",
     ar: "أدخل رقم هاتفك وسنرسل لك رمز تحقق عبر رسالة نصية.",
@@ -32,12 +32,12 @@ const copy = {
   verifying: { en: "Verifying…", ar: "جارٍ التحقق…" },
   resend: { en: "Resend code", ar: "إعادة إرسال الرمز" },
   changeNumber: { en: "Change number", ar: "تغيير الرقم" },
-  noAccount: { en: "New to ATAR?", ar: "جديد على أتار؟" },
+  noAccount: { en: "New to Atar?", ar: "جديد على أتار؟" },
   contactSales: { en: "Talk to sales", ar: "تحدث مع المبيعات" },
   doneTitle: { en: "You're in", ar: "تم الدخول" },
   doneBody: {
-    en: "You're verified. (Demo only — connect this screen to your auth backend.)",
-    ar: "تم التحقق بنجاح. (نسخة تجريبية—اربط هذه الشاشة ببوابة الدخول الفعلية.)",
+    en: "You're verified. (Demo only, connect this screen to your auth backend.)",
+    ar: "تم التحقق بنجاح. (نسخة تجريبية، اربط هذه الشاشة ببوابة الدخول الفعلية.)",
   },
   backToSite: { en: "Back to atar.com", ar: "العودة إلى atar.com" },
   panelEyebrow: { en: "Property management, simplified", ar: "إدارة عقارية مبسّطة" },
@@ -45,8 +45,8 @@ const copy = {
   panelTitleHighlight: { en: "Properties", ar: "عقاراتك" },
   panelTitleB: { en: "With Ease", ar: "بكل سهولة" },
   panelBody: {
-    en: "Leasing, accounting, service requests, and reporting — all from one smart dashboard. Sign in to stay in control of your portfolio.",
-    ar: "التأجير والمحاسبة وطلبات الخدمة والتقارير—كل ذلك من لوحة تحكم ذكية واحدة. سجّل الدخول لتبقى في السيطرة على محفظتك.",
+    en: "Leasing, accounting, service requests, and reporting, all from one smart dashboard. Sign in to stay in control of your portfolio.",
+    ar: "التأجير والمحاسبة وطلبات الخدمة والتقارير، كل ذلك من لوحة تحكم ذكية واحدة. سجّل الدخول لتبقى في السيطرة على محفظتك.",
   },
   privacy: { en: "Privacy & Terms", ar: "الخصوصية والشروط" },
   contactUs: { en: "Contact us", ar: "تواصل معنا" },
@@ -74,7 +74,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     const prev = document.title;
-    document.title = "Sign in — ATAR";
+    document.title = "Sign in to Atar";
     return () => {
       document.title = prev;
     };
@@ -199,7 +199,7 @@ export default function LoginPage() {
         <LogoMark className="pointer-events-none absolute -end-24 bottom-24 h-72 w-72 rotate-12 text-primary/10 dark:text-white/[0.04]" />
 
         <div className="relative z-10 px-12 pt-14">
-          <Link to="/" aria-label="ATAR home" className="inline-block">
+          <Link to="/" aria-label="Atar home" className="inline-block">
             <Logo light={theme === "dark"} className="h-9 w-auto" />
           </Link>
         </div>
@@ -237,7 +237,7 @@ export default function LoginPage() {
         <LogoMark className="pointer-events-none absolute -bottom-16 -end-20 h-[360px] w-[360px] rotate-6 text-primary/[0.05] dark:text-white/[0.03] lg:hidden" />
 
         <header className="relative z-10 flex items-center justify-between px-5 py-6 lg:justify-end lg:px-10">
-          <Link to="/" aria-label="ATAR home" className="lg:hidden">
+          <Link to="/" aria-label="Atar home" className="lg:hidden">
             <Logo light={theme === "dark"} className="h-8 w-auto" />
           </Link>
           {ToggleBar}
@@ -392,7 +392,7 @@ export default function LoginPage() {
                           value={d}
                           onChange={(e) => updateOtp(i, e.target.value)}
                           onKeyDown={(e) => handleOtpKeyDown(i, e)}
-                          aria-label={`${pick(copy.otpTitle, locale)} — digit ${i + 1}`}
+                          aria-label={`${pick(copy.otpTitle, locale)}, digit ${i + 1}`}
                           aria-invalid={otpError || undefined}
                           className={`h-14 w-11 rounded-xl border bg-white text-center text-xl font-semibold text-ink transition-colors focus:border-primary focus:outline-none dark:bg-white/5 dark:text-white sm:w-14 ${
                             otpError ? "border-danger" : "border-grey-200 dark:border-white/15"

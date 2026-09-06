@@ -11,7 +11,7 @@ export default function AboutPage() {
 
   useEffect(() => {
     const prev = document.title;
-    document.title = "About ATAR — The National Real Estate Management Platform";
+    document.title = "About Atar | The National Real Estate Management Platform";
     return () => {
       document.title = prev;
     };
@@ -44,6 +44,72 @@ export default function AboutPage() {
               {a.whoBody}
             </p>
           </Reveal>
+        </div>
+      </section>
+
+      {/* Our Story — alternating vertical timeline */}
+      <section className="relative overflow-hidden bg-secondary py-16 dark:bg-secondary-darker lg:py-24" aria-labelledby="about-story">
+        <div
+          className="pointer-events-none absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl"
+          aria-hidden="true"
+        />
+        <div className="relative mx-auto max-w-2xl px-5 text-center lg:px-8">
+          <Reveal>
+            <p className="text-sm font-medium uppercase tracking-wider text-primary-light">{a.storyEyebrow}</p>
+            <h2 id="about-story" className="mt-3 text-3xl font-medium text-white lg:text-4xl">
+              {a.storyTitle}
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl leading-relaxed text-white/70">{a.storySubtitle}</p>
+          </Reveal>
+        </div>
+
+        <div className="relative mx-auto mt-14 max-w-4xl px-5 lg:mt-16 lg:px-8">
+          {/* connecting line */}
+          <div
+            className="absolute bottom-2 left-[27px] top-2 w-px bg-white/15 lg:left-1/2 lg:-translate-x-1/2"
+            aria-hidden="true"
+          />
+          <ol className="space-y-10 lg:space-y-6">
+            {a.timeline.map((item, i) => {
+              const isLast = i === a.timeline.length - 1;
+              const flip = i % 2 === 1;
+              return (
+                <li key={item.year} className="relative pl-14 lg:pl-0">
+                  <Reveal delay={i * 100} y={20}>
+                    <div className={`lg:flex lg:items-center ${flip ? "lg:flex-row-reverse" : ""}`}>
+                      <div className="lg:w-1/2 lg:px-10">
+                        <div
+                          className={`rounded-2xl border p-6 text-start backdrop-blur-sm ${
+                            isLast ? "border-primary/40 bg-primary/10" : "border-white/10 bg-white/5"
+                          } ${flip ? "lg:text-start" : "lg:text-end"}`}
+                        >
+                          <div className={`flex items-center gap-3 ${flip ? "lg:justify-start" : "lg:justify-end"}`}>
+                            <span className="text-3xl font-semibold text-white" dir="ltr">
+                              {item.year}
+                            </span>
+                            {isLast && (
+                              <span className="rounded-full bg-primary px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-white">
+                                {a.storyToday}
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-1.5 text-white/70">{item.label}</p>
+                        </div>
+                      </div>
+                      <div className="hidden lg:block lg:w-1/2" />
+                    </div>
+                  </Reveal>
+                  {/* dot marker on the line */}
+                  <span
+                    className={`absolute left-[27px] top-6 grid h-4 w-4 -translate-x-1/2 place-items-center rounded-full ring-4 ring-secondary dark:ring-secondary-darker lg:left-1/2 ${
+                      isLast ? "bg-white" : "bg-primary"
+                    }`}
+                    aria-hidden="true"
+                  />
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </section>
 

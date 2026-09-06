@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocale } from "../i18n/LocaleContext";
 import Reveal from "../components/ui/Reveal";
+import StaggerReveal from "../components/ui/StaggerReveal";
 import { Check, roleIcons } from "../components/ui/Icon";
 import CTA from "../components/CTA";
 import {
@@ -59,7 +60,7 @@ const featureSections = [
     title: { en: "Let AI Handle Routine Work", ar: "دع الذكاء الاصطناعي يتولى العمل الروتيني" },
     subtitle: { en: "Smart automation means more time for strategy", ar: "الأتمتة الذكية تعني وقتاً أكثر للإستراتيجية" },
     benefits: [
-      { en: "AI tenant screening with 99.2% accuracy", ar: "فحص المستأجرين بدقة 99.2٪" },
+      { en: "AI tenant screening with ~99% accuracy", ar: "فحص المستأجرين بدقة تقارب 99٪" },
       { en: "Automatic expense categorization & coding", ar: "تصنيف المصروفات التلقائي والترميز" },
       { en: "Predictive analytics for maintenance & vacancy", ar: "التحليلات التنبئية للصيانة والشغور" },
       { en: "Smart chatbot for tenant communication", ar: "روبوت محادثة ذكي للتواصل مع المستأجرين" },
@@ -81,7 +82,7 @@ const featureSections = [
     id: "integrations",
     eyebrow: { en: "Ecosystem", ar: "النظام البيئي" },
     title: { en: "Connect Your Entire Tech Stack", ar: "قم بربط مجموعة التكنولوجيا بالكاملة" },
-    subtitle: { en: "Payments, banking, accounting—all in one place", ar: "المدفوعات والخدمات المصرفية والمحاسبة في مكان واحد" },
+    subtitle: { en: "Payments, banking, and accounting, all in one place", ar: "المدفوعات والخدمات المصرفية والمحاسبة في مكان واحد" },
     benefits: [
       { en: "Payment gateway integration (Telr, PayTabs, 2Checkout)", ar: "تكامل بوابة الدفع (تلر وباي تابز وغيرها)" },
       { en: "Direct bank connections with auto-reconciliation", ar: "اتصالات بنكية مباشرة مع المصالحة التلقائية" },
@@ -112,7 +113,7 @@ export default function FeaturesPage() {
 
   useEffect(() => {
     const prev = document.title;
-    document.title = "Features — ATAR";
+    document.title = "Features | Atar";
     return () => {
       document.title = prev;
     };
@@ -129,23 +130,18 @@ export default function FeaturesPage() {
               Everything to Scale Your Real Estate Business
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-white/70">
-              Financial automation, AI-powered insights, compliance, and integrations—all built for Saudi Arabia's property market.
+              Financial automation, AI-powered insights, compliance, and integrations, all built for Saudi Arabia's property market.
             </p>
           </Reveal>
         </div>
       </section>
 
       {/* Feature sections — alternating text + product-screen visual, same
-          pattern as the homepage Features component. */}
-      {featureSections.map((section, idx) => {
-        const bgClasses = [
-          "bg-white dark:bg-secondary-darker",
-          "bg-grey-50 dark:bg-white/5",
-          "bg-grey-100/40 dark:bg-white/[0.03]",
-          "bg-white dark:bg-secondary-darker",
-          "bg-grey-50 dark:bg-white/5",
-          "bg-grey-100/40 dark:bg-white/[0.03]",
-        ];
+          pattern as the homepage Features component. Capped at 2 rows so the
+          split layout doesn't repeat past what feels intentional; the
+          remaining sections switch to a grid layout below. */}
+      {featureSections.slice(0, 2).map((section, idx) => {
+        const bgClasses = ["bg-white dark:bg-secondary-darker", "bg-grey-50 dark:bg-white/5"];
         const reversed = idx % 2 === 1;
         const Visual = visualsById[section.id];
         return (
@@ -157,9 +153,11 @@ export default function FeaturesPage() {
             <div className="mx-auto max-w-6xl px-5 lg:px-8">
               <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
                 <Reveal delay={idx * 100} className={reversed ? "lg:order-2" : ""}>
-                  <p className="text-sm font-medium uppercase tracking-wider text-primary">
-                    {pick(section.eyebrow, locale)}
-                  </p>
+                  {idx === 0 && (
+                    <p className="text-sm font-medium uppercase tracking-wider text-primary">
+                      {pick(section.eyebrow, locale)}
+                    </p>
+                  )}
                   <h2 id={`feature-${section.id}`} className="mt-3 text-3xl font-medium text-ink dark:text-white lg:text-4xl">
                     {pick(section.title, locale)}
                   </h2>
@@ -180,15 +178,58 @@ export default function FeaturesPage() {
                 </Reveal>
 
                 <Reveal delay={idx * 100 + 60} className={reversed ? "lg:order-1" : ""}>
-                  <div className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card dark:border-white/10 dark:bg-white/5 sm:p-7">
-                    <Visual />
-                  </div>
+                  <Visual />
                 </Reveal>
               </div>
             </div>
           </section>
         );
       })}
+
+      {/* Remaining capabilities — a grid of compact panels instead of
+          continuing the split-row pattern, so the page doesn't read as one
+          long zigzag. */}
+      <section className="bg-grey-100/40 py-16 dark:bg-white/[0.03] lg:py-20" aria-labelledby="more-capabilities-title">
+        <div className="mx-auto max-w-6xl px-5 lg:px-8">
+          <Reveal className="text-center">
+            <h2 id="more-capabilities-title" className="text-3xl font-medium text-ink dark:text-white lg:text-4xl">
+              More Built-In Capabilities
+            </h2>
+          </Reveal>
+
+          <StaggerReveal className="mt-12 grid gap-6 sm:grid-cols-2" y={24}>
+            {featureSections.slice(2).map((section) => {
+              const Visual = visualsById[section.id];
+              return (
+                <div
+                  key={section.id}
+                  className="flex flex-col rounded-2xl border border-grey-100 bg-white p-6 shadow-card dark:border-white/10 dark:bg-white/5 sm:p-7"
+                >
+                  <h3 className="text-xl font-medium text-ink dark:text-white">{pick(section.title, locale)}</h3>
+                  <p className="mt-2 text-sm font-medium text-primary dark:text-primary-light">
+                    {pick(section.subtitle, locale)}
+                  </p>
+
+                  <ul className="mt-4 space-y-2.5">
+                    {section.benefits.slice(0, 3).map((benefit, benefitIdx) => (
+                      <li key={benefitIdx} className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-soft dark:text-white/70">
+                        <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light">
+                          <Check size={12} />
+                        </span>
+                        {pick(benefit, locale)}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-5">
+                    <Visual />
+                  </div>
+                </div>
+              );
+            })}
+          </StaggerReveal>
+        </div>
+      </section>
 
       {/* Roles section */}
       <section className="bg-white py-16 dark:bg-secondary-darker lg:py-20" aria-labelledby="roles-title">
@@ -198,26 +239,27 @@ export default function FeaturesPage() {
               Built for Every Role
             </h2>
             <p className="mt-3 text-lg text-ink-soft dark:text-white/70">
-              Whether you own properties or manage them, ATAR adapts to your needs.
+              Whether you own properties or manage them, Atar adapts to your needs.
             </p>
           </Reveal>
 
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <StaggerReveal className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {roles.map((role, idx) => {
               const RoleIcon = roleIcons[role.icon];
               return (
-                <Reveal key={idx} delay={idx * 75}>
-                  <div className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card hover:shadow-lift transition-shadow dark:border-white/10 dark:bg-white/5">
-                    <div className="mb-4 grid h-12 w-12 place-items-center rounded-xl bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light">
-                      <RoleIcon size={22} />
-                    </div>
-                    <h3 className="text-lg font-semibold text-ink dark:text-white">{pick(role.title, locale)}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-ink-soft dark:text-white/70">{pick(role.desc, locale)}</p>
+                <div
+                  key={idx}
+                  className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card transition-shadow hover:shadow-lift dark:border-white/10 dark:bg-white/5"
+                >
+                  <div className="mb-4 grid h-12 w-12 place-items-center rounded-xl bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light">
+                    <RoleIcon size={22} />
                   </div>
-                </Reveal>
+                  <h3 className="text-lg font-semibold text-ink dark:text-white">{pick(role.title, locale)}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-ink-soft dark:text-white/70">{pick(role.desc, locale)}</p>
+                </div>
               );
             })}
-          </div>
+          </StaggerReveal>
         </div>
       </section>
 
@@ -227,7 +269,7 @@ export default function FeaturesPage() {
           <Reveal>
             <p className="text-sm font-medium uppercase tracking-wider text-primary">Trusted by Leaders</p>
             <h2 className="mt-3 text-2xl font-medium text-ink dark:text-white lg:text-3xl">
-              1,000+ property professionals use ATAR daily
+              1,000+ property professionals use Atar daily
             </h2>
             <p className="mt-4 text-lg text-ink-soft dark:text-white/70">
               From small landlords to enterprise portfolios managing 10,000+ units.
@@ -238,7 +280,7 @@ export default function FeaturesPage() {
             {[
               { metric: "25K+", label: { en: "Units Managed", ar: "وحدة مدارة" } },
               { metric: "5B+", label: { en: "Assets Managed", ar: "أصول مدارة" } },
-              { metric: "99.9%", label: { en: "Uptime SLA", ar: "التوفر" } },
+              { metric: "99%+", label: { en: "Uptime SLA", ar: "التوفر" } },
             ].map((stat, idx) => (
               <Reveal key={idx} delay={idx * 75}>
                 <div className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card hover:shadow-lift transition-shadow dark:border-white/10 dark:bg-secondary-darker">

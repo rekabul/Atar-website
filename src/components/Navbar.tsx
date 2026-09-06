@@ -4,52 +4,55 @@ import { useLocale } from "../i18n/LocaleContext";
 import { useTheme } from "../theme/ThemeContext";
 import Logo from "./ui/Logo";
 import Button from "./ui/Button";
-import { Menu, Close, Phone, Globe, Sun, Moon } from "./ui/Icon";
+import NavDropdown from "./ui/NavDropdown";
+import { Menu, Close, Phone, Globe, Sun, Moon, ChevronDown } from "./ui/Icon";
+import { pick } from "../data/pricing";
+import {
+  headerGroups,
+  headerFlatLinks,
+  loginLink,
+  signUpLink,
+  type NavLink,
+} from "../data/navigation";
 
-type NavTarget = { label: string; to: string };
-
-/** Renders a router Link for real routes and an anchor for in-page hashes. */
+/** Renders a router Link for real routes and a plain anchor for in-page hashes. */
 function NavItem({
   target,
+  locale,
   active = false,
   className,
   onClick,
 }: {
-  target: NavTarget;
+  target: NavLink;
+  locale: "en" | "ar";
   active?: boolean;
   className?: string;
   onClick?: () => void;
 }) {
   const cls = `${className ?? ""} ${active ? "font-medium text-primary" : ""}`.trim();
   const current = active ? ({ "aria-current": "page" } as const) : {};
+  const label = pick(target.label, locale);
   if (target.to.includes("#")) {
     return (
       <a href={target.to} className={cls} onClick={onClick} {...current}>
-        {target.label}
+        {label}
       </a>
     );
   }
   return (
     <Link to={target.to} className={cls} onClick={onClick} {...current}>
-      {target.label}
+      {label}
     </Link>
   );
 }
 
 export default function Navbar() {
-  const { t, toggle } = useLocale();
+  const { t, locale, toggle } = useLocale();
   const { theme, toggle: toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const { pathname } = useLocation();
   const isActive = (to: string) => to === pathname;
-
-  const links: NavTarget[] = [
-    { label: t.nav.home, to: "/" },
-    { label: t.nav.features, to: "/features" },
-    { label: t.nav.pricing, to: "/pricing" },
-    { label: t.nav.about, to: "/about" },
-    { label: t.nav.contact, to: "/contact" },
-  ];
 
   return (
     <header id="top" className="sticky top-0 z-40 bg-white/95 backdrop-blur dark:bg-secondary-darker/95">
@@ -86,15 +89,25 @@ export default function Navbar() {
       {/* Main nav */}
       <nav aria-label="Primary" className="border-b border-grey-100 dark:border-white/10">
         <div className="mx-auto flex h-[72px] max-w-content items-center justify-between gap-6 px-5 lg:px-8">
-          <Link to="/" aria-label="ATAR home" className="shrink-0">
+          <Link to="/" aria-label="Atar home" className="shrink-0">
             <Logo light={theme === "dark"} className="h-10 w-auto" />
           </Link>
 
-          <ul className="hidden items-center gap-8 text-[17px] text-ink dark:text-white lg:flex">
-            {links.map((l) => (
+          <ul className="hidden items-center gap-7 text-[15px] text-ink dark:text-white xl:flex">
+            {headerGroups.map((group) => (
+              <li key={group.label.en}>
+                <NavDropdown
+                  group={group}
+                  locale={locale}
+                  triggerClassName="font-normal transition-colors hover:text-primary dark:hover:text-primary-light"
+                />
+              </li>
+            ))}
+            {headerFlatLinks.map((l) => (
               <li key={l.to}>
                 <NavItem
                   target={l}
+                  locale={locale}
                   active={isActive(l.to)}
                   className="transition-colors hover:text-primary dark:hover:text-primary-light"
                 />
@@ -102,11 +115,14 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <div className="hidden items-center gap-4 lg:flex">
-            <Link to="/login" className="font-medium text-ink hover:text-primary dark:text-white dark:hover:text-primary-light">
-              {t.nav.login}
+          <div className="hidden items-center gap-4 xl:flex">
+            <Link
+              to={loginLink.to}
+              className="font-medium text-ink hover:text-primary dark:text-white dark:hover:text-primary-light"
+            >
+              {pick(loginLink.label, locale)}
             </Link>
-            <Button href="/contact">{t.nav.getStarted}</Button>
+            <Button href={signUpLink.to}>{pick(signUpLink.label, locale)}</Button>
           </div>
 
           <button
@@ -115,19 +131,62 @@ export default function Navbar() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-secondary hover:bg-grey-100 dark:text-white dark:hover:bg-white/10 lg:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-secondary hover:bg-grey-100 dark:text-white dark:hover:bg-white/10 xl:hidden"
           >
             {open ? <Close /> : <Menu />}
           </button>
         </div>
 
         {open && (
-          <div id="mobile-menu" className="border-t border-grey-100 bg-white px-5 py-4 dark:border-white/10 dark:bg-secondary-darker lg:hidden">
+          <div
+            id="mobile-menu"
+            className="max-h-[calc(100vh-72px)] overflow-y-auto border-t border-grey-100 bg-white px-5 py-4 dark:border-white/10 dark:bg-secondary-darker xl:hidden"
+          >
             <ul className="flex flex-col gap-1 text-base text-ink dark:text-white">
-              {links.map((l) => (
+              {headerGroups.map((group) => {
+                const isGroupOpen = openGroup === group.label.en;
+                const panelId = `mobile-group-${group.label.en.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+                return (
+                  <li key={group.label.en} className="border-b border-grey-100 last:border-0 dark:border-white/10">
+                    <button
+                      type="button"
+                      aria-expanded={isGroupOpen}
+                      aria-controls={panelId}
+                      onClick={() => setOpenGroup(isGroupOpen ? null : group.label.en)}
+                      className="flex w-full items-center justify-between py-3 text-start font-medium"
+                    >
+                      <span>{pick(group.label, locale)}</span>
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform ${isGroupOpen ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                    {isGroupOpen && (
+                      <ul id={panelId} className="mb-2 flex flex-col gap-0.5 ps-3">
+                        {group.items.map((item) => (
+                          <li key={item.to}>
+                            <NavItem
+                              target={item}
+                              locale={locale}
+                              active={isActive(item.to)}
+                              className="block py-2 text-sm text-ink-soft dark:text-white/70"
+                              onClick={() => {
+                                setOpen(false);
+                                setOpenGroup(null);
+                              }}
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
+              {headerFlatLinks.map((l) => (
                 <li key={l.to}>
                   <NavItem
                     target={l}
+                    locale={locale}
                     active={isActive(l.to)}
                     className="block py-2.5"
                     onClick={() => setOpen(false)}
@@ -137,14 +196,14 @@ export default function Navbar() {
             </ul>
             <div className="mt-4 flex flex-col gap-3">
               <Link
-                to="/login"
+                to={loginLink.to}
                 onClick={() => setOpen(false)}
                 className="rounded-xl border border-grey-200 px-4 py-3 text-center font-medium text-ink dark:border-white/20 dark:text-white"
               >
-                {t.nav.login}
+                {pick(loginLink.label, locale)}
               </Link>
-              <Button href="/contact" fullWidth>
-                {t.nav.getStarted}
+              <Button href={signUpLink.to} fullWidth>
+                {pick(signUpLink.label, locale)}
               </Button>
             </div>
           </div>

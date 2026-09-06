@@ -75,8 +75,7 @@ export const plans: Plan[] = [
       L("Generate reports", "إنشاء التقارير"),
       L("Upload documents", "رفع المستندات"),
     ],
-    primaryCta: L("Start Your Free 14-Day Trial!", "ابدأ تجربتك المجانية 14 يوماً"),
-    secondaryCta: L("Contact Us", "تواصل معنا"),
+    primaryCta: L("Get Started", "ابدأ الآن"),
   },
   {
     id: "professional",
@@ -91,8 +90,7 @@ export const plans: Plan[] = [
       L("Property and facility management", "إدارة العقارات والمرافق"),
       L("Community management", "إدارة المجتمعات"),
     ],
-    primaryCta: L("Start Your Free 14-Day Trial!", "ابدأ تجربتك المجانية 14 يوماً"),
-    secondaryCta: L("Contact Us", "تواصل معنا"),
+    primaryCta: L("Get Started", "ابدأ الآن"),
     popular: true,
   },
   {
@@ -246,8 +244,8 @@ export const pricingFaq = {
     {
       q: L("What is Atar and who is it for?", "ما هو أتار ولمن هو موجّه؟"),
       a: L(
-        "ATAR is a Saudi real estate and community management platform for real estate agents, property managers, developers, and owners' associations—covering leasing, accounting, service requests, and community operations in one place.",
-        "أتار منصة سعودية لإدارة العقارات والمجتمعات، موجّهة لوكلاء العقارات ومدراء العقارات والمطوّرين وجمعيات الملاك—تجمع التأجير والمحاسبة وطلبات الخدمة وعمليات المجتمع في مكان واحد."
+        "Atar is a Saudi real estate and community management platform for real estate agents, property managers, developers, and owners' associations, covering leasing, accounting, service requests, and community operations in one place.",
+        "أتار منصة سعودية لإدارة العقارات والمجتمعات، موجّهة لوكلاء العقارات ومدراء العقارات والمطوّرين وجمعيات الملاك، تجمع التأجير والمحاسبة وطلبات الخدمة وعمليات المجتمع في مكان واحد."
       ),
     },
     {
@@ -274,8 +272,8 @@ export const pricingFaq = {
     {
       q: L("What properties can I manage with Atar?", "ما العقارات التي يمكنني إدارتها عبر أتار؟"),
       a: L(
-        "Residential and commercial units, buildings, mixed-use developments, and entire communities—from a single unit to a full portfolio.",
-        "الوحدات السكنية والتجارية والمباني والمشاريع متعددة الاستخدامات والمجتمعات بأكملها—من وحدة واحدة إلى محفظة كاملة."
+        "Residential and commercial units, buildings, mixed-use developments, and entire communities, from a single unit to a full portfolio.",
+        "الوحدات السكنية والتجارية والمباني والمشاريع متعددة الاستخدامات والمجتمعات بأكملها، من وحدة واحدة إلى محفظة كاملة."
       ),
     },
     {
@@ -288,8 +286,8 @@ export const pricingFaq = {
     {
       q: L("What distinguishes Atar from other real estate software?", "ما الذي يميّز أتار عن برامج العقارات الأخرى؟"),
       a: L(
-        "ATAR is built for Saudi Arabia—native Ejar integration, an AI Ejar contract reader, ZATCA-compliant e-invoicing, Arabic-first design, and branded web and mobile apps in one platform.",
-        "أتار مبني للسوق السعودي—تكامل مباشر مع إيجار، وقارئ عقود إيجار بالذكاء الاصطناعي، وفوترة إلكترونية متوافقة مع الزكاة والضريبة، وتصميم عربي أولاً، وتطبيقات ويب وجوال بعلامتك التجارية في منصة واحدة."
+        "Atar is built for Saudi Arabia, with native Ejar integration, an AI Ejar contract reader, ZATCA-compliant e-invoicing, Arabic-first design, and branded web and mobile apps in one platform.",
+        "أتار مبني للسوق السعودي، بتكامل مباشر مع إيجار، وقارئ عقود إيجار بالذكاء الاصطناعي، وفوترة إلكترونية متوافقة مع الزكاة والضريبة، وتصميم عربي أولاً، وتطبيقات ويب وجوال بعلامتك التجارية في منصة واحدة."
       ),
     },
     {
@@ -302,7 +300,7 @@ export const pricingFaq = {
     {
       q: L("Is there a mobile app my employees and customers can use?", "هل يوجد تطبيق جوال لموظفيّ وعملائي؟"),
       a: L(
-        "Yes—admins, managers, tenants, owners, and service professionals get mobile access, and Enterprise offers fully company-branded web and mobile apps.",
+        "Yes, admins, managers, tenants, owners, and service professionals get mobile access, and Enterprise offers fully company-branded web and mobile apps.",
         "نعم، يحصل المشرفون والمدراء والمستأجرون والملاك ومزودو الخدمات على وصول عبر الجوال، وتوفّر باقة المؤسسات تطبيقات ويب وجوال بعلامتك التجارية بالكامل."
       ),
     },

@@ -1,5 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation, Link } from "react-router-dom";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "../i18n/LocaleContext";
 import { pick } from "../data/pricing";
 import {
@@ -10,8 +13,11 @@ import {
 import { clientLogos, caseStudyPhotos } from "../data/assetsMap";
 import Reveal from "../components/ui/Reveal";
 import CTA from "../components/CTA";
-import Logo from "../components/ui/Logo";
+import Logo, { LogoMark } from "../components/ui/Logo";
 import { ArrowRight, Check, Minus } from "../components/ui/Icon";
+import { prefersReducedMotion } from "../hooks/useInView";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 import {
   CollectionsAreaChart,
   ServiceLog,
@@ -358,6 +364,64 @@ function BulletsSection({
   );
 }
 
+/**
+ * Reveals each comparison row as two opposing cards sliding in from their own
+ * side (Atar from the start, the alternative from the end) via GSAP
+ * ScrollTrigger — a spatial echo of the "vs." framing already in the page
+ * title, rather than a generic fade-up. Falls back to a static render when
+ * reduced motion is set.
+ */
+function CompareBattle({
+  children,
+  className = "",
+  rtl = false,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  rtl?: boolean;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion() || !containerRef.current) return;
+      const rows = gsap.utils.toArray<HTMLElement>("[data-row]", containerRef.current);
+      if (!rows.length) return;
+
+      // Each card slides in from its own visual edge — physical transforms
+      // aren't mirrored by `dir`, so the offsets flip explicitly for RTL.
+      const atarFrom = rtl ? 28 : -28;
+      const otherFrom = rtl ? -28 : 28;
+
+      rows.forEach((row) => {
+        const atarCard = row.querySelector<HTMLElement>("[data-side='atar']");
+        const otherCard = row.querySelector<HTMLElement>("[data-side='other']");
+        if (!atarCard || !otherCard) return;
+
+        gsap.set(atarCard, { opacity: 0, x: atarFrom });
+        gsap.set(otherCard, { opacity: 0, x: otherFrom });
+
+        ScrollTrigger.create({
+          trigger: row,
+          start: "top 88%",
+          once: true,
+          onEnter: () => {
+            gsap.to(atarCard, { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" });
+            gsap.to(otherCard, { opacity: 1, x: 0, duration: 0.6, ease: "power2.out", delay: 0.1 });
+          },
+        });
+      });
+    },
+    { scope: containerRef, dependencies: [rtl] }
+  );
+
+  return (
+    <div ref={containerRef} className={className}>
+      {children}
+    </div>
+  );
+}
+
 function CompareSection({
   section,
   locale,
@@ -369,41 +433,57 @@ function CompareSection({
     <section className={sectionPad}>
       <div className={wrap}>
         <Reveal>
-          <div className="overflow-x-auto rounded-2xl border border-grey-100 dark:border-white/10">
-            <table className="w-full min-w-[560px] border-collapse text-start text-sm">
-              <thead>
-                <tr className="border-b border-grey-100 dark:border-white/10">
-                  <th className="p-4 text-start font-medium text-ink-muted dark:text-white/50"> </th>
-                  <th className="p-4 text-start font-semibold text-primary">Atar</th>
-                  <th className="p-4 text-start font-medium text-ink-soft dark:text-white/70">
-                    {pick(section.otherLabel, locale)}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {section.rows.map((row, i) => (
-                  <tr
-                    key={i}
-                    className={i % 2 ? "bg-[#F6F7F8] dark:bg-white/5" : "bg-white dark:bg-transparent"}
-                  >
-                    <td className="p-4 font-medium text-ink dark:text-white">{pick(row.aspect, locale)}</td>
-                    <td className="p-4 text-ink-soft dark:text-white/80">
-                      <span className="flex items-start gap-2">
-                        <Check size={14} className="mt-0.5 flex-none text-primary" />
-                        {pick(row.atar, locale)}
-                      </span>
-                    </td>
-                    <td className="p-4 text-ink-muted dark:text-white/50">
-                      <span className="flex items-start gap-2">
-                        <Minus size={14} className="mt-0.5 flex-none" />
-                        {pick(row.other, locale)}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {/* Face-off header: Atar vs. the alternative, matching the page's own "vs." framing */}
+          <div className="mb-10 flex items-center justify-center gap-3 sm:gap-5">
+            <div className="flex flex-1 items-center justify-end gap-3">
+              <span className="hidden h-px flex-1 bg-grey-200 dark:bg-white/10 sm:block" />
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white">
+                <LogoMark className="h-3.5 w-3.5" />
+                Atar
+              </span>
+            </div>
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-grey-200 bg-white text-[11px] font-semibold text-ink-muted dark:border-white/15 dark:bg-white/5 dark:text-white/50">
+              VS
+            </span>
+            <div className="flex flex-1 items-center gap-3">
+              <span className="max-w-[16ch] rounded-full border border-grey-200 bg-white px-4 py-2 text-center text-sm font-medium leading-snug text-ink-soft dark:border-white/15 dark:bg-white/5 dark:text-white/70 sm:max-w-none">
+                {pick(section.otherLabel, locale)}
+              </span>
+              <span className="hidden h-px flex-1 bg-grey-200 dark:bg-white/10 sm:block" />
+            </div>
           </div>
+
+          <CompareBattle className="space-y-6" rtl={locale === "ar"}>
+            {section.rows.map((row, i) => (
+              <div key={i} data-row>
+                <p className="mb-3 text-center text-sm font-medium text-ink-muted dark:text-white/50">
+                  {pick(row.aspect, locale)}
+                </p>
+                <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
+                  <div
+                    data-side="atar"
+                    className="flex items-start gap-2.5 rounded-2xl border border-primary/25 bg-primary/5 p-4 shadow-card dark:border-primary/30 dark:bg-primary/10 sm:p-5"
+                  >
+                    <span className="mt-0.5 grid h-5 w-5 flex-none place-items-center rounded-full bg-primary text-white">
+                      <Check size={12} />
+                    </span>
+                    <p className="text-sm leading-relaxed text-ink dark:text-white">{pick(row.atar, locale)}</p>
+                  </div>
+                  <div
+                    data-side="other"
+                    className="flex items-start gap-2.5 rounded-2xl border border-grey-100 bg-[#F6F7F8] p-4 dark:border-white/10 dark:bg-white/5 sm:p-5"
+                  >
+                    <span className="mt-0.5 grid h-5 w-5 flex-none place-items-center rounded-full bg-grey-200 text-ink-muted dark:bg-white/10 dark:text-white/40">
+                      <Minus size={12} />
+                    </span>
+                    <p className="text-sm leading-relaxed text-ink-muted dark:text-white/50">
+                      {pick(row.other, locale)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </CompareBattle>
         </Reveal>
       </div>
     </section>

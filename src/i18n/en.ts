@@ -10,28 +10,27 @@ export const en = {
   // pattern, shared between the Navbar dropdowns and the repeated footer
   // columns) — only Login/Sign Up route labels are defined there directly.
   hero: {
-    eyebrow: "Leading property management system",
+    eyebrow: "One platform, one source of truth",
     title: "The Operating System for Real Estate",
     subtitle:
-      "Manage everything from leasing to handovers, smarter, faster, and stress-free.",
+      "Digitizing the end-to-end real estate lifecycle across sales, leasing and operations.",
     getStarted: "Get Started",
-    getDemo: "Get a Demo",
+    getDemo: "Book a Demo",
     dashboardAlt: "Atar dashboard showing units, requests and user activity",
   },
   clients: { title: "Our Clients" },
   stats: {
     title: "Our Success in Numbers",
     items: [
-      { value: "25,000+", label: "Units under Management" },
-      { value: "$5BN+", label: "Assets under Management" },
+      { value: "14,000+", label: "Units under Management" },
+      { value: "SAR 10BN+", label: "Assets under Management" },
       { value: "200,000+", label: "Transactions" },
     ],
   },
   featuresIntro: {
-    title:
-      "Experience Effortless Property Management, Backed by Smart Features",
+    title: "One platform, one source of truth",
     subtitle:
-      "We designed Atar to make every task easier, so you can focus on growth, not admin.",
+      "Atar digitizes every stage of the real estate lifecycle - sales, leasing and operations - in a single connected platform built for enterprise scale.",
   },
   features: [
     {
@@ -199,9 +198,8 @@ export const en = {
     ],
   },
   footer: {
-    // ASSUMPTION: Figma blurb was lorem ipsum — replaced with on-brand copy.
     blurb:
-      "The national real estate management platform for leasing, accounting, service, and reporting in one place.",
+      "Digitizing the end-to-end real estate lifecycle across sales, leasing and operations.",
     // Company/Resources/Legal Center columns now come from data/navigation.ts
     // (footerGroups) so they stay in sync with the header's taxonomy.
     contactTitle: "Contact Details",

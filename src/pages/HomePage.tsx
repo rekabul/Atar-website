@@ -5,7 +5,6 @@ import Features from "../components/Features";
 import Benefits from "../components/Benefits";
 import Integrations from "../components/Integrations";
 import FAQ from "../components/FAQ";
-import CTA from "../components/CTA";
 
 export default function HomePage() {
   return (
@@ -17,7 +16,6 @@ export default function HomePage() {
       <Benefits />
       <Integrations />
       <FAQ />
-      <CTA />
     </>
   );
 }

@@ -4,7 +4,7 @@ import { useLocale } from "../i18n/LocaleContext";
 import { useTheme } from "../theme/ThemeContext";
 import Reveal from "../components/ui/Reveal";
 import StaggerReveal from "../components/ui/StaggerReveal";
-import { Riyal, Check, Plus, Minus, ArrowRight } from "../components/ui/Icon";
+import { Riyal, Check, Plus, Minus } from "../components/ui/Icon";
 import {
   pricingHero,
   billing,
@@ -24,7 +24,7 @@ function formatSar(n: number) {
 }
 
 export default function PricingPage() {
-  const { t, locale } = useLocale();
+  const { locale } = useLocale();
   const { theme } = useTheme();
   const [annual, setAnnual] = useState(false);
   const [unitIndex, setUnitIndex] = useState(0);
@@ -365,22 +365,6 @@ export default function PricingPage() {
             );
           })}
         </StaggerReveal>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-secondary-dark text-white" aria-labelledby="pricing-cta">
-        <div className="mx-auto flex max-w-content flex-col items-start justify-between gap-6 px-5 py-14 lg:flex-row lg:items-center lg:px-8 lg:py-16">
-          <h2 id="pricing-cta" className="max-w-xl text-2xl font-medium lg:text-3xl">
-            {t.cta.title}
-          </h2>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-white hover:text-secondary"
-          >
-            <span>{t.cta.button}</span>
-            <ArrowRight />
-          </Link>
-        </div>
       </section>
     </>
   );

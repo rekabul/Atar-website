@@ -11,7 +11,7 @@ export type StatConfig = {
 };
 
 export const statsConfig: StatConfig[] = [
-  { target: 25000, comma: true, suffix: "+" },
-  { target: 5, comma: false, suffix: "BN+", currency: true },
+  { target: 14000, comma: true, suffix: "+" },
+  { target: 10, comma: false, suffix: "BN+", currency: true },
   { target: 200000, comma: true, suffix: "+" },
 ];

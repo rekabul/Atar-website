@@ -4,8 +4,8 @@
  * columns) never drift apart.
  *
  * Duplicate-avoidance: items that already have a real page reuse that page's route
- * instead of spawning a near-duplicate — Products > Overview/All Modules both point
- * at the existing /features page. Integrations (/integrations, see
+ * instead of spawning a near-duplicate — Products > All Modules points at the
+ * existing /features page. Integrations (/integrations, see
  * pages/IntegrationsPage.tsx) and Resources > FAQ Hub (/faq, see pages/FaqPage.tsx)
  * each have their own dedicated page — reusing the same real data
  * (data/assetsMap.ts integrations, data/pricing.ts pricingFaq) — rather than
@@ -24,10 +24,9 @@ export type NavGroup = { label: LStr; items: NavLink[] };
 export const productsGroup: NavGroup = {
   label: L("Products", "المنتجات"),
   items: [
-    { label: L("Overview", "نظرة عامة"), to: "/features" },
     { label: L("Sales Suite", "حزمة المبيعات"), to: "/products/sales-suite" },
     { label: L("Leasing Suite", "حزمة التأجير"), to: "/products/leasing-suite" },
-    { label: L("Property Operations Suite", "حزمة العمليات العقارية"), to: "/products/operations-suite" },
+    { label: L("Operations Suite", "حزمة العمليات"), to: "/products/operations-suite" },
     { label: L("All Modules", "جميع الوحدات"), to: "/features" },
   ],
 };

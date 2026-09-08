@@ -10,11 +10,25 @@ import {
   placeholderFallback,
   type PageSection,
 } from "../data/placeholderPages";
-import { clientLogos, caseStudyPhotos } from "../data/assetsMap";
+import { caseStudyPhotos } from "../data/assetsMap";
 import Reveal from "../components/ui/Reveal";
-import CTA from "../components/CTA";
+import Clients from "../components/Clients";
 import Logo, { LogoMark } from "../components/ui/Logo";
-import { ArrowRight, Check, Minus } from "../components/ui/Icon";
+import {
+  ArrowRight,
+  Check,
+  Minus,
+  RentListIcon,
+  RentersIcon,
+  ApplicationIcon,
+  QuotePriceIcon,
+  LeaseIcon,
+  HandoverIcon,
+  MessageIcon,
+  TicketIcon,
+  FacilityIcon,
+  PaymentIcon,
+} from "../components/ui/Icon";
 import { prefersReducedMotion } from "../hooks/useInView";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -25,8 +39,22 @@ import {
   AIPipeline,
   ComplianceLog,
   IntegrationsHub,
+  ListingCard,
+  LeadsChart,
+  BookingConfirm,
+  SignatureCheck,
+  MilestoneBar,
+  RentalListingCard,
+  RenterInterestChart,
+  ApplicationReviewCard,
+  QuotationCard,
+  LeaseAgreementCard,
+  HandoverChecklistCard,
+  CommunicationFeedCard,
+  FacilityStatusCard,
+  OnlinePaymentCard,
 } from "../components/FeatureVisuals";
-import type { VisualKey } from "../data/placeholderPages";
+import type { VisualKey, DetailedVisualKey } from "../data/placeholderPages";
 
 /**
  * Most of these are the same "product screen" mockups used on the Features
@@ -45,6 +73,25 @@ const visualComponents: Record<VisualKey, () => JSX.Element> = {
   integrations: IntegrationsHub,
 };
 
+/** One distinct mockup per step for a detailed "How it works" — see stepsDetailed. */
+const detailedVisualComponents: Record<DetailedVisualKey, () => JSX.Element> = {
+  listing: ListingCard,
+  leads: LeadsChart,
+  booking: BookingConfirm,
+  signature: SignatureCheck,
+  milestones: MilestoneBar,
+  rentalListing: RentalListingCard,
+  renterInterest: RenterInterestChart,
+  application: ApplicationReviewCard,
+  quotation: QuotationCard,
+  leaseAgreement: LeaseAgreementCard,
+  handoverChecklist: HandoverChecklistCard,
+  communication: CommunicationFeedCard,
+  tickets: ServiceLog,
+  facility: FacilityStatusCard,
+  onlinePayment: OnlinePaymentCard,
+};
+
 /**
  * Generic page shell for new nav destinations that don't have bespoke content
  * yet (Products sub-suites, Solutions by role, Markets by asset class,
@@ -60,6 +107,11 @@ export default function PlaceholderPage() {
   const { locale } = useLocale();
   const { pathname } = useLocation();
   const copy = placeholderPages[pathname] ?? placeholderFallback;
+  // Sales Suite, Leasing Suite and Operations Suite each get a compact flow
+  // stepper under their hero, without touching any other placeholder route.
+  const isSalesSuite = pathname === "/products/sales-suite";
+  const isLeasingSuite = pathname === "/products/leasing-suite";
+  const isOperationsSuite = pathname === "/products/operations-suite";
 
   useEffect(() => {
     const prev = document.title;
@@ -88,6 +140,9 @@ export default function PlaceholderPage() {
             </p>
           </Reveal>
         </div>
+        {isSalesSuite && <SalesFlowStepper locale={locale} />}
+        {isLeasingSuite && <LeasingFlowStepper locale={locale} />}
+        {isOperationsSuite && <OperationsFlowStepper locale={locale} />}
       </section>
 
       {copy.sections?.map((section, i) => (
@@ -95,30 +150,26 @@ export default function PlaceholderPage() {
       ))}
 
       {!copy.minimalFooter && (
-        <>
-          <section className="bg-white py-16 dark:bg-secondary-darker lg:py-24" aria-label="Talk to us">
-            <div className="mx-auto max-w-3xl px-5 lg:px-8">
-              <Reveal>
-                <div className="rounded-[28px] border border-grey-100 bg-[#F6F7F8] p-8 text-center dark:border-white/10 dark:bg-white/5 lg:p-10">
-                  <p className="leading-relaxed text-ink-soft dark:text-white/70">
-                    {locale === "ar"
-                      ? "هل تريد معرفة المزيد الآن؟ فريقنا جاهز للحديث عن احتياجاتك."
-                      : "Want the details now? Our team is ready to talk through your needs."}
-                  </p>
-                  <Link
-                    to="/contact"
-                    className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-secondary"
-                  >
-                    <span>{locale === "ar" ? "تواصل مع فريقنا" : "Talk to our team"}</span>
-                    <ArrowRight />
-                  </Link>
-                </div>
-              </Reveal>
-            </div>
-          </section>
-
-          <CTA />
-        </>
+        <section className="bg-white py-16 dark:bg-secondary-darker lg:py-24" aria-label="Talk to us">
+          <div className="mx-auto max-w-3xl px-5 lg:px-8">
+            <Reveal>
+              <div className="rounded-[28px] border border-grey-100 bg-[#F6F7F8] p-8 text-center dark:border-white/10 dark:bg-white/5 lg:p-10">
+                <p className="leading-relaxed text-ink-soft dark:text-white/70">
+                  {locale === "ar"
+                    ? "هل تحتاج إلى مزيد من المعلومات؟ احجز عرضاً توضيحياً لمعرفة المزيد"
+                    : "Need more information? Book a demo to learn more"}
+                </p>
+                <Link
+                  to="/contact"
+                  className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-secondary"
+                >
+                  <span>{locale === "ar" ? "احجز عرضاً توضيحياً" : "Book a Demo"}</span>
+                  <ArrowRight />
+                </Link>
+              </div>
+            </Reveal>
+          </div>
+        </section>
       )}
     </>
   );
@@ -130,6 +181,8 @@ function SectionBlock({ section, locale }: { section: PageSection; locale: "en" 
       return <StepsSection section={section} locale={locale} />;
     case "stepsVisual":
       return <StepsVisualSection section={section} locale={locale} />;
+    case "stepsDetailed":
+      return <StepsDetailedSection section={section} locale={locale} />;
     case "stats":
       return <StatsSection section={section} locale={locale} />;
     case "bullets":
@@ -141,7 +194,7 @@ function SectionBlock({ section, locale }: { section: PageSection; locale: "en" 
     case "caseStudies":
       return <CaseStudiesSection section={section} locale={locale} />;
     case "logos":
-      return <LogosSection locale={locale} />;
+      return <Clients />;
     case "team":
       return <TeamSection section={section} locale={locale} />;
     case "timeline":
@@ -243,6 +296,333 @@ function StepsVisualSection({
   );
 }
 
+/**
+ * Sales Suite "alt" variant only — a compact 5-stop overview of the whole
+ * sales flow, sitting right under the hero copy: number, short label, a
+ * connecting line with a dot per stop, and a one-word sub-label. Purely a
+ * visual summary — the detailed step-by-step section below still carries the
+ * real copy.
+ */
+function SalesFlowStepper({ locale }: { locale: "en" | "ar" }) {
+  const steps: { n: string; label: string; sub: string }[] = [
+    { n: "01", label: locale === "ar" ? "الإدراج" : "List", sub: locale === "ar" ? "العقار" : "Property" },
+    { n: "02", label: locale === "ar" ? "العملاء" : "Leads", sub: locale === "ar" ? "العميل" : "Customer" },
+    { n: "03", label: locale === "ar" ? "العرض" : "Quote", sub: locale === "ar" ? "عرض السعر" : "Quotation" },
+    { n: "04", label: locale === "ar" ? "الإغلاق" : "Close", sub: locale === "ar" ? "الاتفاقية" : "Agreement" },
+    { n: "05", label: locale === "ar" ? "التسليم" : "Handover", sub: locale === "ar" ? "الإنجاز" : "Completion" },
+  ];
+
+  return (
+    <div className="mx-auto mt-4 max-w-4xl overflow-x-auto px-5 pb-14 lg:px-8">
+      <Reveal delay={80}>
+        <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
+          {locale === "ar" ? "من الإدراج إلى التسليم النهائي" : "From listing to final handover"}
+        </p>
+        <div className="mx-auto min-w-[520px]">
+          <div className="grid grid-cols-5 gap-2 text-center">
+            {steps.map((s) => (
+              <div key={s.n}>
+                <p className="text-xs font-medium text-ink-muted dark:text-white/40">{s.n}</p>
+                <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-ink dark:text-white sm:text-base">
+                  {s.label}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="relative mt-4 h-px w-full bg-grey-200 dark:bg-white/15">
+            <div className="absolute inset-0 grid grid-cols-5">
+              {steps.map((s) => (
+                <div key={s.n} className="flex items-center justify-center">
+                  <span className="h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-white dark:ring-secondary-darker" />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mt-4 grid grid-cols-5 gap-2 text-center">
+            {steps.map((s) => (
+              <p key={s.n} className="text-xs text-ink-muted dark:text-white/40">
+                {s.sub}
+              </p>
+            ))}
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  );
+}
+
+/**
+ * Leasing Suite "alt" hero strip — a compact 5-stop overview of the whole
+ * leasing flow, sitting right under the hero copy. Same flat-line timeline
+ * mechanic as the Sales Suite stepper, but each stop gets a small icon in a
+ * muted circle instead of a number, matching the icon-circle style requested.
+ */
+function LeasingFlowStepper({ locale }: { locale: "en" | "ar" }) {
+  const steps: {
+    key: string;
+    label: string;
+    sub: string;
+    Icon: (p: { size?: number }) => JSX.Element;
+  }[] = [
+    {
+      key: "list",
+      label: locale === "ar" ? "الإدراج" : "List",
+      sub: locale === "ar" ? "الوحدة" : "Listing",
+      Icon: RentListIcon,
+    },
+    {
+      key: "attract",
+      label: locale === "ar" ? "الاستقطاب" : "Attract",
+      sub: locale === "ar" ? "المستأجرون" : "Renters",
+      Icon: RentersIcon,
+    },
+    {
+      key: "applications",
+      label: locale === "ar" ? "الطلبات" : "Applications",
+      sub: locale === "ar" ? "المراجعة" : "Review",
+      Icon: ApplicationIcon,
+    },
+    {
+      key: "quote",
+      label: locale === "ar" ? "العرض" : "Quote",
+      sub: locale === "ar" ? "التسعير" : "Pricing",
+      Icon: QuotePriceIcon,
+    },
+    {
+      key: "lease",
+      label: locale === "ar" ? "العقد" : "Lease",
+      sub: locale === "ar" ? "الاتفاقية" : "Agreement",
+      Icon: LeaseIcon,
+    },
+  ];
+
+  return (
+    <div className="mx-auto mt-4 max-w-5xl overflow-x-auto px-5 pb-14 lg:px-8">
+      <Reveal delay={80}>
+        <div className="mx-auto min-w-[600px] rounded-[28px] bg-[#F6F7F8] px-6 py-10 dark:bg-white/5 sm:px-10">
+          <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
+            {locale === "ar" ? "من أول إعلان إلى عقد مُدار بالكامل" : "From listing to a fully managed lease"}
+          </p>
+          <div className="grid grid-cols-5 gap-2 text-center">
+            {steps.map(({ key, label, Icon }) => (
+              <div key={key} className="flex flex-col items-center">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-primary shadow-card dark:bg-secondary-darker">
+                  <Icon size={18} />
+                </span>
+                <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-ink dark:text-white sm:text-base">
+                  {label}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="relative mt-4 h-px w-full bg-grey-200 dark:bg-white/15">
+            <div className="absolute inset-0 grid grid-cols-5">
+              {steps.map(({ key }) => (
+                <div key={key} className="flex items-center justify-center">
+                  <span className="h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-[#F6F7F8] dark:ring-white/5" />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mt-4 grid grid-cols-5 gap-2 text-center">
+            {steps.map(({ key, sub }) => (
+              <p key={key} className="text-xs text-ink-muted dark:text-white/40">
+                {sub}
+              </p>
+            ))}
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  );
+}
+
+/**
+ * Operations Suite "alt" hero strip — same small-point timeline idea as
+ * Sales/Leasing, but each stop is its own bordered card; a line-and-dot rail
+ * above the row visually connects card one through to card five.
+ */
+function OperationsFlowStepper({ locale }: { locale: "en" | "ar" }) {
+  const steps: {
+    key: string;
+    label: string;
+    sub: string;
+    Icon: (p: { size?: number }) => JSX.Element;
+  }[] = [
+    {
+      key: "handover",
+      label: locale === "ar" ? "التسليم" : "Handover",
+      sub: locale === "ar" ? "الإدراج" : "Onboarding",
+      Icon: HandoverIcon,
+    },
+    {
+      key: "communicate",
+      label: locale === "ar" ? "التواصل" : "Communicate",
+      sub: locale === "ar" ? "العملاء" : "Customers",
+      Icon: MessageIcon,
+    },
+    {
+      key: "tickets",
+      label: locale === "ar" ? "التذاكر" : "Tickets",
+      sub: locale === "ar" ? "الطلبات" : "Requests",
+      Icon: TicketIcon,
+    },
+    {
+      key: "facilities",
+      label: locale === "ar" ? "المرافق" : "Facilities",
+      sub: locale === "ar" ? "المناطق المشتركة" : "Common Areas",
+      Icon: FacilityIcon,
+    },
+    {
+      key: "payments",
+      label: locale === "ar" ? "المدفوعات" : "Payments",
+      sub: locale === "ar" ? "إلكترونياً" : "Online",
+      Icon: PaymentIcon,
+    },
+  ];
+
+  return (
+    <div className="mx-auto mt-4 max-w-5xl overflow-x-auto px-5 pb-16 lg:px-8">
+      <Reveal delay={80}>
+        <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
+          {locale === "ar" ? "من التسليم الرقمي إلى التشغيل اليومي" : "From digital handover to everyday operations"}
+        </p>
+
+        <div className="mx-auto min-w-[880px]">
+          {/* Connecting rail — one dot per card, centered directly above it. */}
+          <div className="relative mb-6 h-px w-full bg-grey-200 dark:bg-white/15">
+            <div className="absolute inset-0 grid grid-cols-5">
+              {steps.map(({ key }) => (
+                <div key={key} className="flex items-center justify-center">
+                  <span className="h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-white dark:ring-secondary-darker" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-5 gap-4">
+            {steps.map(({ key, label, sub, Icon }) => (
+              <div
+                key={key}
+                className="flex flex-col items-center rounded-2xl border border-grey-100 bg-white p-5 text-center shadow-card dark:border-white/10 dark:bg-secondary-darker"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary dark:bg-primary/20">
+                  <Icon size={18} />
+                </span>
+                <p className="mt-3 text-sm font-semibold uppercase tracking-wide text-ink dark:text-white sm:text-base">
+                  {label}
+                </p>
+                <p className="mt-1 text-xs text-ink-muted dark:text-white/40">{sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  );
+}
+
+/**
+ * A more detailed "How it works" — each step is its own full-width card with
+ * its own product-screen mockup (not one shared visual for the whole flow),
+ * alternating sides like the site's other "remaining feature" rows. A slim
+ * rail beside the sequence fills in as you scroll, reading as literal
+ * progress through the steps rather than decoration.
+ */
+function StepsDetailedSection({
+  section,
+  locale,
+}: {
+  section: Extract<PageSection, { kind: "stepsDetailed" }>;
+  locale: "en" | "ar";
+}) {
+  const railRef = useRef<HTMLDivElement>(null);
+  const fillRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion() || !railRef.current || !fillRef.current) return;
+      gsap.set(fillRef.current, { scaleY: 0 });
+      gsap.to(fillRef.current, {
+        scaleY: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: railRef.current,
+          start: "top center",
+          end: "bottom center",
+          scrub: 0.5,
+        },
+      });
+    },
+    { scope: railRef }
+  );
+
+  return (
+    <section className={sectionPad}>
+      <div className={wrap}>
+        {section.heading && (
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <h2 className="text-2xl font-medium text-ink dark:text-white sm:text-3xl">
+                {pick(section.heading, locale)}
+              </h2>
+              {section.subtitle && (
+                <p className="mt-3 leading-relaxed text-ink-soft dark:text-white/70">
+                  {pick(section.subtitle, locale)}
+                </p>
+              )}
+            </div>
+          </Reveal>
+        )}
+
+        <div ref={railRef} className="relative mt-12 lg:mt-16">
+          {/* scroll-progress rail — desktop only, tracks how far through the sequence you are */}
+          <div
+            className="absolute top-1 bottom-1 hidden w-px bg-grey-200 dark:bg-white/10 lg:block"
+            style={{ insetInlineStart: 0 }}
+            aria-hidden="true"
+          />
+          <div
+            ref={fillRef}
+            className="absolute top-1 hidden w-px origin-top bg-primary lg:block"
+            style={{ insetInlineStart: 0, height: "calc(100% - 0.5rem)" }}
+            aria-hidden="true"
+          />
+
+          <ol className="space-y-8 lg:space-y-12 lg:ps-10">
+            {section.items.map((step, i) => {
+              const Visual = detailedVisualComponents[step.visual];
+              const flip = i % 2 === 1;
+              return (
+                <li key={i}>
+                  <Reveal delay={i * 60}>
+                    <article className="overflow-hidden rounded-3xl border border-grey-100 bg-grey-100/40 dark:border-white/10 dark:bg-white/5 lg:grid lg:grid-cols-5 lg:items-center">
+                      <div className={`p-8 lg:col-span-2 lg:p-10 ${flip ? "lg:order-2" : ""}`}>
+                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
+                          {i + 1}
+                        </span>
+                        <h3 className="mt-4 text-xl font-medium text-ink dark:text-white lg:text-2xl">
+                          {pick(step.title, locale)}
+                        </h3>
+                        <p className="mt-3 leading-relaxed text-ink-soft dark:text-white/70">
+                          {pick(step.body, locale)}
+                        </p>
+                      </div>
+                      <div className={`p-6 lg:col-span-3 lg:p-8 ${flip ? "lg:order-1" : ""}`}>
+                        <Visual />
+                      </div>
+                    </article>
+                  </Reveal>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ChipsSection({
   section,
   locale,
@@ -298,16 +678,16 @@ function StatsSection({
               </h2>
             )}
             <dl
-              className={`grid grid-cols-1 gap-10 text-center sm:grid-cols-3 sm:gap-0 ${
-                section.heading ? "mt-10" : ""
-              }`}
+              className={`mx-auto grid grid-cols-1 gap-10 text-center sm:gap-0 ${
+                section.items.length === 2 ? "max-w-xl sm:grid-cols-2" : "sm:grid-cols-3"
+              } ${section.heading ? "mt-10" : ""}`}
             >
               {section.items.map((stat, i) => (
                 <div
                   key={i}
                   className={
-                    i === 1 && section.items.length === 3
-                      ? "sm:border-x sm:border-grey-200 dark:sm:border-white/15 sm:px-6"
+                    (i === 1 && section.items.length === 3) || (i === 1 && section.items.length === 2)
+                      ? "sm:border-s sm:border-grey-200 dark:sm:border-white/15 sm:px-6"
                       : "sm:px-6"
                   }
                 >
@@ -542,35 +922,6 @@ function CaseStudiesSection({
             </Reveal>
           );
         })}
-      </div>
-    </section>
-  );
-}
-
-function LogosSection({ locale }: { locale: "en" | "ar" }) {
-  return (
-    <section className="bg-[#F6F7F8] py-14 dark:bg-white/5 lg:py-20">
-      <div className={wrap}>
-        <Reveal>
-          <p className="mb-8 text-center text-sm font-medium uppercase tracking-wider text-ink-muted dark:text-white/50">
-            {locale === "ar" ? "موثوق به من قبل" : "Trusted by"}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            {clientLogos.map((c) => (
-              <div
-                key={c.file}
-                className="flex h-20 w-36 items-center justify-center rounded-2xl bg-white px-6 dark:bg-white/10"
-              >
-                <img
-                  src={c.url}
-                  alt={c.name}
-                  className="max-h-10 w-auto object-contain dark:brightness-0 dark:invert dark:opacity-80"
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
-        </Reveal>
       </div>
     </section>
   );

@@ -16,7 +16,7 @@ const clientGlob = import.meta.glob("./clients/*.svg", {
   import: "default",
 }) as Record<string, string>;
 
-const integrationGlob = import.meta.glob("./integrations/*.svg", {
+const integrationGlob = import.meta.glob("./integrations/*.{svg,png}", {
   eager: true,
   query: "?url",
   import: "default",

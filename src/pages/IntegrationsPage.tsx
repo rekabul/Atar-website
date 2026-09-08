@@ -7,13 +7,20 @@ import { Badge } from "../components/ui/badge";
 import Reveal from "../components/ui/Reveal";
 import StaggerReveal from "../components/ui/StaggerReveal";
 import { ArrowRight } from "../components/ui/Icon";
-import CTA from "../components/CTA";
 
 type LStr = { en: string; ar: string };
 const pick = (str: LStr, locale: string) => (locale === "ar" ? str.ar : str.en);
 const L = (en: string, ar: string): LStr => ({ en, ar });
 
-type Category = "identity" | "payments" | "analytics" | "housing" | "automation" | "trust";
+type Category =
+  | "identity"
+  | "payments"
+  | "analytics"
+  | "housing"
+  | "automation"
+  | "trust"
+  | "enterprise"
+  | "messaging";
 
 const categories: { id: Category; label: LStr }[] = [
   { id: "identity", label: L("Identity & Compliance", "الهوية والامتثال") },
@@ -22,6 +29,8 @@ const categories: { id: Category; label: LStr }[] = [
   { id: "housing", label: L("Government & Housing", "الجهات الحكومية والإسكان") },
   { id: "automation", label: L("Automation", "الأتمتة") },
   { id: "trust", label: L("Trust & Verification", "الثقة والتحقق") },
+  { id: "enterprise", label: L("Enterprise Systems", "أنظمة المؤسسات") },
+  { id: "messaging", label: L("Engagement & Messaging", "التواصل والمراسلة") },
 ];
 
 /** Real integration copy, keyed by the same `name` used in data/assetsMap.ts so the logo, brand color, and description always stay in sync. */
@@ -68,6 +77,105 @@ const integrationCopy: Record<string, { category: Category; description: LStr }>
       "أضف تحققاً إقليمياً موثوقاً للعقود والمعاملات أثناء انتقالها عبر أتار."
     ),
   },
+  // Added from the Company Profile "Ecosystem" page (p.13).
+  SADAD: {
+    category: "payments",
+    description: L(
+      "Collect national bill payments, including bulk requests billed straight against project milestones.",
+      "حصّل مدفوعات الفواتير الوطنية، بما في ذلك الطلبات المجمّعة التي تُفوتَر مباشرة مقابل مراحل المشروع."
+    ),
+  },
+  ZATCA: {
+    category: "identity",
+    description: L(
+      "Generate and clear Fatoora-compliant e-invoices automatically from every contract.",
+      "أصدر فواتير إلكترونية متوافقة مع فاتورة (زاتكا) وقم بتصفيتها تلقائياً من كل عقد."
+    ),
+  },
+  HyperPay: {
+    category: "payments",
+    description: L(
+      "Accept card and digital payments from tenants, buyers, and owners with a regional payment gateway.",
+      "اقبل مدفوعات البطاقات والمدفوعات الرقمية من المستأجرين والمشترين والملاك عبر بوابة دفع إقليمية."
+    ),
+  },
+  Oracle: {
+    category: "enterprise",
+    description: L(
+      "Sync financial and operational records with Oracle's enterprise resource planning suite.",
+      "زامن السجلات المالية والتشغيلية مع مجموعة أوراكل لتخطيط موارد المؤسسات."
+    ),
+  },
+  SAP: {
+    category: "enterprise",
+    description: L(
+      "Connect Atar's property and financial data to an existing SAP deployment.",
+      "اربط بيانات أتار العقارية والمالية بمنصة SAP القائمة لديك."
+    ),
+  },
+  "Microsoft Dynamics 365": {
+    category: "enterprise",
+    description: L(
+      "Keep customer, sales, and finance records aligned between Atar and Dynamics 365.",
+      "حافظ على تناسق سجلات العملاء والمبيعات والمالية بين أتار وDynamics 365."
+    ),
+  },
+  Odoo: {
+    category: "enterprise",
+    description: L(
+      "Extend Atar's data into Odoo's broader suite of business applications.",
+      "امتدّ ببيانات أتار إلى مجموعة تطبيقات أودو الأوسع لإدارة الأعمال."
+    ),
+  },
+  Zoho: {
+    category: "enterprise",
+    description: L(
+      "Push leads, deals, and contacts between Atar and the Zoho suite.",
+      "انقل العملاء المحتملين والصفقات وجهات الاتصال بين أتار ومجموعة Zoho."
+    ),
+  },
+  Salesforce: {
+    category: "enterprise",
+    description: L(
+      "Sync leads, accounts, and deal stages with your existing Salesforce CRM.",
+      "زامن العملاء المحتملين والحسابات ومراحل الصفقات مع نظام Salesforce الحالي لديك."
+    ),
+  },
+  Unifonic: {
+    category: "messaging",
+    description: L(
+      "Send SMS and OTP messages to tenants and owners through a regional messaging platform.",
+      "أرسل رسائل SMS ورموز التحقق للمستأجرين والملاك عبر منصة مراسلة إقليمية."
+    ),
+  },
+  Twilio: {
+    category: "messaging",
+    description: L(
+      "Trigger SMS, voice, and WhatsApp notifications directly from Atar workflows.",
+      "أطلق إشعارات SMS والصوت وواتساب مباشرة من سير عمل أتار."
+    ),
+  },
+  SendGrid: {
+    category: "messaging",
+    description: L(
+      "Deliver transactional emails, receipts, and statements reliably at scale.",
+      "أرسل رسائل بريد إلكتروني معاملاتية وإيصالات وكشوف حساب بشكل موثوق وعلى نطاق واسع."
+    ),
+  },
+  Meta: {
+    category: "messaging",
+    description: L(
+      "Reach tenants and leads through Facebook and Instagram messaging and ads.",
+      "تواصل مع المستأجرين والعملاء المحتملين عبر رسائل وإعلانات فيسبوك وإنستغرام."
+    ),
+  },
+  WhatsApp: {
+    category: "messaging",
+    description: L(
+      "Send maintenance updates, payment reminders, and confirmations where tenants already are.",
+      "أرسل تحديثات الصيانة وتذكيرات الدفع والتأكيدات عبر واتساب حيث يتواجد المستأجرون بالفعل."
+    ),
+  },
 };
 
 export default function IntegrationsPage() {
@@ -108,8 +216,8 @@ export default function IntegrationsPage() {
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-white/70">
               {locale === "ar"
-                ? "من التحقق من الهوية إلى المدفوعات والتحليلات، يتصل أتار مباشرة بالبنية التحتية الوطنية وأكثر من 100 أداة أخرى."
-                : "From identity verification to payments and analytics, Atar connects natively to national infrastructure and 100+ other tools."}
+                ? "من منصات التحقق من الهوية والتحليلات إلى الحلول الفردية وأنظمة تخطيط موارد المؤسسات، يتصل أتار مباشرة بالبنية التحتية الوطنية وأدوات أخرى."
+                : "From identity verification and analytics platforms to point-solutions and ERPs, Atar connects natively to national infrastructure and other tools."}
             </p>
           </Reveal>
         </div>
@@ -212,8 +320,6 @@ export default function IntegrationsPage() {
           </Reveal>
         </div>
       </section>
-
-      <CTA />
     </>
   );
 }

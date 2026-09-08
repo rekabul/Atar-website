@@ -205,6 +205,120 @@ export function Target({ size = 28, ...p }: IconProps) {
   );
 }
 
+/** Leasing Suite mini-timeline — "List a rental unit". */
+export function RentListIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M4 21V10l8-6 8 6v11" />
+      <path d="M9 21v-6h6v6" />
+    </svg>
+  );
+}
+
+/** Leasing Suite mini-timeline — "Attract renters". */
+export function RentersIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+    </svg>
+  );
+}
+
+/** Leasing Suite mini-timeline — "Receive applications". */
+export function ApplicationIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <path d="M14 2v6h6" />
+      <path d="M9 14.5l2 2 4-4.5" />
+    </svg>
+  );
+}
+
+/** Leasing Suite mini-timeline — "Issue quotations". */
+export function QuotePriceIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M7 3h10a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" />
+      <path d="M9 8h6M9 12h6M9 16h3" />
+    </svg>
+  );
+}
+
+/** Leasing Suite mini-timeline — "Create & manage leases". */
+export function LeaseIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M4 4h16v16H4z" />
+      <path d="M8 9h8M8 13h8M8 17h4" />
+    </svg>
+  );
+}
+
+/** Continuous-cycle badge — Features page lifecycle timeline. */
+export function RefreshIcon({ size = 14, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M23 4v6h-6" />
+      <path d="M1 20v-6h6" />
+      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10" />
+      <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14" />
+    </svg>
+  );
+}
+
+/** Operations Suite mini-timeline — "Handover & onboard digitally". */
+export function HandoverIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <circle cx="8" cy="15" r="3.5" />
+      <path d="M10.5 12.5L18 5" />
+      <path d="M15.5 7.5l2 2" />
+      <path d="M18 5l2 2" />
+    </svg>
+  );
+}
+
+/** Operations Suite mini-timeline — "Communicate with customers". */
+export function MessageIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+    </svg>
+  );
+}
+
+/** Operations Suite mini-timeline — "Manage tickets & requests". */
+export function TicketIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z" />
+      <path d="M10 6v12" strokeDasharray="2 2" />
+    </svg>
+  );
+}
+
+/** Operations Suite mini-timeline — "Manage facilities & common areas". */
+export function FacilityIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.1-3.1a4 4 0 0 1-5.3 5.3L7 20l-3-3 8.5-8.5a4 4 0 0 1 5.3-5.3z" />
+    </svg>
+  );
+}
+
+/** Operations Suite mini-timeline — "Collect payments online". */
+export function PaymentIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <rect x="2.5" y="5" width="19" height="14" rx="2" />
+      <path d="M2.5 10h19" />
+      <path d="M6 15h4" />
+    </svg>
+  );
+}
+
 /** Icons for the Features "Built for Every Role" cards, keyed by name. */
 export const roleIcons: Record<string, (p: IconProps) => ReactElement> = {
   owner: (p) => (

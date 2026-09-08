@@ -43,10 +43,29 @@ export type QuoteItem = { quote: LStr; name: string; title: LStr };
 export type LegalSection = { heading: string; body: string };
 /** Keys into the small self-contained "product screen" mockups already built for the Features page (components/FeatureVisuals.tsx) — reused here instead of new artwork. */
 export type VisualKey = "financial" | "service" | "property" | "ai" | "compliance" | "integrations";
+/** Keys into the per-step mockups built specifically for a detailed "How it works" — one distinct visual per step, unlike `VisualKey` which is one shared visual per whole section. */
+export type DetailedVisualKey =
+  | "listing"
+  | "leads"
+  | "booking"
+  | "signature"
+  | "milestones"
+  | "rentalListing"
+  | "renterInterest"
+  | "application"
+  | "quotation"
+  | "leaseAgreement"
+  | "handoverChecklist"
+  | "communication"
+  | "tickets"
+  | "facility"
+  | "onlinePayment";
+export type DetailedStep = { title: LStr; body: LStr; visual: DetailedVisualKey };
 
 export type PageSection =
   | { kind: "steps"; heading?: LStr; items: Step[] }
   | { kind: "stepsVisual"; heading?: LStr; visual: VisualKey; items: Step[] }
+  | { kind: "stepsDetailed"; heading?: LStr; subtitle?: LStr; items: DetailedStep[] }
   | { kind: "stats"; heading?: LStr; items: Stat[] }
   | { kind: "bullets"; heading?: LStr; items: LStr[] }
   | { kind: "chips"; heading?: LStr; items: LStr[] }
@@ -99,9 +118,12 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ),
     sections: [
       {
-        kind: "stepsVisual",
+        kind: "stepsDetailed",
         heading: L("How it works", "كيف تعمل"),
-        visual: "compliance",
+        subtitle: L(
+          "From first listing to final handover — five connected steps, one platform.",
+          "من أول إعلان إلى التسليم النهائي، خمس خطوات متصلة على منصة واحدة."
+        ),
         items: [
           {
             title: L("List properties for sale", "أدرج العقارات للبيع"),
@@ -109,6 +131,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Create listings for ready and off-plan units with full property and purchase detail.",
               "أنشئ إعلانات للوحدات الجاهزة والمباعة على الخريطة مع كامل تفاصيل العقار والشراء."
             ),
+            visual: "listing",
           },
           {
             title: L("Attract buyers", "استقطب المشترين"),
@@ -116,6 +139,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Publish to your website; interest registers and leads generate automatically.",
               "انشر على موقعك الإلكتروني؛ يُسجَّل الاهتمام وتُولَّد العملاء المحتملون تلقائياً."
             ),
+            visual: "leads",
           },
           {
             title: L("Secure bookings", "أمّن الحجوزات"),
@@ -123,6 +147,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Approve booking requests and collect booking payments through SADAD.",
               "وافق على طلبات الحجز وحصّل مدفوعات الحجز عبر سداد."
             ),
+            visual: "booking",
           },
           {
             title: L("Sign contracts", "وقّع العقود"),
@@ -130,6 +155,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Sign digitally via Nafath, with legal compliance and protection for both parties.",
               "وقّع إلكترونياً عبر نفاذ، مع الامتثال القانوني وحماية الطرفين."
             ),
+            visual: "signature",
           },
           {
             title: L("Collect payments & handover", "حصّل المدفوعات وسلّم"),
@@ -137,15 +163,15 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Collect via SADAD and issue bulk requests against off-plan completion milestones.",
               "حصّل عبر سداد وأصدر طلبات دفع مجمّعة مقابل مراحل إنجاز المشروع على الخريطة."
             ),
+            visual: "milestones",
           },
         ],
       },
       {
         kind: "stats",
-        heading: L("Sales, backed by real numbers", "مبيعات مدعومة بأرقام حقيقية"),
+        heading: L("Backed by Real Numbers", "مدعومة بأرقام حقيقية"),
         items: [
           { value: "300M+", label: L("SAR property sales enabled", "ريال مبيعات عقارية مُمكَّنة") },
-          { value: "40M+", label: L("SAR sold in first 3 hours of a launch", "ريال مبيعات خلال أول 3 ساعات من الإطلاق") },
           { value: "400+", label: L("Units sold on the platform", "وحدة مباعة عبر المنصة") },
         ],
       },
@@ -162,9 +188,12 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ),
     sections: [
       {
-        kind: "stepsVisual",
+        kind: "stepsDetailed",
         heading: L("How it works", "كيف تعمل"),
-        visual: "financial",
+        subtitle: L(
+          "From first listing to a fully managed lease — five connected steps, one platform.",
+          "من أول إعلان إلى عقد إيجار مُدار بالكامل، خمس خطوات متصلة على منصة واحدة."
+        ),
         items: [
           {
             title: L("List available rentals", "أدرج الوحدات المتاحة للتأجير"),
@@ -172,6 +201,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Publish listings with areas, annual rentals and booking deposits.",
               "انشر إعلانات تتضمن المساحات والإيجار السنوي ومبالغ حجز التأمين."
             ),
+            visual: "rentalListing",
           },
           {
             title: L("Attract renters", "استقطب المستأجرين"),
@@ -179,6 +209,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Showcase on your website; interest converts to leads automatically.",
               "اعرض على موقعك الإلكتروني؛ يتحول الاهتمام إلى عملاء محتملين تلقائياً."
             ),
+            visual: "renterInterest",
           },
           {
             title: L("Receive applications", "استقبل الطلبات"),
@@ -186,6 +217,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Approve rental applications with full KYC and customer detail.",
               "وافق على طلبات التأجير مع التحقق الكامل من هوية العميل وبياناته."
             ),
+            visual: "application",
           },
           {
             title: L("Issue quotations", "أصدر عروض الأسعار"),
@@ -193,6 +225,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Link quotations to leads and applications to track the whole journey.",
               "اربط عروض الأسعار بالعملاء المحتملين والطلبات لتتبع الرحلة كاملة."
             ),
+            visual: "quotation",
           },
           {
             title: L("Create & manage leases", "أنشئ العقود وأدرها"),
@@ -200,16 +233,16 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Generate agreements and raise invoices automatically on payment dates.",
               "أنشئ الاتفاقيات وأصدر الفواتير تلقائياً في مواعيد الدفع."
             ),
+            visual: "leaseAgreement",
           },
         ],
       },
       {
         kind: "stats",
-        heading: L("Leasing, at scale", "التأجير، على نطاق واسع"),
+        heading: L("Backed by Real Numbers", "مدعومة بأرقام حقيقية"),
         items: [
           { value: "400M+", label: L("SAR rental value managed", "ريال قيمة إيجار مُدارة") },
-          { value: "14,000+", label: L("Units under management", "وحدة تحت الإدارة") },
-          { value: "500+", label: L("Tenants managed at once, per portfolio", "مستأجر تتم إدارته في آنٍ واحد لكل محفظة") },
+          { value: "400+", label: L("Units sold on the platform", "وحدة مباعة عبر المنصة") },
         ],
       },
       includedWithEverySuite,
@@ -218,16 +251,19 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
 
   "/products/operations-suite": {
     eyebrow: PRODUCTS,
-    title: L("Property Operations Suite", "حزمة العمليات العقارية"),
+    title: L("Operations Suite", "حزمة العمليات"),
     body: L(
-      "Unify communication, maintenance, service requests, facility management, space bookings and visitor management.",
-      "وحّد التواصل والصيانة وطلبات الخدمة وإدارة المرافق وحجوزات المساحات وإدارة الزوار."
+      "Unify all post-sale and post-rental operations, including communication, maintenance, facility management and space and visitor management.",
+      "وحّد جميع عمليات ما بعد البيع وما بعد التأجير، بما في ذلك التواصل والصيانة وإدارة المرافق وإدارة المساحات والزوار."
     ),
     sections: [
       {
-        kind: "stepsVisual",
+        kind: "stepsDetailed",
         heading: L("How it works", "كيف تعمل"),
-        visual: "service",
+        subtitle: L(
+          "From digital handover to everyday operations — five connected steps, one platform.",
+          "من التسليم الرقمي إلى التشغيل اليومي، خمس خطوات متصلة على منصة واحدة."
+        ),
         items: [
           {
             title: L("Handover & onboard digitally", "سلّم وأدرج رقمياً"),
@@ -235,6 +271,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Hand over properties with all documentation and guidelines attached.",
               "سلّم العقارات مع إرفاق جميع المستندات والإرشادات."
             ),
+            visual: "handoverChecklist",
           },
           {
             title: L("Communicate with customers", "تواصل مع العملاء"),
@@ -242,6 +279,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Engage through news, events, surveys and suggestions.",
               "تفاعل من خلال الأخبار والفعاليات والاستبيانات والاقتراحات."
             ),
+            visual: "communication",
           },
           {
             title: L("Manage tickets & requests", "أدر التذاكر والطلبات"),
@@ -249,6 +287,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Run customer-initiated workflows end to end, with KPI measurement.",
               "أدر سير عمل طلبات العملاء من البداية للنهاية مع قياس مؤشرات الأداء."
             ),
+            visual: "tickets",
           },
           {
             title: L("Manage facilities & common areas", "أدر المرافق والمناطق المشتركة"),
@@ -256,6 +295,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Maintain shared assets and assign and monitor teams.",
               "حافظ على الأصول المشتركة وكلّف الفرق وتابعها."
             ),
+            visual: "facility",
           },
           {
             title: L("Collect payments online", "حصّل المدفوعات إلكترونياً"),
@@ -263,16 +303,17 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
               "Take payments through online gateway solutions.",
               "استلم المدفوعات عبر حلول الدفع الإلكترونية."
             ),
+            visual: "onlinePayment",
           },
         ],
       },
       {
         kind: "stats",
-        heading: L("Service you can measure", "خدمة يمكنك قياسها"),
+        heading: L("Backed by Real Numbers", "مدعومة بأرقام حقيقية"),
         items: [
           { value: "30,000+", label: L("Tickets processed", "تذكرة تمت معالجتها") },
           { value: "50%", label: L("Reduction in lead time", "خفض في زمن الاستجابة") },
-          { value: "4.5 / 5", label: L("Average customer rating", "متوسط تقييم العملاء") },
+          { value: "4.5+ / 5.0", label: L("Average customer rating", "متوسط تقييم العملاء") },
         ],
       },
       includedWithEverySuite,

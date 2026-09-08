@@ -1,115 +1,199 @@
-import { useEffect } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
+import { Link } from "react-router-dom";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 import { useLocale } from "../i18n/LocaleContext";
 import Reveal from "../components/ui/Reveal";
 import StaggerReveal from "../components/ui/StaggerReveal";
-import { Check, roleIcons } from "../components/ui/Icon";
-import CTA from "../components/CTA";
-import {
-  FinancialChart,
-  ServiceLog,
-  PropertyDonut,
-  AIPipeline,
-  ComplianceLog,
-  IntegrationsHub,
-} from "../components/FeatureVisuals";
+import { ArrowRight, RefreshIcon } from "../components/ui/Icon";
+import { prefersReducedMotion } from "../hooks/useInView";
+
+gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
 type LStr = { en: string; ar: string };
 
 const pick = (str: LStr, locale: string) => (locale === "ar" ? str.ar : str.en);
 
-const featureSections = [
-  {
-    id: "financial",
-    eyebrow: { en: "Smart Finances", ar: "التمويل الذكي" },
-    title: { en: "Reduce Late Payments by 40%", ar: "قلل الدفعات المتأخرة بنسبة 40٪" },
-    subtitle: { en: "Automate collections, maximize cash flow, stay compliant", ar: "أتمتة التحصيل وتعظيم تدفق النقد والامتثال" },
-    benefits: [
-      { en: "Automated rent collection with local payment gateways", ar: "تحصيل الإيجارات الآلي مع بوابات الدفع المحلية" },
-      { en: "Real-time payment reconciliation & VAT compliance", ar: "المصالحة الفورية والامتثال لضريبة القيمة المضافة" },
-      { en: "Late payment escalation & dunning management", ar: "تصعيد الدفعات المتأخرة وإدارة المتابعة" },
-      { en: "ZAKAT, tax, and withholding calculations", ar: "حسابات الزكاة والضريبة والاستقطاع" },
-    ],
-  },
-  {
-    id: "service",
-    eyebrow: { en: "Tenant Experience", ar: "تجربة المستأجر" },
-    title: { en: "Resolve Issues 3x Faster", ar: "حل المشاكل أسرع 3 مرات" },
-    subtitle: { en: "Keep tenants happy, maintenance streamlined, costs controlled", ar: "اسعد المستأجرين والصيانة مبسطة والتكاليف محكومة" },
-    benefits: [
-      { en: "Mobile app for instant maintenance requests with photos", ar: "تطبيق جوال لطلبات الصيانة الفورية مع الصور" },
-      { en: "AI-powered cost estimation before work begins", ar: "تقدير التكاليف المدعوم بالذكاء الاصطناعي" },
-      { en: "Real-time task dispatch to contractors", ar: "توزيع المهام الفوري على المقاولين" },
-      { en: "Predictive maintenance to prevent breakdowns", ar: "الصيانة الاستباقية لمنع الأعطال" },
-    ],
-  },
-  {
-    id: "property",
-    eyebrow: { en: "Portfolio Control", ar: "تحكم المحفظة" },
-    title: { en: "Manage 1 Property or 10,000", ar: "أدِر عقار أو 10,000" },
-    subtitle: { en: "Centralized operations, instant insights, zero spreadsheets", ar: "عمليات مركزية ورؤى فورية بدون جداول" },
-    benefits: [
-      { en: "Unified tenant database with complete payment history", ar: "قاعدة بيانات موحدة مع السجل المالي الكامل" },
-      { en: "Automated lease renewals & compliance tracking", ar: "تجديد العقود الآلي وتتبع الامتثال" },
-      { en: "Revenue analytics by property, district & asset class", ar: "تحليلات الإيرادات حسب الملكية والمنطقة والنوع" },
-      { en: "Occupancy forecasting & dynamic pricing optimization", ar: "التنبؤ بالإشغال وتحسين التسعير الديناميكي" },
-    ],
-  },
-  {
-    id: "ai",
-    eyebrow: { en: "AI & Automation", ar: "الذكاء الاصطناعي والأتمتة" },
-    title: { en: "Let AI Handle Routine Work", ar: "دع الذكاء الاصطناعي يتولى العمل الروتيني" },
-    subtitle: { en: "Smart automation means more time for strategy", ar: "الأتمتة الذكية تعني وقتاً أكثر للإستراتيجية" },
-    benefits: [
-      { en: "AI tenant screening with ~99% accuracy", ar: "فحص المستأجرين بدقة تقارب 99٪" },
-      { en: "Automatic expense categorization & coding", ar: "تصنيف المصروفات التلقائي والترميز" },
-      { en: "Predictive analytics for maintenance & vacancy", ar: "التحليلات التنبئية للصيانة والشغور" },
-      { en: "Smart chatbot for tenant communication", ar: "روبوت محادثة ذكي للتواصل مع المستأجرين" },
-    ],
-  },
-  {
-    id: "compliance",
-    eyebrow: { en: "Governance", ar: "الحوكمة" },
-    title: { en: "Built for Saudi Arabia", ar: "مصمم للمملكة العربية السعودية" },
-    subtitle: { en: "RERA-compliant, VAT-ready, audit-proof", ar: "متوافق مع ريرا وجاهز للضريبة وآمن للتدقيق" },
-    benefits: [
-      { en: "RERA regulation compliance & transaction logging", ar: "امتثال تنظيم ريرا وتسجيل المعاملات" },
-      { en: "Automatic VAT calculation & ZATCA reporting", ar: "حساب ضريبة القيمة المضافة التلقائي وتقرير زاتكا" },
-      { en: "Complete audit trail with immutable logs", ar: "سجل تدقيق كامل مع سجلات ثابتة" },
-      { en: "Withholding tax & ZAKAT automation", ar: "أتمتة ضريبة الاستقطاع والزكاة" },
-    ],
-  },
-  {
-    id: "integrations",
-    eyebrow: { en: "Ecosystem", ar: "النظام البيئي" },
-    title: { en: "Connect Your Entire Tech Stack", ar: "قم بربط مجموعة التكنولوجيا بالكاملة" },
-    subtitle: { en: "Payments, banking, and accounting, all in one place", ar: "المدفوعات والخدمات المصرفية والمحاسبة في مكان واحد" },
-    benefits: [
-      { en: "Payment gateway integration (Telr, PayTabs, 2Checkout)", ar: "تكامل بوابة الدفع (تلر وباي تابز وغيرها)" },
-      { en: "Direct bank connections with auto-reconciliation", ar: "اتصالات بنكية مباشرة مع المصالحة التلقائية" },
-      { en: "Accounting software sync (QuickBooks, FreshBooks)", ar: "مزامنة برنامج المحاسبة" },
-      { en: "CRM & property listing platform integrations", ar: "تكامل CRM وأنظمة الإدراج العقاري" },
-    ],
-  },
+/**
+ * Platform lifecycle + module map — mixes two pages of the company profile:
+ * page 6's continuous 8-stage lifecycle (with which suite covers which
+ * stage) and page 11's 20+ module breadth, grouped by Sell/Lease/Operate/
+ * Shared. Modules render as a chip cloud per category rather than the
+ * icon-tile picker style of a typical "app launcher" reference, since a
+ * plain wrapped list scans faster for 27 short names than a grid of large
+ * icon tiles would.
+ */
+const lifecycleStages: { n: string; label: LStr }[] = [
+  { n: "01", label: { en: "List & market", ar: "الإدراج والتسويق" } },
+  { n: "02", label: { en: "Attract & qualify", ar: "الاستقطاب والتأهيل" } },
+  { n: "03", label: { en: "Sell or lease", ar: "البيع أو التأجير" } },
+  { n: "04", label: { en: "Contract & collect", ar: "التعاقد والتحصيل" } },
+  { n: "05", label: { en: "Handover & onboard", ar: "التسليم والإدراج" } },
+  { n: "06", label: { en: "Operate & maintain", ar: "التشغيل والصيانة" } },
+  { n: "07", label: { en: "Engage & serve", ar: "التفاعل والخدمة" } },
+  { n: "08", label: { en: "Renew & re-market", ar: "التجديد وإعادة التسويق" } },
 ];
 
-const visualsById: Record<string, () => JSX.Element> = {
-  financial: FinancialChart,
-  service: ServiceLog,
-  property: PropertyDonut,
-  ai: AIPipeline,
-  compliance: ComplianceLog,
-  integrations: IntegrationsHub,
+type SuiteColor = "primary" | "secondary" | "success";
+
+/** [start, end) 1-indexed grid-column ranges into the 8-stage row above. */
+const suiteCoverage: { name: LStr; color: SuiteColor; segments: [number, number][] }[] = [
+  { name: { en: "Sales Suite", ar: "حزمة المبيعات" }, color: "primary", segments: [[1, 5], [8, 9]] },
+  { name: { en: "Leasing Suite", ar: "حزمة التأجير" }, color: "secondary", segments: [[1, 5], [8, 9]] },
+  { name: { en: "Operations Suite", ar: "حزمة العمليات" }, color: "success", segments: [[5, 9]] },
+];
+
+const suiteBarClasses: Record<SuiteColor, string> = {
+  primary: "bg-primary",
+  secondary: "bg-secondary dark:bg-white/70",
+  success: "bg-success",
 };
 
-const roles = [
-  { icon: "owner", title: { en: "Property Owners", ar: "مالكو العقارات" }, desc: { en: "Maximize income, see performance, reduce vacancy", ar: "زيادة الدخل ورؤية الأداء وتقليل الشغور" } },
-  { icon: "manager", title: { en: "Managers", ar: "المديرون" }, desc: { en: "Streamline ops, reduce admin by 60%, scale easily", ar: "تبسيط العمليات وتقليل الإدارة بنسبة 60٪" } },
-  { icon: "tenant", title: { en: "Tenants", ar: "المستأجرون" }, desc: { en: "Fast requests, instant resolutions, full transparency", ar: "طلبات سريعة وحلول فورية وشفافية كاملة" } },
-  { icon: "accountant", title: { en: "Accountants", ar: "المحاسبون" }, desc: { en: "Auto-categorized data, audit-ready reports, zero errors", ar: "بيانات مصنفة تلقائياً وتقارير جاهزة للتدقيق" } },
+const suiteTextClasses: Record<SuiteColor, string> = {
+  primary: "text-primary dark:text-primary-light",
+  secondary: "text-secondary dark:text-white",
+  success: "text-success",
+};
+
+type ModuleColor = SuiteColor | "neutral";
+
+const moduleCategories: { name: LStr; color: ModuleColor; items: LStr[] }[] = [
+  {
+    name: { en: "Sell", ar: "البيع" },
+    color: "primary",
+    items: [
+      { en: "CRM", ar: "إدارة علاقات العملاء" },
+      { en: "Listings", ar: "الإعلانات" },
+      { en: "Listing website", ar: "موقع الإعلانات" },
+      { en: "Property viewings", ar: "معاينات العقار" },
+      { en: "Property bookings", ar: "حجوزات العقار" },
+      { en: "Sales contracts", ar: "عقود البيع" },
+      { en: "Nafath eSign", ar: "التوقيع عبر نفاذ" },
+    ],
+  },
+  {
+    name: { en: "Lease", ar: "التأجير" },
+    color: "secondary",
+    items: [
+      { en: "CRM", ar: "إدارة علاقات العملاء" },
+      { en: "Listings", ar: "الإعلانات" },
+      { en: "Listing website", ar: "موقع الإعلانات" },
+      { en: "Property viewings", ar: "معاينات العقار" },
+      { en: "Applications", ar: "الطلبات" },
+      { en: "Quotes", ar: "عروض الأسعار" },
+      { en: "Contracts", ar: "العقود" },
+    ],
+  },
+  {
+    name: { en: "Operate", ar: "التشغيل" },
+    color: "success",
+    items: [
+      { en: "Maintenance", ar: "الصيانة" },
+      { en: "Facility management", ar: "إدارة المرافق" },
+      { en: "Visitor management", ar: "إدارة الزوار" },
+      { en: "Space bookings", ar: "حجوزات المساحات" },
+      { en: "News", ar: "الأخبار" },
+      { en: "Events", ar: "الفعاليات" },
+      { en: "Surveys", ar: "الاستبيانات" },
+      { en: "Suggestions", ar: "الاقتراحات" },
+      { en: "Directory", ar: "الدليل" },
+      { en: "Offers", ar: "العروض" },
+    ],
+  },
+  {
+    name: { en: "Shared", ar: "مشترك" },
+    color: "neutral",
+    items: [
+      { en: "Portfolio management", ar: "إدارة المحفظة" },
+      { en: "Finance", ar: "المالية" },
+      { en: "Workflows", ar: "سير العمل" },
+      { en: "Documents", ar: "المستندات" },
+      { en: "Reporting", ar: "التقارير" },
+      { en: "Mobile app", ar: "تطبيق الجوال" },
+      { en: "Integrations", ar: "التكاملات" },
+    ],
+  },
 ];
+
+const moduleColorClasses: Record<
+  ModuleColor,
+  { heading: string; underline: string; chipBg: string; chipBorder: string; span: string }
+> = {
+  primary: {
+    heading: "text-primary dark:text-primary-light",
+    underline: "bg-primary",
+    chipBg: "bg-primary/5 dark:bg-primary/10",
+    chipBorder: "border-primary/20 dark:border-primary/30",
+    span: "",
+  },
+  secondary: {
+    heading: "text-secondary dark:text-white",
+    underline: "bg-secondary dark:bg-white/60",
+    chipBg: "bg-secondary/5 dark:bg-white/5",
+    chipBorder: "border-secondary/20 dark:border-white/15",
+    span: "",
+  },
+  success: {
+    heading: "text-success",
+    underline: "bg-success",
+    chipBg: "bg-success-light dark:bg-success/10",
+    chipBorder: "border-success/25 dark:border-success/25",
+    // Operate carries 10 modules vs 7 for the others — a wider card is a
+    // functional fix (less cramped) as much as it is the grid-breaking
+    // moment: not every card has to be the same size to feel systematic.
+    span: "lg:col-span-2",
+  },
+  neutral: {
+    heading: "text-ink-muted dark:text-white/60",
+    underline: "bg-grey-600 dark:bg-white/30",
+    chipBg: "bg-grey-50 dark:bg-white/5",
+    chipBorder: "border-grey-200 dark:border-white/15",
+    span: "",
+  },
+};
+
+/** CTA button that pulls gently toward the cursor, then springs back on leave. */
+function MagneticCta({ to, children }: { to: string; children: ReactNode }) {
+  const ref = useRef<HTMLAnchorElement>(null);
+
+  useGSAP(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion()) return;
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      gsap.to(el, {
+        x: (e.clientX - rect.left - rect.width / 2) * 0.25,
+        y: (e.clientY - rect.top - rect.height / 2) * 0.35,
+        duration: 0.4,
+        ease: "power2.out",
+      });
+    };
+    const onLeave = () => gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.5)" });
+    el.addEventListener("mousemove", onMove);
+    el.addEventListener("mouseleave", onLeave);
+    return () => {
+      el.removeEventListener("mousemove", onMove);
+      el.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  return (
+    <Link
+      ref={ref}
+      to={to}
+      className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white shadow-card transition-colors hover:bg-secondary"
+    >
+      {children}
+    </Link>
+  );
+}
 
 export default function FeaturesPage() {
   const { locale } = useLocale();
+  const heroTitleRef = useRef<HTMLHeadingElement>(null);
+  const suiteBarsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const prev = document.title;
@@ -119,14 +203,58 @@ export default function FeaturesPage() {
     };
   }, []);
 
+  // Hero headline — cinematic word-by-word reveal (skipped under reduced motion).
+  useGSAP(
+    () => {
+      if (prefersReducedMotion() || !heroTitleRef.current) return;
+      const split = new SplitText(heroTitleRef.current, { type: "words" });
+      gsap.set(split.words, { opacity: 0, y: 60, rotateX: -40, transformOrigin: "top center" });
+      gsap.to(split.words, {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        stagger: 0.035,
+        duration: 0.8,
+        ease: "power4.out",
+        delay: 0.15,
+      });
+      return () => split.revert();
+    },
+    { scope: heroTitleRef }
+  );
+
+  // Suite-coverage bars — each segment draws in from its reading-direction start on scroll.
+  useGSAP(
+    () => {
+      if (prefersReducedMotion() || !suiteBarsRef.current) return;
+      const bars = gsap.utils.toArray<HTMLElement>(".suite-bar", suiteBarsRef.current);
+      if (!bars.length) return;
+      gsap.set(bars, { scaleX: 0, transformOrigin: locale === "ar" ? "right center" : "left center" });
+      ScrollTrigger.batch(bars, {
+        start: "top 85%",
+        once: true,
+        onEnter: (batch) => gsap.to(batch, { scaleX: 1, duration: 0.9, ease: "power3.out", stagger: 0.12 }),
+      });
+    },
+    { scope: suiteBarsRef, dependencies: [locale] }
+  );
+
   return (
     <>
       {/* Hero */}
       <section className="hero-bg" aria-labelledby="features-title">
         <div className="mx-auto max-w-3xl px-5 py-16 text-center lg:px-8 lg:py-20">
           <Reveal>
-            <p className="text-sm font-medium uppercase tracking-wider text-primary">Enterprise Features</p>
-            <h1 id="features-title" className="mt-3 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl">
+            <p className="inline-flex items-center gap-2 text-sm font-medium uppercase tracking-wider text-primary">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary motion-safe:animate-pulse" />
+              Enterprise Features
+            </p>
+            <h1
+              ref={heroTitleRef}
+              id="features-title"
+              className="mt-3 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl"
+              style={{ perspective: 600 }}
+            >
               Everything to Scale Your Real Estate Business
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-white/70">
@@ -136,165 +264,124 @@ export default function FeaturesPage() {
         </div>
       </section>
 
-      {/* Feature sections — alternating text + product-screen visual, same
-          pattern as the homepage Features component. Capped at 2 rows so the
-          split layout doesn't repeat past what feels intentional; the
-          remaining sections switch to a grid layout below. */}
-      {featureSections.slice(0, 2).map((section, idx) => {
-        const bgClasses = ["bg-white dark:bg-secondary-darker", "bg-grey-50 dark:bg-white/5"];
-        const reversed = idx % 2 === 1;
-        const Visual = visualsById[section.id];
-        return (
-          <section
-            key={section.id}
-            className={`py-16 lg:py-20 ${bgClasses[idx]}`}
-            aria-labelledby={`feature-${section.id}`}
-          >
-            <div className="mx-auto max-w-6xl px-5 lg:px-8">
-              <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-                <Reveal delay={idx * 100} className={reversed ? "lg:order-2" : ""}>
-                  {idx === 0 && (
-                    <p className="text-sm font-medium uppercase tracking-wider text-primary">
-                      {pick(section.eyebrow, locale)}
-                    </p>
-                  )}
-                  <h2 id={`feature-${section.id}`} className="mt-3 text-3xl font-medium text-ink dark:text-white lg:text-4xl">
-                    {pick(section.title, locale)}
-                  </h2>
-                  <p className="mt-3 text-lg font-medium text-primary dark:text-primary-light">
-                    {pick(section.subtitle, locale)}
-                  </p>
-
-                  <ul className="mt-6 space-y-3">
-                    {section.benefits.map((benefit, benefitIdx) => (
-                      <li key={benefitIdx} className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-soft dark:text-white/70">
-                        <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light">
-                          <Check size={12} />
-                        </span>
-                        {pick(benefit, locale)}
-                      </li>
-                    ))}
-                  </ul>
-                </Reveal>
-
-                <Reveal delay={idx * 100 + 60} className={reversed ? "lg:order-1" : ""}>
-                  <Visual />
-                </Reveal>
-              </div>
-            </div>
-          </section>
-        );
-      })}
-
-      {/* Remaining capabilities — a grid of compact panels instead of
-          continuing the split-row pattern, so the page doesn't read as one
-          long zigzag. */}
-      <section className="bg-grey-100/40 py-16 dark:bg-white/[0.03] lg:py-20" aria-labelledby="more-capabilities-title">
+      {/* Platform lifecycle + module map — see the data block above this
+          component for how this mixes company-profile pages 6 and 11. */}
+      <section className="bg-white py-16 dark:bg-secondary-darker lg:py-24" aria-labelledby="lifecycle-title">
         <div className="mx-auto max-w-6xl px-5 lg:px-8">
           <Reveal className="text-center">
-            <h2 id="more-capabilities-title" className="text-3xl font-medium text-ink dark:text-white lg:text-4xl">
-              More Built-In Capabilities
+            <p className="text-sm font-medium uppercase tracking-wider text-primary">Platform Breadth</p>
+            <h2 id="lifecycle-title" className="mt-3 text-3xl font-medium text-ink dark:text-white lg:text-4xl">
+              {locale === "ar"
+                ? "منصة واحدة عبر دورة حياة العقار بأكملها"
+                : "One Platform Across the Entire Property Lifecycle"}
             </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-lg text-ink-soft dark:text-white/70">
+              {locale === "ar"
+                ? "من الإدراج والتسويق إلى التجديد وإعادة التسويق - أكثر من 20 وحدة، ونموذج بيانات واحد متصل."
+                : "From list & market to renew & re-market — 20+ modules, one connected data model."}
+            </p>
           </Reveal>
 
-          <StaggerReveal className="mt-12 grid gap-6 sm:grid-cols-2" y={24}>
-            {featureSections.slice(2).map((section) => {
-              const Visual = visualsById[section.id];
+          {/* Part A — the 8-stage lifecycle, with which suite covers which stage. */}
+          <Reveal delay={80} className="mt-14 overflow-x-auto">
+            <div className="mx-auto min-w-[860px]">
+              <div className="mb-7 flex justify-center">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-grey-50 px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-muted dark:bg-white/5 dark:text-white/50">
+                  <RefreshIcon size={13} className="motion-safe:animate-spin-slow" />
+                  {locale === "ar" ? "دورة مستمرة" : "Continuous Cycle"}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-8 gap-2 text-center">
+                {lifecycleStages.map((s) => (
+                  <div key={s.n}>
+                    <p className="text-xs font-semibold text-primary">{s.n}</p>
+                    <p className="mt-1 text-xs font-medium leading-snug text-ink dark:text-white sm:text-sm">
+                      {pick(s.label, locale)}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="relative mt-4 h-px w-full bg-grey-200 dark:bg-white/15">
+                <div className="absolute inset-0 grid grid-cols-8">
+                  {lifecycleStages.map((s) => (
+                    <div key={s.n} className="flex items-center justify-center">
+                      <span className="h-2 w-2 rounded-full bg-grey-600 dark:bg-white/30" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div ref={suiteBarsRef} className="mt-8 space-y-4">
+                {suiteCoverage.map((suite) => (
+                  <div key={suite.name.en} className="flex items-center gap-4">
+                    <p className={`w-32 shrink-0 text-sm font-semibold ${suiteTextClasses[suite.color]}`}>
+                      {pick(suite.name, locale)}
+                    </p>
+                    <div className="grid h-1.5 flex-1" style={{ gridTemplateColumns: "repeat(8, 1fr)" }}>
+                      {suite.segments.map(([start, end], i) => (
+                        <div
+                          key={i}
+                          className={`suite-bar h-1.5 rounded-full ${suiteBarClasses[suite.color]}`}
+                          style={{ gridColumn: `${start} / ${end}` }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Part B — 20+ modules, grouped Sell / Lease / Operate / Shared, colour-matched to the suites above. */}
+          <StaggerReveal className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" y={20}>
+            {moduleCategories.map((cat) => {
+              const c = moduleColorClasses[cat.color];
               return (
                 <div
-                  key={section.id}
-                  className="flex flex-col rounded-2xl border border-grey-100 bg-white p-6 shadow-card dark:border-white/10 dark:bg-white/5 sm:p-7"
+                  key={cat.name.en}
+                  className={`h-full rounded-2xl border border-grey-100 bg-white p-6 shadow-card transition-shadow hover:shadow-lift dark:border-white/10 dark:bg-white/5 ${c.span}`}
                 >
-                  <h3 className="text-xl font-medium text-ink dark:text-white">{pick(section.title, locale)}</h3>
-                  <p className="mt-2 text-sm font-medium text-primary dark:text-primary-light">
-                    {pick(section.subtitle, locale)}
+                  <p className={`text-xs font-semibold uppercase tracking-wider ${c.heading}`}>
+                    {pick(cat.name, locale)}
                   </p>
-
-                  <ul className="mt-4 space-y-2.5">
-                    {section.benefits.slice(0, 3).map((benefit, benefitIdx) => (
-                      <li key={benefitIdx} className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-soft dark:text-white/70">
-                        <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light">
-                          <Check size={12} />
-                        </span>
-                        {pick(benefit, locale)}
-                      </li>
+                  <div className={`mb-4 mt-2 h-0.5 w-8 rounded-full ${c.underline}`} />
+                  <div className="flex flex-wrap gap-2">
+                    {cat.items.map((item) => (
+                      <span
+                        key={item.en}
+                        className={`rounded-full border px-3 py-1 text-xs font-medium text-ink dark:text-white/80 ${c.chipBg} ${c.chipBorder}`}
+                      >
+                        {pick(item, locale)}
+                      </span>
                     ))}
-                  </ul>
-
-                  <div className="mt-5">
-                    <Visual />
                   </div>
                 </div>
               );
             })}
           </StaggerReveal>
-        </div>
-      </section>
-
-      {/* Roles section */}
-      <section className="bg-white py-16 dark:bg-secondary-darker lg:py-20" aria-labelledby="roles-title">
-        <div className="mx-auto max-w-5xl px-5 lg:px-8">
-          <Reveal className="text-center">
-            <h2 id="roles-title" className="text-3xl font-medium text-ink dark:text-white lg:text-4xl">
-              Built for Every Role
-            </h2>
-            <p className="mt-3 text-lg text-ink-soft dark:text-white/70">
-              Whether you own properties or manage them, Atar adapts to your needs.
-            </p>
-          </Reveal>
-
-          <StaggerReveal className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {roles.map((role, idx) => {
-              const RoleIcon = roleIcons[role.icon];
-              return (
-                <div
-                  key={idx}
-                  className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card transition-shadow hover:shadow-lift dark:border-white/10 dark:bg-white/5"
-                >
-                  <div className="mb-4 grid h-12 w-12 place-items-center rounded-xl bg-primary-lighter text-primary dark:bg-white/10 dark:text-primary-light">
-                    <RoleIcon size={22} />
-                  </div>
-                  <h3 className="text-lg font-semibold text-ink dark:text-white">{pick(role.title, locale)}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-ink-soft dark:text-white/70">{pick(role.desc, locale)}</p>
-                </div>
-              );
-            })}
-          </StaggerReveal>
-        </div>
-      </section>
-
-      {/* Social proof section */}
-      <section className="bg-grey-50 py-16 dark:bg-white/5 lg:py-20">
-        <div className="mx-auto max-w-3xl px-5 text-center lg:px-8">
-          <Reveal>
-            <p className="text-sm font-medium uppercase tracking-wider text-primary">Trusted by Leaders</p>
-            <h2 className="mt-3 text-2xl font-medium text-ink dark:text-white lg:text-3xl">
-              1,000+ property professionals use Atar daily
-            </h2>
-            <p className="mt-4 text-lg text-ink-soft dark:text-white/70">
-              From small landlords to enterprise portfolios managing 10,000+ units.
-            </p>
-          </Reveal>
-
-          <div className="mt-10 grid gap-6 sm:grid-cols-3">
-            {[
-              { metric: "25K+", label: { en: "Units Managed", ar: "وحدة مدارة" } },
-              { metric: "5B+", label: { en: "Assets Managed", ar: "أصول مدارة" } },
-              { metric: "99%+", label: { en: "Uptime SLA", ar: "التوفر" } },
-            ].map((stat, idx) => (
-              <Reveal key={idx} delay={idx * 75}>
-                <div className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card hover:shadow-lift transition-shadow dark:border-white/10 dark:bg-secondary-darker">
-                  <p className="text-3xl font-semibold text-primary dark:text-primary-light">{stat.metric}</p>
-                  <p className="mt-2 text-sm text-ink-soft dark:text-white/70">{pick(stat.label, locale)}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 
       {/* CTA */}
-      <CTA />
+      <section className="bg-white py-16 dark:bg-secondary-darker lg:py-24" aria-label="Talk to us">
+        <div className="mx-auto max-w-3xl px-5 lg:px-8">
+          <Reveal>
+            <div className="rounded-[28px] border border-grey-100 bg-[#F6F7F8] p-8 text-center dark:border-white/10 dark:bg-white/5 lg:p-10">
+              <p className="leading-relaxed text-ink-soft dark:text-white/70">
+                {locale === "ar"
+                  ? "هل تحتاج إلى مزيد من المعلومات؟ احجز عرضاً توضيحياً لمعرفة المزيد"
+                  : "Need more information? Book a demo to learn more"}
+              </p>
+              <MagneticCta to="/contact">
+                <span>{locale === "ar" ? "احجز عرضاً توضيحياً" : "Book a Demo"}</span>
+                <ArrowRight />
+              </MagneticCta>
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </>
   );
 }

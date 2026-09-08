@@ -5,7 +5,6 @@ import { pricingFaq, pick, type LStr } from "../data/pricing";
 import Reveal from "../components/ui/Reveal";
 import StaggerReveal from "../components/ui/StaggerReveal";
 import { Plus, Minus, ArrowRight, Search, Globe, Riyal, valueIcons } from "../components/ui/Icon";
-import CTA from "../components/CTA";
 
 /**
  * Dedicated FAQ Hub — reuses the real, existing data/pricing.ts `pricingFaq`
@@ -262,8 +261,6 @@ export default function FaqPage() {
           </Reveal>
         </div>
       </section>
-
-      <CTA />
     </>
   );
 }

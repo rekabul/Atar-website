@@ -51,6 +51,7 @@ export default {
       animation: {
         marquee: "marquee 40s linear infinite",
         "marquee-rtl": "marqueeRtl 40s linear infinite",
+        "spin-slow": "spin 3s linear infinite",
       },
     },
   },

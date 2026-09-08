@@ -2,7 +2,6 @@ import { useEffect, useMemo } from "react";
 import { useLocale } from "../i18n/LocaleContext";
 import Reveal from "../components/ui/Reveal";
 import Logo from "../components/ui/Logo";
-import CTA from "../components/CTA";
 import { Globe, Target, valueIcons } from "../components/ui/Icon";
 
 export default function AboutPage() {
@@ -189,8 +188,6 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
-
-      <CTA />
     </>
   );
 }

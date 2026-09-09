@@ -9,7 +9,6 @@ import Reveal from "../components/ui/Reveal";
 import StaggerReveal from "../components/ui/StaggerReveal";
 import {
   ArrowRight,
-  RefreshIcon,
   Search,
   RentersIcon,
   RentListIcon,
@@ -37,12 +36,11 @@ import {
   LinkIcon,
 } from "../components/ui/Icon";
 import { prefersReducedMotion } from "../hooks/useInView";
+import { type LStr, pick } from "../data/lifecycle";
+import InteractiveLifecycleStrip from "../components/features/InteractiveLifecycleStrip";
+import OrbitalLifecycleTimeline from "../components/features/OrbitalLifecycleTimeline";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
-
-type LStr = { en: string; ar: string };
-
-const pick = (str: LStr, locale: string) => (locale === "ar" ? str.ar : str.en);
 
 /**
  * Platform lifecycle + module map — mixes two pages of the company profile:
@@ -52,16 +50,18 @@ const pick = (str: LStr, locale: string) => (locale === "ar" ? str.ar : str.en);
  * one-line description, then a grid of icon/name/description cards) rather
  * than AppFolio's partner-marketplace card-grid, which represents third-party
  * add-ons rather than first-party modules.
+ *
+ * The "Continuous Cycle" strip has interchangeable variants (see
+ * ../components/features/) so we can compare them before settling on one —
+ * switched via the `cycleVariant` state below, not a permanent feature.
+ * (The PDF-recreation variant was dropped from the picker; its component
+ * file is still there if it's needed again.)
  */
-const lifecycleStages: { n: string; label: LStr }[] = [
-  { n: "01", label: { en: "List & market", ar: "الإدراج والتسويق" } },
-  { n: "02", label: { en: "Attract & qualify", ar: "الاستقطاب والتأهيل" } },
-  { n: "03", label: { en: "Sell or lease", ar: "البيع أو التأجير" } },
-  { n: "04", label: { en: "Contract & collect", ar: "التعاقد والتحصيل" } },
-  { n: "05", label: { en: "Handover & onboard", ar: "التسليم والإدراج" } },
-  { n: "06", label: { en: "Operate & maintain", ar: "التشغيل والصيانة" } },
-  { n: "07", label: { en: "Engage & serve", ar: "التفاعل والخدمة" } },
-  { n: "08", label: { en: "Renew & re-market", ar: "التجديد وإعادة التسويق" } },
+type CycleVariantId = "linear" | "orbital";
+
+const cycleVariants: { id: CycleVariantId; label: LStr }[] = [
+  { id: "linear", label: { en: "Linear", ar: "بسيط" } },
+  { id: "orbital", label: { en: "Orbital", ar: "مداري" } },
 ];
 
 type ModuleColor = "primary" | "secondary" | "success" | "neutral";
@@ -399,6 +399,7 @@ export default function FeaturesPage() {
   const { locale } = useLocale();
   const heroTitleRef = useRef<HTMLHeadingElement>(null);
   const [query, setQuery] = useState("");
+  const [cycleVariant, setCycleVariant] = useState<CycleVariantId>("linear");
 
   const q = query.trim().toLowerCase();
   const visibleCategories = moduleCategories
@@ -436,54 +437,93 @@ export default function FeaturesPage() {
     { scope: heroTitleRef }
   );
 
+  const isOrbital = cycleVariant === "orbital";
+
+  const heroText = (
+    <Reveal>
+      <p className="inline-flex items-center gap-2 text-sm font-medium uppercase tracking-wider text-primary">
+        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary motion-safe:animate-pulse" />
+        Enterprise Features
+      </p>
+      <h1
+        ref={heroTitleRef}
+        id="features-title"
+        className="mt-3 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl"
+        style={{ perspective: 600 }}
+      >
+        Everything to Scale Your Real Estate Business
+      </h1>
+      <p
+        className={`mt-5 text-lg leading-relaxed text-ink-soft dark:text-white/70 ${
+          isOrbital ? "max-w-xl" : "mx-auto max-w-2xl"
+        }`}
+      >
+        Financial automation, AI-powered insights, compliance, and integrations, all built for Saudi Arabia's property market.
+      </p>
+    </Reveal>
+  );
+
   return (
     <>
-      {/* Hero */}
+      {/* Hero — a two-column layout (text start-aligned, orbital cycle on
+          the other side) when the Orbital variant is picked below; the
+          plain centred hero otherwise. See the Continuous Cycle section for
+          the variant switcher. */}
       <section className="hero-bg" aria-labelledby="features-title">
-        <div className="mx-auto max-w-3xl px-5 py-16 text-center lg:px-8 lg:py-20">
-          <Reveal>
-            <p className="inline-flex items-center gap-2 text-sm font-medium uppercase tracking-wider text-primary">
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary motion-safe:animate-pulse" />
-              Enterprise Features
-            </p>
-            <h1
-              ref={heroTitleRef}
-              id="features-title"
-              className="mt-3 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl"
-              style={{ perspective: 600 }}
-            >
-              Everything to Scale Your Real Estate Business
-            </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-white/70">
-              Financial automation, AI-powered insights, compliance, and integrations, all built for Saudi Arabia's property market.
-            </p>
-          </Reveal>
-
-          {/* Compact journey strip — page 6's 8-stage cycle, kept as light
-              context under the hero rather than woven through the module
-              directory below (see the module data block further down for
-              why: that directory now follows Zoho's all-products.html
-              card-grid pattern instead). */}
-          <Reveal delay={80} className="mt-10">
-            <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-4">
-              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-grey-50 px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-muted dark:bg-white/5 dark:text-white/50">
-                <RefreshIcon size={13} className="motion-safe:animate-spin-slow" />
-                {locale === "ar" ? "دورة مستمرة" : "Continuous Cycle"}
-              </span>
-              <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2.5">
-                {lifecycleStages.map((s, i) => (
-                  <div key={s.n} className="flex shrink-0 items-center gap-2.5">
-                    <span className="whitespace-nowrap text-xs font-medium text-ink-soft dark:text-white/60">
-                      {pick(s.label, locale)}
-                    </span>
-                    {i < lifecycleStages.length - 1 && (
-                      <ArrowRight size={12} className="shrink-0 text-grey-600 dark:text-white/30" />
-                    )}
-                  </div>
-                ))}
-              </div>
+        <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8 lg:py-20">
+          {isOrbital ? (
+            <div className="grid items-center gap-10 text-start lg:grid-cols-2 lg:gap-16">
+              {heroText}
+              <Reveal delay={100}>
+                <OrbitalLifecycleTimeline locale={locale} compact />
+              </Reveal>
             </div>
-          </Reveal>
+          ) : (
+            <div className="mx-auto max-w-3xl text-center">{heroText}</div>
+          )}
+        </div>
+      </section>
+
+      {/* Continuous Cycle — page 6's 8-stage lifecycle, built as
+          interchangeable variants so they can be compared side by side
+          before picking one (see ../components/features/ for each). This
+          switcher is a review tool, not meant to ship as a permanent
+          user-facing control. Orbital renders inline in the hero above
+          instead of a second time here. */}
+      <section className="py-12 lg:py-16" aria-label="Continuous cycle — variant preview">
+        <div className="mx-auto max-w-6xl px-5 lg:px-8">
+          {/* Pinned to the true page edge (breaks out of the centred
+              max-w-6xl column on purpose) rather than sitting indented
+              alongside the heading — per feedback, moved as far start-side
+              as the section itself. */}
+          <div className="relative start-1/2 -ms-[50vw] mt-4 w-screen">
+            <div className="inline-flex items-center gap-1 rounded-full border border-grey-200 bg-grey-50 p-1 ps-4 dark:border-white/10 dark:bg-white/5 sm:ps-6">
+              {cycleVariants.map((v) => (
+                <button
+                  key={v.id}
+                  type="button"
+                  onClick={() => setCycleVariant(v.id)}
+                  aria-pressed={cycleVariant === v.id}
+                  className={`rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wide transition-colors ${
+                    cycleVariant === v.id
+                      ? "bg-primary text-white shadow-card"
+                      : "text-ink-soft hover:text-primary dark:text-white/60"
+                  }`}
+                >
+                  {pick(v.label, locale)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {!isOrbital && (
+            <div className="mt-10">
+              <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
+                {locale === "ar" ? "الدورة المستمرة" : "Continuous Cycle"}
+              </p>
+              <InteractiveLifecycleStrip locale={locale} />
+            </div>
+          )}
         </div>
       </section>
 

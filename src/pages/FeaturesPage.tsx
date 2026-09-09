@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactElement, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -7,7 +7,35 @@ import { SplitText } from "gsap/SplitText";
 import { useLocale } from "../i18n/LocaleContext";
 import Reveal from "../components/ui/Reveal";
 import StaggerReveal from "../components/ui/StaggerReveal";
-import { ArrowRight, RefreshIcon } from "../components/ui/Icon";
+import {
+  ArrowRight,
+  RefreshIcon,
+  Search,
+  RentersIcon,
+  RentListIcon,
+  Globe,
+  EyeIcon,
+  CalendarIcon,
+  LeaseIcon,
+  EditIcon,
+  ApplicationIcon,
+  QuotePriceIcon,
+  FacilityIcon,
+  GridIcon,
+  HandoverIcon,
+  BellIcon,
+  ClipboardIcon,
+  valueIcons,
+  BookOpenIcon,
+  TagIcon,
+  LayersIcon,
+  Riyal,
+  Share2Icon,
+  FileTextIcon,
+  BarChartIcon,
+  SmartphoneIcon,
+  LinkIcon,
+} from "../components/ui/Icon";
 import { prefersReducedMotion } from "../hooks/useInView";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
@@ -18,12 +46,12 @@ const pick = (str: LStr, locale: string) => (locale === "ar" ? str.ar : str.en);
 
 /**
  * Platform lifecycle + module map — mixes two pages of the company profile:
- * page 6's continuous 8-stage lifecycle (with which suite covers which
- * stage) and page 11's 20+ module breadth, grouped by Sell/Lease/Operate/
- * Shared. Modules render as a chip cloud per category rather than the
- * icon-tile picker style of a typical "app launcher" reference, since a
- * plain wrapped list scans faster for 27 short names than a grid of large
- * icon tiles would.
+ * page 6's continuous 8-stage lifecycle (kept as a light strip for context)
+ * and page 11's 20+ module breadth, now shown as a searchable, categorised
+ * card directory modelled on zoho.com/all-products.html (category heading +
+ * one-line description, then a grid of icon/name/description cards) rather
+ * than AppFolio's partner-marketplace card-grid, which represents third-party
+ * add-ons rather than first-party modules.
  */
 const lifecycleStages: { n: string; label: LStr }[] = [
   { n: "01", label: { en: "List & market", ar: "الإدراج والتسويق" } },
@@ -36,121 +64,298 @@ const lifecycleStages: { n: string; label: LStr }[] = [
   { n: "08", label: { en: "Renew & re-market", ar: "التجديد وإعادة التسويق" } },
 ];
 
-type SuiteColor = "primary" | "secondary" | "success";
+type ModuleColor = "primary" | "secondary" | "success" | "neutral";
+type IconType = (p: { size?: number; className?: string }) => ReactElement;
 
-/** [start, end) 1-indexed grid-column ranges into the 8-stage row above. */
-const suiteCoverage: { name: LStr; color: SuiteColor; segments: [number, number][] }[] = [
-  { name: { en: "Sales Suite", ar: "حزمة المبيعات" }, color: "primary", segments: [[1, 5], [8, 9]] },
-  { name: { en: "Leasing Suite", ar: "حزمة التأجير" }, color: "secondary", segments: [[1, 5], [8, 9]] },
-  { name: { en: "Operations Suite", ar: "حزمة العمليات" }, color: "success", segments: [[5, 9]] },
-];
+/**
+ * Every module, grouped by suite — modelled on how Zoho's all-products
+ * directory (zoho.com/all-products.html) represents a large catalogue: a
+ * category heading with a one-line description, then a grid of cards, each
+ * with its own icon, name, and a short plain-language description of what it
+ * does. AppFolio's partner marketplace (appfolio.com/stack/marketplace) uses
+ * a similar card-grid, but for third-party add-ons rather than first-party
+ * modules — closer to what Atar's own Integrations page already covers, so
+ * Zoho's pattern is the closer fit here.
+ */
+type Module = { en: string; ar: string; descEn: string; descAr: string; icon: IconType };
 
-const suiteBarClasses: Record<SuiteColor, string> = {
-  primary: "bg-primary",
-  secondary: "bg-secondary dark:bg-white/70",
-  success: "bg-success",
-};
+const m = (en: string, ar: string, descEn: string, descAr: string, icon: IconType): Module => ({
+  en,
+  ar,
+  descEn,
+  descAr,
+  icon,
+});
 
-const suiteTextClasses: Record<SuiteColor, string> = {
-  primary: "text-primary dark:text-primary-light",
-  secondary: "text-secondary dark:text-white",
-  success: "text-success",
-};
+type Category = { name: LStr; desc: LStr; color: ModuleColor; items: Module[] };
 
-type ModuleColor = SuiteColor | "neutral";
-
-const moduleCategories: { name: LStr; color: ModuleColor; items: LStr[] }[] = [
+const moduleCategories: Category[] = [
   {
     name: { en: "Sell", ar: "البيع" },
+    desc: {
+      en: "Everything to market, sell, and close a property.",
+      ar: "كل ما تحتاجه لتسويق العقار وبيعه وإتمام الصفقة.",
+    },
     color: "primary",
     items: [
-      { en: "CRM", ar: "إدارة علاقات العملاء" },
-      { en: "Listings", ar: "الإعلانات" },
-      { en: "Listing website", ar: "موقع الإعلانات" },
-      { en: "Property viewings", ar: "معاينات العقار" },
-      { en: "Property bookings", ar: "حجوزات العقار" },
-      { en: "Sales contracts", ar: "عقود البيع" },
-      { en: "Nafath eSign", ar: "التوقيع عبر نفاذ" },
+      m(
+        "CRM",
+        "إدارة علاقات العملاء",
+        "Track every lead from first contact to closed deal.",
+        "تتبع كل عميل محتمل من أول تواصل حتى إتمام الصفقة.",
+        RentersIcon
+      ),
+      m(
+        "Listings",
+        "الإعلانات",
+        "Publish and manage property listings in one place.",
+        "انشر وأدر إعلانات العقارات من مكان واحد.",
+        RentListIcon
+      ),
+      m(
+        "Listing website",
+        "موقع الإعلانات",
+        "A branded website that showcases your listings.",
+        "موقع إلكتروني بعلامتك التجارية يعرض إعلاناتك.",
+        Globe
+      ),
+      m(
+        "Property viewings",
+        "معاينات العقار",
+        "Schedule and confirm viewings without the back-and-forth.",
+        "جدولة وتأكيد المعاينات دون تبادل رسائل لا نهاية له.",
+        EyeIcon
+      ),
+      m(
+        "Property bookings",
+        "حجوزات العقار",
+        "Let buyers reserve a unit online, instantly.",
+        "امنح المشترين إمكانية حجز الوحدة إلكترونياً وفوراً.",
+        CalendarIcon
+      ),
+      m(
+        "Sales contracts",
+        "عقود البيع",
+        "Generate and manage sale contracts digitally.",
+        "أنشئ وأدر عقود البيع إلكترونياً.",
+        LeaseIcon
+      ),
+      m(
+        "Nafath eSign",
+        "التوقيع عبر نفاذ",
+        "Sign contracts securely with Nafath verification.",
+        "وقّع العقود بأمان عبر التحقق من نفاذ.",
+        EditIcon
+      ),
     ],
   },
   {
     name: { en: "Lease", ar: "التأجير" },
+    desc: {
+      en: "Everything to market, lease, and onboard a renter.",
+      ar: "كل ما تحتاجه لتسويق الوحدة وتأجيرها واستقبال المستأجر.",
+    },
     color: "secondary",
     items: [
-      { en: "CRM", ar: "إدارة علاقات العملاء" },
-      { en: "Listings", ar: "الإعلانات" },
-      { en: "Listing website", ar: "موقع الإعلانات" },
-      { en: "Property viewings", ar: "معاينات العقار" },
-      { en: "Applications", ar: "الطلبات" },
-      { en: "Quotes", ar: "عروض الأسعار" },
-      { en: "Contracts", ar: "العقود" },
+      m(
+        "CRM",
+        "إدارة علاقات العملاء",
+        "Track every renter from inquiry to signed lease.",
+        "تتبع كل مستأجر من الاستفسار حتى توقيع العقد.",
+        RentersIcon
+      ),
+      m(
+        "Listings",
+        "الإعلانات",
+        "Publish and manage rental listings in one place.",
+        "انشر وأدر إعلانات الإيجار من مكان واحد.",
+        RentListIcon
+      ),
+      m(
+        "Listing website",
+        "موقع الإعلانات",
+        "A branded website that showcases your rentals.",
+        "موقع إلكتروني بعلامتك التجارية يعرض وحداتك المؤجرة.",
+        Globe
+      ),
+      m(
+        "Property viewings",
+        "معاينات العقار",
+        "Schedule and confirm rental viewings without the back-and-forth.",
+        "جدولة وتأكيد معاينات الإيجار دون تبادل رسائل لا نهاية له.",
+        EyeIcon
+      ),
+      m(
+        "Applications",
+        "الطلبات",
+        "Collect and review rental applications online.",
+        "استقبل ودقق طلبات الإيجار إلكترونياً.",
+        ApplicationIcon
+      ),
+      m(
+        "Quotes",
+        "عروض الأسعار",
+        "Send rental price quotes in a few clicks.",
+        "أرسل عروض أسعار الإيجار خلال نقرات قليلة.",
+        QuotePriceIcon
+      ),
+      m(
+        "Contracts",
+        "العقود",
+        "Generate and manage lease agreements digitally.",
+        "أنشئ وأدر عقود الإيجار إلكترونياً.",
+        LeaseIcon
+      ),
     ],
   },
   {
     name: { en: "Operate", ar: "التشغيل" },
+    desc: {
+      en: "Everything to run day-to-day operations after handover.",
+      ar: "كل ما تحتاجه لإدارة العمليات اليومية بعد التسليم.",
+    },
     color: "success",
     items: [
-      { en: "Maintenance", ar: "الصيانة" },
-      { en: "Facility management", ar: "إدارة المرافق" },
-      { en: "Visitor management", ar: "إدارة الزوار" },
-      { en: "Space bookings", ar: "حجوزات المساحات" },
-      { en: "News", ar: "الأخبار" },
-      { en: "Events", ar: "الفعاليات" },
-      { en: "Surveys", ar: "الاستبيانات" },
-      { en: "Suggestions", ar: "الاقتراحات" },
-      { en: "Directory", ar: "الدليل" },
-      { en: "Offers", ar: "العروض" },
+      m(
+        "Maintenance",
+        "الصيانة",
+        "Log, assign, and track maintenance requests to completion.",
+        "سجّل طلبات الصيانة وأسندها وتابعها حتى الإنجاز.",
+        FacilityIcon
+      ),
+      m(
+        "Facility management",
+        "إدارة المرافق",
+        "Keep shared facilities running and well maintained.",
+        "حافظ على تشغيل المرافق المشتركة وصيانتها.",
+        GridIcon
+      ),
+      m(
+        "Visitor management",
+        "إدارة الزوار",
+        "Approve and track visitor access to your properties.",
+        "اعتمد وتتبع دخول الزوار إلى عقاراتك.",
+        HandoverIcon
+      ),
+      m(
+        "Space bookings",
+        "حجوزات المساحات",
+        "Let residents reserve shared spaces online.",
+        "امنح السكان إمكانية حجز المساحات المشتركة إلكترونياً.",
+        CalendarIcon
+      ),
+      m(
+        "News",
+        "الأخبار",
+        "Share community updates and announcements.",
+        "شارك أخبار المجتمع والإعلانات.",
+        BellIcon
+      ),
+      m(
+        "Events",
+        "الفعاليات",
+        "Plan and promote community events.",
+        "خطط للفعاليات المجتمعية وروّج لها.",
+        CalendarIcon
+      ),
+      m(
+        "Surveys",
+        "الاستبيانات",
+        "Collect resident feedback with quick surveys.",
+        "اجمع آراء السكان عبر استبيانات سريعة.",
+        ClipboardIcon
+      ),
+      m(
+        "Suggestions",
+        "الاقتراحات",
+        "Give residents a channel to suggest improvements.",
+        "امنح السكان قناة لاقتراح التحسينات.",
+        valueIcons.bulb as IconType
+      ),
+      m(
+        "Directory",
+        "الدليل",
+        "A searchable directory of residents and units.",
+        "دليل قابل للبحث للسكان والوحدات.",
+        BookOpenIcon
+      ),
+      m(
+        "Offers",
+        "العروض",
+        "Promote deals and offers to your community.",
+        "روّج للعروض والصفقات لمجتمعك.",
+        TagIcon
+      ),
     ],
   },
   {
     name: { en: "Shared", ar: "مشترك" },
+    desc: { en: "Runs underneath every suite, all the time.", ar: "يعمل أسفل كل حزمة، طوال الوقت." },
     color: "neutral",
     items: [
-      { en: "Portfolio management", ar: "إدارة المحفظة" },
-      { en: "Finance", ar: "المالية" },
-      { en: "Workflows", ar: "سير العمل" },
-      { en: "Documents", ar: "المستندات" },
-      { en: "Reporting", ar: "التقارير" },
-      { en: "Mobile app", ar: "تطبيق الجوال" },
-      { en: "Integrations", ar: "التكاملات" },
+      m(
+        "Portfolio management",
+        "إدارة المحفظة",
+        "See every property and unit in one portfolio view.",
+        "اطّلع على جميع العقارات والوحدات في واجهة محفظة واحدة.",
+        LayersIcon
+      ),
+      m(
+        "Finance",
+        "المالية",
+        "Automate rent collection, invoicing, and reconciliation.",
+        "أتمتة تحصيل الإيجارات والفوترة والتسوية المالية.",
+        Riyal
+      ),
+      m(
+        "Workflows",
+        "سير العمل",
+        "Automate repetitive tasks across every suite.",
+        "أتمتة المهام المتكررة عبر جميع الحزم.",
+        Share2Icon
+      ),
+      m(
+        "Documents",
+        "المستندات",
+        "Store and organize every document in one place.",
+        "خزّن ونظّم جميع المستندات في مكان واحد.",
+        FileTextIcon
+      ),
+      m(
+        "Reporting",
+        "التقارير",
+        "Real-time dashboards and reports on demand.",
+        "لوحات معلومات وتقارير فورية عند الطلب.",
+        BarChartIcon
+      ),
+      m("Mobile app", "تطبيق الجوال", "Manage your business from anywhere.", "أدر أعمالك من أي مكان.", SmartphoneIcon),
+      m(
+        "Integrations",
+        "التكاملات",
+        "Connect Atar with the tools you already use.",
+        "اربط أتار بالأدوات التي تستخدمها بالفعل.",
+        LinkIcon
+      ),
     ],
   },
 ];
 
-const moduleColorClasses: Record<
-  ModuleColor,
-  { heading: string; underline: string; chipBg: string; chipBorder: string; span: string }
-> = {
+const categoryClasses: Record<ModuleColor, { heading: string; iconText: string }> = {
   primary: {
     heading: "text-primary dark:text-primary-light",
-    underline: "bg-primary",
-    chipBg: "bg-primary/5 dark:bg-primary/10",
-    chipBorder: "border-primary/20 dark:border-primary/30",
-    span: "",
+    iconText: "text-primary dark:text-primary-light",
   },
   secondary: {
     heading: "text-secondary dark:text-white",
-    underline: "bg-secondary dark:bg-white/60",
-    chipBg: "bg-secondary/5 dark:bg-white/5",
-    chipBorder: "border-secondary/20 dark:border-white/15",
-    span: "",
+    iconText: "text-secondary dark:text-white",
   },
   success: {
     heading: "text-success",
-    underline: "bg-success",
-    chipBg: "bg-success-light dark:bg-success/10",
-    chipBorder: "border-success/25 dark:border-success/25",
-    // Operate carries 10 modules vs 7 for the others — a wider card is a
-    // functional fix (less cramped) as much as it is the grid-breaking
-    // moment: not every card has to be the same size to feel systematic.
-    span: "lg:col-span-2",
+    iconText: "text-success",
   },
   neutral: {
     heading: "text-ink-muted dark:text-white/60",
-    underline: "bg-grey-600 dark:bg-white/30",
-    chipBg: "bg-grey-50 dark:bg-white/5",
-    chipBorder: "border-grey-200 dark:border-white/15",
-    span: "",
+    iconText: "text-ink-muted dark:text-white/70",
   },
 };
 
@@ -193,7 +398,15 @@ function MagneticCta({ to, children }: { to: string; children: ReactNode }) {
 export default function FeaturesPage() {
   const { locale } = useLocale();
   const heroTitleRef = useRef<HTMLHeadingElement>(null);
-  const suiteBarsRef = useRef<HTMLDivElement>(null);
+  const [query, setQuery] = useState("");
+
+  const q = query.trim().toLowerCase();
+  const visibleCategories = moduleCategories
+    .map((cat) => ({
+      ...cat,
+      items: q ? cat.items.filter((i) => i.en.toLowerCase().includes(q) || i.ar.includes(query.trim())) : cat.items,
+    }))
+    .filter((cat) => cat.items.length > 0);
 
   useEffect(() => {
     const prev = document.title;
@@ -223,22 +436,6 @@ export default function FeaturesPage() {
     { scope: heroTitleRef }
   );
 
-  // Suite-coverage bars — each segment draws in from its reading-direction start on scroll.
-  useGSAP(
-    () => {
-      if (prefersReducedMotion() || !suiteBarsRef.current) return;
-      const bars = gsap.utils.toArray<HTMLElement>(".suite-bar", suiteBarsRef.current);
-      if (!bars.length) return;
-      gsap.set(bars, { scaleX: 0, transformOrigin: locale === "ar" ? "right center" : "left center" });
-      ScrollTrigger.batch(bars, {
-        start: "top 85%",
-        once: true,
-        onEnter: (batch) => gsap.to(batch, { scaleX: 1, duration: 0.9, ease: "power3.out", stagger: 0.12 }),
-      });
-    },
-    { scope: suiteBarsRef, dependencies: [locale] }
-  );
-
   return (
     <>
       {/* Hero */}
@@ -261,6 +458,32 @@ export default function FeaturesPage() {
               Financial automation, AI-powered insights, compliance, and integrations, all built for Saudi Arabia's property market.
             </p>
           </Reveal>
+
+          {/* Compact journey strip — page 6's 8-stage cycle, kept as light
+              context under the hero rather than woven through the module
+              directory below (see the module data block further down for
+              why: that directory now follows Zoho's all-products.html
+              card-grid pattern instead). */}
+          <Reveal delay={80} className="mt-10">
+            <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-4">
+              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-grey-50 px-3 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-muted dark:bg-white/5 dark:text-white/50">
+                <RefreshIcon size={13} className="motion-safe:animate-spin-slow" />
+                {locale === "ar" ? "دورة مستمرة" : "Continuous Cycle"}
+              </span>
+              <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2.5">
+                {lifecycleStages.map((s, i) => (
+                  <div key={s.n} className="flex shrink-0 items-center gap-2.5">
+                    <span className="whitespace-nowrap text-xs font-medium text-ink-soft dark:text-white/60">
+                      {pick(s.label, locale)}
+                    </span>
+                    {i < lifecycleStages.length - 1 && (
+                      <ArrowRight size={12} className="shrink-0 text-grey-600 dark:text-white/30" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -282,85 +505,57 @@ export default function FeaturesPage() {
             </p>
           </Reveal>
 
-          {/* Part A — the 8-stage lifecycle, with which suite covers which stage. */}
-          <Reveal delay={80} className="mt-14 overflow-x-auto">
-            <div className="mx-auto min-w-[860px]">
-              <div className="mb-7 flex justify-center">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-grey-50 px-4 py-1.5 text-xs font-medium uppercase tracking-wide text-ink-muted dark:bg-white/5 dark:text-white/50">
-                  <RefreshIcon size={13} className="motion-safe:animate-spin-slow" />
-                  {locale === "ar" ? "دورة مستمرة" : "Continuous Cycle"}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-8 gap-2 text-center">
-                {lifecycleStages.map((s) => (
-                  <div key={s.n}>
-                    <p className="text-xs font-semibold text-primary">{s.n}</p>
-                    <p className="mt-1 text-xs font-medium leading-snug text-ink dark:text-white sm:text-sm">
-                      {pick(s.label, locale)}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="relative mt-4 h-px w-full bg-grey-200 dark:bg-white/15">
-                <div className="absolute inset-0 grid grid-cols-8">
-                  {lifecycleStages.map((s) => (
-                    <div key={s.n} className="flex items-center justify-center">
-                      <span className="h-2 w-2 rounded-full bg-grey-600 dark:bg-white/30" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div ref={suiteBarsRef} className="mt-8 space-y-4">
-                {suiteCoverage.map((suite) => (
-                  <div key={suite.name.en} className="flex items-center gap-4">
-                    <p className={`w-32 shrink-0 text-sm font-semibold ${suiteTextClasses[suite.color]}`}>
-                      {pick(suite.name, locale)}
-                    </p>
-                    <div className="grid h-1.5 flex-1" style={{ gridTemplateColumns: "repeat(8, 1fr)" }}>
-                      {suite.segments.map(([start, end], i) => (
-                        <div
-                          key={i}
-                          className={`suite-bar h-1.5 rounded-full ${suiteBarClasses[suite.color]}`}
-                          style={{ gridColumn: `${start} / ${end}` }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {/* Search — same affordance as Zoho's "I'm looking for..." bar. */}
+          <Reveal delay={100} className="mx-auto mt-8 max-w-md">
+            <div className="relative">
+              <Search
+                size={16}
+                className="pointer-events-none absolute start-4 top-1/2 -translate-y-1/2 text-ink-muted dark:text-white/40"
+              />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={locale === "ar" ? "ابحث عن وحدة..." : "Search modules..."}
+                className="w-full rounded-xl border border-grey-200 bg-white py-3 ps-11 pe-4 text-sm text-ink placeholder:text-ink-muted focus:border-primary focus:outline-none dark:border-white/15 dark:bg-white/5 dark:text-white"
+              />
             </div>
           </Reveal>
 
-          {/* Part B — 20+ modules, grouped Sell / Lease / Operate / Shared, colour-matched to the suites above. */}
-          <StaggerReveal className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" y={20}>
-            {moduleCategories.map((cat) => {
-              const c = moduleColorClasses[cat.color];
+          {/* Module directory — one category per suite, each a heading +
+              one-line description + a grid of icon/name/description cards. */}
+          {visibleCategories.length === 0 ? (
+            <p className="mt-14 text-center text-ink-soft dark:text-white/60">
+              {locale === "ar" ? "لا توجد نتائج مطابقة" : "No modules match your search."}
+            </p>
+          ) : (
+            visibleCategories.map((cat) => {
+              const c = categoryClasses[cat.color];
               return (
-                <div
-                  key={cat.name.en}
-                  className={`h-full rounded-2xl border border-grey-100 bg-white p-6 shadow-card transition-shadow hover:shadow-lift dark:border-white/10 dark:bg-white/5 ${c.span}`}
-                >
-                  <p className={`text-xs font-semibold uppercase tracking-wider ${c.heading}`}>
-                    {pick(cat.name, locale)}
-                  </p>
-                  <div className={`mb-4 mt-2 h-0.5 w-8 rounded-full ${c.underline}`} />
-                  <div className="flex flex-wrap gap-2">
-                    {cat.items.map((item) => (
-                      <span
-                        key={item.en}
-                        className={`rounded-full border px-3 py-1 text-xs font-medium text-ink dark:text-white/80 ${c.chipBg} ${c.chipBorder}`}
-                      >
-                        {pick(item, locale)}
-                      </span>
-                    ))}
-                  </div>
+                <div key={cat.name.en} className="mt-14">
+                  <h3 className={`text-lg font-semibold ${c.heading}`}>{pick(cat.name, locale)}</h3>
+                  <p className="mt-1 max-w-xl text-sm text-ink-soft dark:text-white/60">{pick(cat.desc, locale)}</p>
+                  <StaggerReveal className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" y={16} stagger={0.06}>
+                    {cat.items.map((item) => {
+                      const ItemIcon = item.icon;
+                      return (
+                        <div
+                          key={item.en}
+                          className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card transition-shadow hover:shadow-lift dark:border-white/10 dark:bg-white/5 lg:p-7"
+                        >
+                          <ItemIcon size={32} className={c.iconText} />
+                          <p className="mt-5 text-xl font-medium text-ink dark:text-white">{pick(item, locale)}</p>
+                          <p className="mt-2 text-sm leading-relaxed text-ink-soft dark:text-white/60">
+                            {pick({ en: item.descEn, ar: item.descAr }, locale)}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </StaggerReveal>
                 </div>
               );
-            })}
-          </StaggerReveal>
+            })
+          )}
         </div>
       </section>
 

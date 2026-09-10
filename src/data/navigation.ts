@@ -159,12 +159,12 @@ export const legalGroup: NavGroup = {
  * groups. "Additional Links" bundles the header's flat, group-less links plus
  * API Docs under one column heading for the footer layout.
  *
- * Unlike the header (where Products/Solutions nest sub-sections inside one
- * dropdown), the footer never nests: sectionsToFooterGroups() expands each
- * sub-sectioned group into its own column (Products -> "Products" + "Add-ons",
- * Solutions -> its 3 groups), so every footer column is a plain label + flat
- * list — same visual weight, same structure, easy to scan. 10 columns total,
- * which divides evenly at both the 2-col (mobile) and 5-col (desktop) grid.
+ * Unlike the header (where Products/Solutions nest labeled sub-sections
+ * inside one dropdown), the footer flattens them: groupItems() merges a
+ * sub-sectioned group's items into one plain list under a single column
+ * heading (Products' "Products"/"Add-ons" split and Solutions' 3 groups all
+ * collapse into one "Products" column and one "Solutions" column), so no
+ * footer column shows a sub-heading.
  */
 export const additionalLinksGroup: NavGroup = {
   label: L("Additional Links", "روابط إضافية"),
@@ -172,8 +172,8 @@ export const additionalLinksGroup: NavGroup = {
 };
 
 export const footerGroups: NavGroup[] = [
-  ...sectionsToFooterGroups(productsGroup),
-  ...sectionsToFooterGroups(solutionsGroup),
+  { label: productsGroup.label, items: groupItems(productsGroup) },
+  { label: solutionsGroup.label, items: groupItems(solutionsGroup) },
   marketsGroup,
   additionalLinksGroup,
   companyGroup,

@@ -205,7 +205,7 @@ export const en = {
     // Company/Resources/Legal Center columns now come from data/navigation.ts
     // (footerGroups) so they stay in sync with the header's taxonomy.
     contactTitle: "Contact Details",
-    address: "Al Imam Saud Ibn Faysal Rd, Riyadh 13522, Saudi Arabia",
+    address: "Al Imam Saud bin Faisal Road, Al Malqa, Riyadh, Saudi Arabia",
     phone: "+966 53 115 5105",
     email: "Info@goatar.com",
     copyright:

@@ -39,6 +39,7 @@ import { prefersReducedMotion } from "../hooks/useInView";
 import { type LStr, pick } from "../data/lifecycle";
 import InteractiveLifecycleStrip from "../components/features/InteractiveLifecycleStrip";
 import OrbitalLifecycleTimeline from "../components/features/OrbitalLifecycleTimeline";
+import CardStackLifecycle from "../components/features/CardStackLifecycle";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
@@ -57,11 +58,12 @@ gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
  * (The PDF-recreation variant was dropped from the picker; its component
  * file is still there if it's needed again.)
  */
-type CycleVariantId = "linear" | "orbital";
+type CycleVariantId = "linear" | "orbital" | "stack";
 
 const cycleVariants: { id: CycleVariantId; label: LStr }[] = [
   { id: "linear", label: { en: "Linear", ar: "بسيط" } },
   { id: "orbital", label: { en: "Orbital", ar: "مداري" } },
+  { id: "stack", label: { en: "Stack", ar: "مكدس" } },
 ];
 
 type ModuleColor = "primary" | "secondary" | "success" | "neutral";
@@ -495,16 +497,17 @@ export default function FeaturesPage() {
           {/* Pinned to the true page edge (breaks out of the centred
               max-w-6xl column on purpose) rather than sitting indented
               alongside the heading — per feedback, moved as far start-side
-              as the section itself. */}
+              as the section itself. Buttons stack vertically now that
+              there are three variants to choose from. */}
           <div className="relative start-1/2 -ms-[50vw] mt-4 w-screen">
-            <div className="inline-flex items-center gap-1 rounded-full border border-grey-200 bg-grey-50 p-1 ps-4 dark:border-white/10 dark:bg-white/5 sm:ps-6">
+            <div className="inline-flex flex-col items-stretch gap-1 rounded-[1.75rem] border border-grey-200 bg-grey-50 p-1 ps-4 dark:border-white/10 dark:bg-white/5 sm:ps-6">
               {cycleVariants.map((v) => (
                 <button
                   key={v.id}
                   type="button"
                   onClick={() => setCycleVariant(v.id)}
                   aria-pressed={cycleVariant === v.id}
-                  className={`rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wide transition-colors ${
+                  className={`rounded-full px-4 py-1.5 text-start text-xs font-semibold uppercase tracking-wide transition-colors ${
                     cycleVariant === v.id
                       ? "bg-primary text-white shadow-card"
                       : "text-ink-soft hover:text-primary dark:text-white/60"
@@ -516,12 +519,21 @@ export default function FeaturesPage() {
             </div>
           </div>
 
-          {!isOrbital && (
+          {cycleVariant === "linear" && (
             <div className="mt-10">
               <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
                 {locale === "ar" ? "الدورة المستمرة" : "Continuous Cycle"}
               </p>
               <InteractiveLifecycleStrip locale={locale} />
+            </div>
+          )}
+
+          {cycleVariant === "stack" && (
+            <div className="mt-10">
+              <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
+                {locale === "ar" ? "الدورة المستمرة" : "Continuous Cycle"}
+              </p>
+              <CardStackLifecycle locale={locale} />
             </div>
           )}
         </div>

@@ -16,9 +16,10 @@ export default function Features() {
       </Reveal>
 
       <div className="mx-auto max-w-6xl space-y-16 px-5 py-12 lg:space-y-24 lg:px-8">
-        {/* First two features keep the alternating split layout; the pattern
-            caps at two rows so the page doesn't read as one long zigzag. */}
-        {t.features.slice(0, 2).map((f, i) => {
+        {/* All three features share the same alternating split layout (the
+            "Sales Suite" treatment) instead of the last one breaking into a
+            different full-width layout. */}
+        {t.features.map((f, i) => {
           const reversed = i % 2 === 1;
           const art = featureIllustrations[i];
           const titleId = `feature-${i}`;
@@ -50,39 +51,6 @@ export default function Features() {
                   />
                 </div>
               </div>
-              </div>
-            </Reveal>
-          );
-        })}
-
-        {/* Remaining feature(s) — full-width layout instead of continuing
-            the alternating split, breaking the zigzag pattern. */}
-        {t.features.slice(2).map((f, i) => {
-          const art = featureIllustrations[i + 2];
-          const titleId = `feature-${i + 2}`;
-          return (
-            <Reveal key={f.eyebrow}>
-              <div className="overflow-hidden rounded-3xl border border-grey-100 bg-grey-100/40 dark:border-white/10 dark:bg-white/5 lg:grid lg:grid-cols-5 lg:items-center">
-                <div className="p-8 lg:col-span-2 lg:p-10">
-                  <p className="text-sm font-medium uppercase tracking-wider text-primary">
-                    {f.eyebrow}
-                  </p>
-                  <h3 id={titleId} className="mt-3 text-2xl font-medium text-ink dark:text-white lg:text-3xl">
-                    {f.title}
-                  </h3>
-                  <p className="mt-4 leading-relaxed text-ink-soft dark:text-white/70">{f.body}</p>
-                  <Button href="/contact" className="mt-6" icon={<ArrowRight />}>
-                    {t.featureCta}
-                  </Button>
-                </div>
-                <div className="p-6 lg:col-span-3 lg:p-8">
-                  <img
-                    src={art.url}
-                    alt={art.alt}
-                    className="mx-auto block h-auto w-full max-w-[720px] rounded-2xl"
-                    loading="lazy"
-                  />
-                </div>
               </div>
             </Reveal>
           );

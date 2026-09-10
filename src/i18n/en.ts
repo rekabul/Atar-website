@@ -69,7 +69,7 @@ export const en = {
         body: "Handle recurring tasks like invoicing, renewals, and inspections without lifting a finger.",
       },
       {
-        title: "Collaborative Tools Built-In",
+        title: "Collaborative Tools",
         body: "Communicate with tenants, owners, and vendors in one place, no third-party tools required.",
       },
     ],

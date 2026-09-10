@@ -18,10 +18,35 @@
  * new, lightweight page (see data/placeholderPages.ts) rather than a dead "#" link.
  */
 import { type LStr } from "./pricing";
+import {
+  TrendingUpIcon,
+  LeaseIcon,
+  FacilityIcon,
+  CpuIcon,
+  GridIcon,
+  Globe,
+  SmartphoneIcon,
+  BarChartIcon,
+  UsersIcon,
+  HandoverIcon,
+  FileTextIcon,
+  WalletIcon,
+  TicketIcon,
+  MessageIcon,
+  UserCircleIcon,
+  RentListIcon,
+  ShoppingBagIcon,
+  BriefcaseIcon,
+  CompoundIcon,
+  LayersIcon,
+} from "../components/ui/Icon";
 
 const L = (en: string, ar: string): LStr => ({ en, ar });
 
-export type NavLink = { label: LStr; to: string; external?: boolean };
+/** A nav item's icon — used by the header mega-menu (see ui/NavDropdown.tsx). */
+export type NavIcon = (props: { size?: number; className?: string }) => JSX.Element;
+
+export type NavLink = { label: LStr; to: string; external?: boolean; icon?: NavIcon };
 export type NavSection = { label: LStr; items: NavLink[] };
 export type NavGroup = { label: LStr; items?: NavLink[]; sections?: NavSection[] };
 
@@ -50,19 +75,19 @@ export const productsGroup: NavGroup = {
     {
       label: L("Products", "المنتجات"),
       items: [
-        { label: L("Sales Suite", "حزمة المبيعات"), to: "/products/sales-suite" },
-        { label: L("Leasing Suite", "حزمة التأجير"), to: "/products/leasing-suite" },
-        { label: L("Property Operations Suite", "حزمة عمليات العقارات"), to: "/products/operations-suite" },
-        { label: L("Atar OS", "نظام أتار"), to: "/products/atar-os" },
-        { label: L("All Modules", "جميع الوحدات"), to: "/features" },
+        { label: L("Sales Suite", "حزمة المبيعات"), to: "/products/sales-suite", icon: TrendingUpIcon },
+        { label: L("Leasing Suite", "حزمة التأجير"), to: "/products/leasing-suite", icon: LeaseIcon },
+        { label: L("Property Operations Suite", "حزمة عمليات العقارات"), to: "/products/operations-suite", icon: FacilityIcon },
+        { label: L("Atar OS", "نظام أتار"), to: "/products/atar-os", icon: CpuIcon },
+        { label: L("All Modules", "جميع الوحدات"), to: "/features", icon: GridIcon },
       ],
     },
     {
       label: L("Add-ons", "الإضافات"),
       items: [
-        { label: L("Listing Website", "موقع الإعلانات"), to: "/products/addons/listing-website" },
-        { label: L("Branded Mobile App", "تطبيق جوال بعلامتك التجارية"), to: "/products/addons/branded-mobile-app" },
-        { label: L("PowerBI Reports", "تقارير PowerBI"), to: "/products/addons/powerbi-reports" },
+        { label: L("Listing Website", "موقع الإعلانات"), to: "/products/addons/listing-website", icon: Globe },
+        { label: L("Branded Mobile App", "تطبيق جوال بعلامتك التجارية"), to: "/products/addons/branded-mobile-app", icon: SmartphoneIcon },
+        { label: L("PowerBI Reports", "تقارير PowerBI"), to: "/products/addons/powerbi-reports", icon: BarChartIcon },
       ],
     },
   ],
@@ -74,26 +99,26 @@ export const solutionsGroup: NavGroup = {
     {
       label: L("Sales & Leasing", "المبيعات والتأجير"),
       items: [
-        { label: L("Real Estate CRM", "إدارة علاقات العملاء العقارية"), to: "/solutions/real-estate-crm" },
-        { label: L("Listing Website", "موقع الإعلانات"), to: "/solutions/listing-website" },
-        { label: L("Sales & Handover", "المبيعات والتسليم"), to: "/solutions/sales-handover" },
-        { label: L("Leasing & Contract Management", "التأجير وإدارة العقود"), to: "/solutions/leasing-contract-management" },
+        { label: L("Real Estate CRM", "إدارة علاقات العملاء العقارية"), to: "/solutions/real-estate-crm", icon: UsersIcon },
+        { label: L("Listing Website", "موقع الإعلانات"), to: "/solutions/listing-website", icon: Globe },
+        { label: L("Sales & Handover", "المبيعات والتسليم"), to: "/solutions/sales-handover", icon: HandoverIcon },
+        { label: L("Leasing & Contract Management", "التأجير وإدارة العقود"), to: "/solutions/leasing-contract-management", icon: FileTextIcon },
       ],
     },
     {
       label: L("Operations & Finance", "العمليات والماليات"),
       items: [
-        { label: L("Property & Portfolio Financials", "الماليات العقارية ومالية المحفظة"), to: "/solutions/property-portfolio-financials" },
-        { label: L("Maintenance & Ticketing", "الصيانة والتذاكر"), to: "/solutions/maintenance-ticketing" },
-        { label: L("Facilities Management", "إدارة المرافق"), to: "/solutions/facilities-management" },
+        { label: L("Property & Portfolio Financials", "الماليات العقارية ومالية المحفظة"), to: "/solutions/property-portfolio-financials", icon: WalletIcon },
+        { label: L("Maintenance & Ticketing", "الصيانة والتذاكر"), to: "/solutions/maintenance-ticketing", icon: TicketIcon },
+        { label: L("Facilities Management", "إدارة المرافق"), to: "/solutions/facilities-management", icon: FacilityIcon },
       ],
     },
     {
       label: L("Engagement & Insights", "التفاعل والتحليلات"),
       items: [
-        { label: L("Community Engagement & Access", "تفاعل المجتمع والدخول"), to: "/solutions/community-engagement-access" },
-        { label: L("Customer Portal", "بوابة العملاء"), to: "/solutions/customer-portal" },
-        { label: L("Reporting & Analytics", "التقارير والتحليلات"), to: "/solutions/reporting-analytics" },
+        { label: L("Community Engagement & Access", "تفاعل المجتمع والدخول"), to: "/solutions/community-engagement-access", icon: MessageIcon },
+        { label: L("Customer Portal", "بوابة العملاء"), to: "/solutions/customer-portal", icon: UserCircleIcon },
+        { label: L("Reporting & Analytics", "التقارير والتحليلات"), to: "/solutions/reporting-analytics", icon: BarChartIcon },
       ],
     },
   ],
@@ -102,11 +127,11 @@ export const solutionsGroup: NavGroup = {
 export const marketsGroup: NavGroup = {
   label: L("Markets", "القطاعات"),
   items: [
-    { label: L("Residential", "سكني"), to: "/markets/residential" },
-    { label: L("Retail", "تجزئة"), to: "/markets/retail" },
-    { label: L("Office", "مكاتب"), to: "/markets/office" },
-    { label: L("Compounds & Communities", "المجمّعات والمجتمعات السكنية"), to: "/markets/compounds-communities" },
-    { label: L("Mixed-use Developments", "المشاريع متعددة الاستخدامات"), to: "/markets/mixed-use-developments" },
+    { label: L("Residential", "سكني"), to: "/markets/residential", icon: RentListIcon },
+    { label: L("Retail", "تجزئة"), to: "/markets/retail", icon: ShoppingBagIcon },
+    { label: L("Office", "مكاتب"), to: "/markets/office", icon: BriefcaseIcon },
+    { label: L("Compounds & Communities", "المجمّعات والمجتمعات السكنية"), to: "/markets/compounds-communities", icon: CompoundIcon },
+    { label: L("Mixed-use Developments", "المشاريع متعددة الاستخدامات"), to: "/markets/mixed-use-developments", icon: LayersIcon },
   ],
 };
 

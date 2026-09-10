@@ -453,6 +453,91 @@ export function LinkIcon({ size = 18, ...p }: IconProps) {
   );
 }
 
+/** Header mega-menu — Sales Suite / "grow" concept. */
+export function TrendingUpIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M3 17l6-6 4 4 8-8" />
+      <path d="M14 7h7v7" />
+    </svg>
+  );
+}
+
+/** Header mega-menu — Atar OS / underlying platform concept. */
+export function CpuIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <rect x="7" y="7" width="10" height="10" rx="1.5" />
+      <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" />
+    </svg>
+  );
+}
+
+/** Header mega-menu — CRM / people concept. */
+export function UsersIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M2.5 20c0-3.4 2.9-5.8 6.5-5.8s6.5 2.4 6.5 5.8" />
+      <circle cx="17" cy="8.5" r="2.4" />
+      <path d="M21.5 20c0-2.6-1.9-4.6-4.3-5.2" />
+    </svg>
+  );
+}
+
+/** Header mega-menu — financials / wallet concept. */
+export function WalletIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M3 7a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+      <path d="M16 12h3v3h-3a1.5 1.5 0 010-3z" />
+    </svg>
+  );
+}
+
+/** Header mega-menu — customer portal / account concept. */
+export function UserCircleIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="10" r="3" />
+      <path d="M6.5 19a6 6 0 0111 0" />
+    </svg>
+  );
+}
+
+/** Header mega-menu — Retail market concept. */
+export function ShoppingBagIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M6 8h12l1 12a2 2 0 01-2 2H7a2 2 0 01-2-2z" />
+      <path d="M9 8V6a3 3 0 016 0v2" />
+    </svg>
+  );
+}
+
+/** Header mega-menu — Office market concept. */
+export function BriefcaseIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <rect x="3" y="7" width="18" height="12" rx="2" />
+      <path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" />
+      <path d="M3 12h18" />
+    </svg>
+  );
+}
+
+/** Header mega-menu — Compounds & Communities market concept. */
+export function CompoundIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <path d="M4 21V9l5-4 5 4v12" />
+      <path d="M16 21V6l4-2 4 2v15" />
+      <path d="M2 21h20" />
+    </svg>
+  );
+}
+
 /** Icons for the Features "Built for Every Role" cards, keyed by name. */
 export const roleIcons: Record<string, (p: IconProps) => ReactElement> = {
   owner: (p) => (

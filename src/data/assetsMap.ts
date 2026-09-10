@@ -54,7 +54,6 @@ export const integrations: Integration[] = [
   { file: "Group 48095644.svg", name: "Zapier", bg: "#FBE9EC" },
   { file: "Frame 1707480246.svg", name: "Sadq", bg: "#E6F6EC" },
   { file: "Group 48095601.svg", name: "Power BI", bg: "#FCF4DD" },
-  { file: "logo 1.svg", name: "Sakani", bg: "#DDF3F0" },
   { file: "image 72.svg", name: "Edaat", bg: "#E7E9FB" },
   { file: "Frame 1707480351.svg", name: "Nafath", bg: "#DDF3F0" },
   // Added from the Company Profile "Ecosystem" page (p.13) — every logo on

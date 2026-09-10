@@ -15,6 +15,58 @@ import {
   type NavLink,
 } from "../data/navigation";
 
+/** Renders a mobile accordion group's items — either a flat list, or, for a
+ * sub-sectioned group like Products, each labeled sub-section in turn. */
+function MobileGroupItems({
+  group,
+  locale,
+  onNavigate,
+}: {
+  group: (typeof headerGroups)[number];
+  locale: "en" | "ar";
+  onNavigate: () => void;
+}) {
+  if (group.sections) {
+    return (
+      <>
+        {group.sections.map((section) => (
+          <div key={section.label.en} className="mb-2 last:mb-0">
+            <p className="px-0 py-1.5 text-xs font-medium uppercase tracking-wider text-ink-muted dark:text-white/40">
+              {pick(section.label, locale)}
+            </p>
+            <ul className="flex flex-col gap-0.5">
+              {section.items.map((item) => (
+                <li key={item.to}>
+                  <NavItem
+                    target={item}
+                    locale={locale}
+                    className="block py-2 text-sm text-ink-soft dark:text-white/70"
+                    onClick={onNavigate}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </>
+    );
+  }
+  return (
+    <ul className="flex flex-col gap-0.5">
+      {(group.items ?? []).map((item) => (
+        <li key={item.to}>
+          <NavItem
+            target={item}
+            locale={locale}
+            className="block py-2 text-sm text-ink-soft dark:text-white/70"
+            onClick={onNavigate}
+          />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 /** Renders a router Link for real routes and a plain anchor for in-page hashes. */
 function NavItem({
   target,
@@ -162,22 +214,16 @@ export default function Navbar() {
                       />
                     </button>
                     {isGroupOpen && (
-                      <ul id={panelId} className="mb-2 flex flex-col gap-0.5 ps-3">
-                        {group.items.map((item) => (
-                          <li key={item.to}>
-                            <NavItem
-                              target={item}
-                              locale={locale}
-                              active={isActive(item.to)}
-                              className="block py-2 text-sm text-ink-soft dark:text-white/70"
-                              onClick={() => {
-                                setOpen(false);
-                                setOpenGroup(null);
-                              }}
-                            />
-                          </li>
-                        ))}
-                      </ul>
+                      <div id={panelId} className="mb-2 ps-3">
+                        <MobileGroupItems
+                          group={group}
+                          locale={locale}
+                          onNavigate={() => {
+                            setOpen(false);
+                            setOpenGroup(null);
+                          }}
+                        />
+                      </div>
                     )}
                   </li>
                 );

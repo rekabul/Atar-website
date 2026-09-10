@@ -251,7 +251,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
 
   "/products/operations-suite": {
     eyebrow: PRODUCTS,
-    title: L("Operations Suite", "حزمة العمليات"),
+    title: L("Property Operations Suite", "حزمة عمليات العقارات"),
     body: L(
       "Unify all post-sale and post-rental operations, including communication, maintenance, facility management and space and visitor management.",
       "وحّد جميع عمليات ما بعد البيع وما بعد التأجير، بما في ذلك التواصل والصيانة وإدارة المرافق وإدارة المساحات والزوار."
@@ -320,128 +320,284 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ],
   },
 
-  // ---- Solutions by role --------------------------------------------------
-  "/solutions/property-developers": {
-    eyebrow: SOLUTIONS,
-    title: L("Solutions for Property Developers", "حلول للمطورين العقاريين"),
+  // ---- Products > Atar OS --------------------------------------------------
+  "/products/atar-os": {
+    eyebrow: PRODUCTS,
+    title: L("Atar OS", "نظام أتار"),
     body: L(
-      "Off-plan sales management built for developers: track inventory, manage buyer documentation, and coordinate handovers without leaving spreadsheets behind.",
-      "إدارة مبيعات على الخريطة مصممة للمطورين: تتبّع المخزون، وأدر مستندات المشترين، ونسّق عمليات التسليم دون الاعتماد على جداول البيانات."
+      "The connected operating system underneath every Atar suite — one data model for properties, customers, contracts, financials, and workflows.",
+      "نظام التشغيل المتصل الذي يقف خلف كل حزمة من حزم أتار — نموذج بيانات واحد للعقارات والعملاء والعقود والماليات وسير العمل."
     ),
     sections: [
       {
         kind: "bullets",
-        heading: L("Built for developers", "مصمم للمطورين"),
         items: [
-          L("Sell off-plan and ready units from one sales pipeline", "بِع الوحدات على الخريطة والجاهزة من مسار مبيعات واحد"),
-          L("Digital contracts via Nafath, payments via SADAD", "عقود إلكترونية عبر نفاذ ومدفوعات عبر سداد"),
-          L("Bulk billing against off-plan completion milestones", "فوترة مجمّعة مقابل مراحل إنجاز المشروع"),
-          L("Seamless handover into post-sale operations", "تسليم سلس إلى عمليات ما بعد البيع"),
+          L("One data model shared across sales, leasing and operations", "نموذج بيانات واحد مشترك بين المبيعات والتأجير والعمليات"),
+          L("Role-based access control across every module", "التحكم في الوصول حسب الدور عبر كل وحدة"),
+          L("Native Nafath, SADAD and ZATCA compliance built in", "امتثال أصلي مدمج مع نفاذ وسداد وزاتكا"),
+          L("Open API for connecting your existing tools", "واجهة برمجية مفتوحة لربط أدواتك الحالية"),
         ],
       },
     ],
   },
 
-  "/solutions/real-estate-marketers": {
-    eyebrow: SOLUTIONS,
-    title: L("Solutions for Real Estate Marketers", "حلول للمسوّقين العقاريين"),
+  // ---- Products > Add-ons --------------------------------------------------
+  "/products/addons/listing-website": {
+    eyebrow: L("Add-ons", "الإضافات"),
+    title: L("Listing Website", "موقع الإعلانات"),
     body: L(
-      "Real estate marketing & sales tools that turn listings into tracked, qualified leads, not guesswork.",
-      "أدوات تسويق ومبيعات عقارية تحوّل الإعلانات إلى عملاء محتملين مؤهلين وقابلين للتتبع، لا إلى تخمين."
+      "A branded, SEO-ready listing website for your sale and rental inventory, connected directly to your Atar data — no manual re-entry.",
+      "موقع إعلانات بعلامتك التجارية ومهيّأ لمحركات البحث لعرض مخزون البيع والتأجير، متصل مباشرة ببيانات أتار دون إعادة إدخال يدوية."
     ),
     sections: [
       {
         kind: "bullets",
-        heading: L("Built for marketers", "مصمم للمسوّقين"),
         items: [
-          L("Publish listings to your own branded website", "انشر الإعلانات على موقعك الإلكتروني بعلامتك التجارية"),
-          L("Automatic lead capture from every listing view", "التقاط تلقائي للعملاء المحتملين من كل مشاهدة إعلان"),
-          L("CRM pipeline from lead to booked viewing", "مسار CRM من العميل المحتمل إلى المعاينة المحجوزة"),
-          L("Track campaign performance against real bookings", "تتبّع أداء الحملات مقابل الحجوزات الفعلية"),
+          L("Listings sync automatically from Atar", "إعلانات تتزامن تلقائياً من أتار"),
+          L("Lead capture on every listing view", "التقاط عملاء محتملين من كل مشاهدة إعلان"),
+          L("Your own domain and brand, fully hosted", "نطاقك وعلامتك التجارية، بالكامل مُستضاف"),
+          L("Arabic and English out of the box", "عربي وإنجليزي جاهزان مباشرة"),
         ],
       },
     ],
   },
 
-  "/solutions/property-managers": {
-    eyebrow: SOLUTIONS,
-    title: L("Solutions for Property Managers", "حلول لمديري العقارات"),
+  "/products/addons/branded-mobile-app": {
+    eyebrow: L("Add-ons", "الإضافات"),
+    title: L("Branded Mobile App", "تطبيق جوال بعلامتك التجارية"),
     body: L(
-      "Property management software to run leasing, collections, and maintenance for every building from one dashboard.",
-      "برنامج إدارة عقارات لتشغيل التأجير والتحصيل والصيانة لكل مبنى من لوحة تحكم واحدة."
+      "A white-labeled mobile app for your tenants, owners and buyers — service requests, payments and announcements, under your own brand.",
+      "تطبيق جوال بعلامتك الخاصة لمستأجريك وملّاكك ومشتريك — طلبات الخدمة والمدفوعات والإعلانات، تحت علامتك التجارية."
     ),
     sections: [
       {
         kind: "bullets",
-        heading: L("Built for property managers", "مصمم لمديري العقارات"),
         items: [
-          L("Lease management: contracts, renewals, invoicing", "إدارة التأجير: العقود والتجديدات والفواتير"),
-          L("Owner-ready financial and occupancy reporting", "تقارير مالية وإشغال جاهزة للملّاك"),
-          L("Service ticket workflows with KPI tracking", "سير عمل تذاكر الخدمة مع تتبّع مؤشرات الأداء"),
-          L("One dashboard across your entire portfolio", "لوحة تحكم واحدة لكامل محفظتك"),
+          L("Your logo, colors and app store listing", "شعارك وألوانك وقائمتك في متجر التطبيقات"),
+          L("Service requests and maintenance tracking", "طلبات الخدمة وتتبّع الصيانة"),
+          L("In-app payments and statements", "مدفوعات وكشوف حساب داخل التطبيق"),
+          L("Push notifications for announcements and updates", "إشعارات فورية للإعلانات والتحديثات"),
         ],
       },
     ],
   },
 
-  "/solutions/facility-managers": {
-    eyebrow: SOLUTIONS,
-    title: L("Solutions for Facility Managers", "حلول لمديري المرافق"),
+  "/products/addons/powerbi-reports": {
+    eyebrow: L("Add-ons", "الإضافات"),
+    title: L("PowerBI Reports", "تقارير PowerBI"),
     body: L(
-      "Facility management software to schedule maintenance, dispatch vendors, and keep a full audit trail for every asset.",
-      "برنامج إدارة مرافق لجدولة الصيانة وإرسال المقاولين والاحتفاظ بسجل تدقيق كامل لكل أصل."
+      "Connect Atar's live data to Microsoft PowerBI for deeper, customizable reporting and dashboards beyond the built-in analytics.",
+      "اربط بيانات أتار الحية بمايكروسوفت PowerBI للحصول على تقارير ولوحات تحكم أعمق وقابلة للتخصيص إلى جانب التحليلات المدمجة."
     ),
     sections: [
       {
         kind: "bullets",
-        heading: L("Built for facility managers", "مصمم لمديري المرافق"),
+        items: [
+          L("Pre-built PowerBI templates for common reports", "قوالب PowerBI جاهزة للتقارير الشائعة"),
+          L("Live connection, no manual data exports", "اتصال مباشر دون تصدير بيانات يدوي"),
+          L("Build fully custom dashboards for your team", "أنشئ لوحات تحكم مخصصة بالكامل لفريقك"),
+          L("Role-based access to sensitive financial data", "وصول محكوم حسب الدور للبيانات المالية الحساسة"),
+        ],
+      },
+    ],
+  },
+
+  // ---- Solutions by capability ---------------------------------------------
+  "/solutions/real-estate-crm": {
+    eyebrow: SOLUTIONS,
+    title: L("Real Estate CRM", "إدارة علاقات العملاء العقارية"),
+    body: L(
+      "Track every lead, buyer and tenant from first contact to signed contract in one real estate CRM built for the full lifecycle.",
+      "تتبّع كل عميل محتمل ومشترٍ ومستأجر من أول تواصل إلى توقيع العقد في نظام إدارة علاقات عملاء عقاري مصمم لكامل دورة الحياة."
+    ),
+    sections: [
+      {
+        kind: "bullets",
+        items: [
+          L("One pipeline across sales and leasing leads", "مسار واحد لعملاء المبيعات والتأجير المحتملين"),
+          L("Automatic lead capture from your listings", "التقاط تلقائي للعملاء المحتملين من إعلاناتك"),
+          L("Full activity history per contact", "سجل نشاط كامل لكل جهة اتصال"),
+          L("Follow-up reminders and task assignment", "تذكيرات متابعة وتوزيع مهام"),
+        ],
+      },
+    ],
+  },
+
+  "/solutions/listing-website": {
+    eyebrow: SOLUTIONS,
+    title: L("Listing Website", "موقع الإعلانات"),
+    body: L(
+      "Publish your sale and rental inventory to a fast, branded listing website that stays in sync with your Atar data automatically.",
+      "انشر مخزون البيع والتأجير على موقع إعلانات سريع وبعلامتك التجارية يبقى متزامناً تلقائياً مع بيانات أتار."
+    ),
+    sections: [
+      {
+        kind: "bullets",
+        items: [
+          L("Listings sync automatically from Atar", "إعلانات تتزامن تلقائياً من أتار"),
+          L("Built-in lead capture and inquiry forms", "التقاط عملاء محتملين ونماذج استفسار مدمجة"),
+          L("SEO-ready pages for every listing", "صفحات مهيّأة لمحركات البحث لكل إعلان"),
+          L("Arabic and English out of the box", "عربي وإنجليزي جاهزان مباشرة"),
+        ],
+      },
+    ],
+  },
+
+  "/solutions/sales-handover": {
+    eyebrow: SOLUTIONS,
+    title: L("Sales & Handover", "المبيعات والتسليم"),
+    body: L(
+      "Run the full sales journey, from booking to signed contract to digital handover, without losing track of a single unit.",
+      "أدر رحلة المبيعات كاملة، من الحجز إلى توقيع العقد إلى التسليم الرقمي، دون فقدان تتبّع أي وحدة."
+    ),
+    sections: [
+      {
+        kind: "bullets",
+        items: [
+          L("Booking, contracts and milestone billing in one flow", "الحجز والعقود والفوترة حسب المراحل في مسار واحد"),
+          L("Digital signature via Nafath", "توقيع إلكتروني عبر نفاذ"),
+          L("Handover checklists with full documentation", "قوائم تسليم مع توثيق كامل"),
+          L("Seamless handoff into post-sale operations", "تسليم سلس إلى عمليات ما بعد البيع"),
+        ],
+      },
+    ],
+  },
+
+  "/solutions/leasing-contract-management": {
+    eyebrow: SOLUTIONS,
+    title: L("Leasing & Contract Management", "التأجير وإدارة العقود"),
+    body: L(
+      "Manage leases end to end — applications, agreements, renewals and invoicing — with every contract and payment in one place.",
+      "أدر عقود التأجير من البداية للنهاية — الطلبات والاتفاقيات والتجديدات والفوترة — مع كل عقد ومدفوعة في مكان واحد."
+    ),
+    sections: [
+      {
+        kind: "bullets",
+        items: [
+          L("Application review with full KYC detail", "مراجعة الطلبات مع تفاصيل التحقق الكامل من الهوية"),
+          L("Auto-generated lease agreements", "عقود إيجار تُنشأ تلقائياً"),
+          L("Renewal reminders before contracts expire", "تذكيرات تجديد قبل انتهاء العقود"),
+          L("Invoicing raised automatically on payment dates", "فواتير تُصدر تلقائياً في مواعيد الدفع"),
+        ],
+      },
+    ],
+  },
+
+  "/solutions/property-portfolio-financials": {
+    eyebrow: SOLUTIONS,
+    title: L("Property & Portfolio Financials", "الماليات العقارية ومالية المحفظة"),
+    body: L(
+      "Owner-ready financial reporting across your entire portfolio — revenue, collections, and occupancy in one connected view.",
+      "تقارير مالية جاهزة للملّاك عبر كامل محفظتك — الإيرادات والتحصيل والإشغال في عرض واحد متصل."
+    ),
+    sections: [
+      {
+        kind: "bullets",
+        items: [
+          L("Real-time revenue and collections dashboards", "لوحات تحكم فورية للإيرادات والتحصيل"),
+          L("Owner statements generated automatically", "كشوف حساب للملّاك تُنشأ تلقائياً"),
+          L("Occupancy and portfolio performance in one view", "الإشغال وأداء المحفظة في عرض واحد"),
+          L("Export-ready reporting for finance teams", "تقارير جاهزة للتصدير لفرق المالية"),
+        ],
+      },
+    ],
+  },
+
+  "/solutions/maintenance-ticketing": {
+    eyebrow: SOLUTIONS,
+    title: L("Maintenance & Ticketing", "الصيانة والتذاكر"),
+    body: L(
+      "Run every maintenance request end to end, with KPI tracking so nothing sits unresolved.",
+      "أدر كل طلب صيانة من البداية للنهاية، مع تتبّع مؤشرات الأداء حتى لا يبقى شيء دون حل."
+    ),
+    sections: [
+      {
+        kind: "bullets",
+        items: [
+          L("Customer-initiated ticket workflows", "سير عمل تذاكر يبدأها العميل"),
+          L("Vendor and technician dispatch", "إرسال المقاولين والفنيين"),
+          L("SLA and KPI tracking on every ticket", "تتبّع اتفاقيات مستوى الخدمة ومؤشرات الأداء على كل تذكرة"),
+          L("Full audit trail from request to resolution", "سجل تدقيق كامل من الطلب إلى الحل"),
+        ],
+      },
+    ],
+  },
+
+  "/solutions/facilities-management": {
+    eyebrow: SOLUTIONS,
+    title: L("Facilities Management", "إدارة المرافق"),
+    body: L(
+      "Keep shared assets and common areas maintained, with teams assigned, monitored, and accountable.",
+      "حافظ على صيانة الأصول المشتركة والمناطق المشتركة، مع تكليف الفرق ومتابعتها ومحاسبتها."
+    ),
+    sections: [
+      {
+        kind: "bullets",
         items: [
           L("Manage common areas and shared facilities", "أدر المناطق المشتركة والمرافق المشتركة"),
           L("Facility booking management for shared spaces", "إدارة حجز المرافق للمساحات المشتركة"),
           L("Assign and monitor maintenance teams", "كلّف فرق الصيانة وتابعها"),
-          L("Full ticket and work-order audit trail", "سجل تدقيق كامل لتذاكر وأوامر العمل"),
+          L("Preventive maintenance scheduling", "جدولة الصيانة الوقائية"),
         ],
       },
     ],
   },
 
-  "/solutions/owner-associations": {
+  "/solutions/community-engagement-access": {
     eyebrow: SOLUTIONS,
-    title: L("Solutions for Owner Associations", "حلول لاتحادات الملّاك"),
+    title: L("Community Engagement & Access", "تفاعل المجتمع والدخول"),
     body: L(
-      "Residential compound and homeowner association management: service charges, community rules, and owner communications in one place.",
-      "إدارة المجمعات السكنية واتحادات الملّاك: رسوم الخدمة وأنظمة المجتمع والتواصل مع الملّاك من مكان واحد."
+      "Keep residents and tenants informed and engaged, and control who comes and goes across your properties.",
+      "أبقِ السكان والمستأجرين على اطلاع وتفاعل، وتحكّم بمن يدخل ويخرج عبر عقاراتك."
     ),
     sections: [
       {
         kind: "bullets",
-        heading: L("Built for owner associations", "مصمم لاتحادات الملّاك"),
         items: [
-          L("Residential compound management tools", "أدوات إدارة المجمعات السكنية"),
-          L("Homeowner association management workflows", "سير عمل إدارة اتحادات الملّاك"),
-          L("Announcements, surveys, and directory for residents", "إعلانات واستبيانات ودليل للسكان"),
-          L("Shared facility and common-area billing", "فوترة المرافق والمناطق المشتركة"),
+          L("News, events, surveys and suggestions", "أخبار وفعاليات واستبيانات واقتراحات"),
+          L("Visitor management and access control", "إدارة الزوار والتحكم في الدخول"),
+          L("Resident directory and announcements", "دليل السكان والإعلانات"),
+          L("Community-wide notifications", "إشعارات على مستوى المجتمع"),
         ],
       },
     ],
   },
 
-  "/solutions/coworking-operators": {
+  "/solutions/customer-portal": {
     eyebrow: SOLUTIONS,
-    title: L("Solutions for Coworking Operators", "حلول لمشغّلي مساحات العمل المشترك"),
+    title: L("Customer Portal", "بوابة العملاء"),
     body: L(
-      "Co-working space management for flexible memberships, desk and room bookings, and usage-based billing.",
-      "إدارة مساحات العمل المشترك للعضويات المرنة وحجوزات المكاتب والقاعات والفوترة حسب الاستخدام."
+      "Give owners, tenants and buyers self-service access to statements, service requests and documents, anytime.",
+      "امنح الملّاك والمستأجرين والمشترين وصولاً ذاتياً إلى كشوف الحساب وطلبات الخدمة والمستندات في أي وقت."
     ),
     sections: [
       {
         kind: "bullets",
-        heading: L("Built for coworking operators", "مصمم لمشغّلي مساحات العمل المشترك"),
         items: [
-          L("Space bookings for desks, offices, and meeting rooms", "حجوزات المساحات للمكاتب والمكاتب الخاصة وقاعات الاجتماعات"),
-          L("Flexible membership and usage billing", "عضويات مرنة وفوترة حسب الاستخدام"),
-          L("Visitor management for shared spaces", "إدارة الزوار للمساحات المشتركة"),
-          L("Community engagement: news, offers, directory", "تفاعل مجتمعي: أخبار وعروض ودليل"),
+          L("Self-service statements and payment history", "كشوف حساب وسجل مدفوعات ذاتية الخدمة"),
+          L("Submit and track service requests", "إرسال وتتبّع طلبات الخدمة"),
+          L("Document access: contracts, invoices, notices", "الوصول للمستندات: العقود والفواتير والإشعارات"),
+          L("Available on web and the branded mobile app", "متاحة على الويب وتطبيق الجوال بعلامتك التجارية"),
+        ],
+      },
+    ],
+  },
+
+  "/solutions/reporting-analytics": {
+    eyebrow: SOLUTIONS,
+    title: L("Reporting & Analytics", "التقارير والتحليلات"),
+    body: L(
+      "Real-time dashboards and KPIs across sales, leasing and operations, so decisions are backed by current data.",
+      "لوحات تحكم ومؤشرات أداء فورية عبر المبيعات والتأجير والعمليات، لتكون القرارات مدعومة ببيانات حالية."
+    ),
+    sections: [
+      {
+        kind: "bullets",
+        items: [
+          L("Real-time dashboards across every module", "لوحات تحكم فورية عبر كل وحدة"),
+          L("Custom KPI tracking for your team", "تتبّع مؤشرات أداء مخصصة لفريقك"),
+          L("Export-ready reports for stakeholders", "تقارير جاهزة للتصدير لأصحاب المصلحة"),
+          L("Connects to PowerBI for deeper analysis", "تتصل بـ PowerBI لتحليل أعمق"),
         ],
       },
     ],
@@ -468,12 +624,12 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ],
   },
 
-  "/markets/commercial": {
+  "/markets/retail": {
     eyebrow: MARKETS,
-    title: L("Commercial", "تجاري"),
+    title: L("Retail", "تجزئة"),
     body: L(
-      "Manage commercial properties, retail, and office space, with the reporting your investors expect.",
-      "أدر العقارات التجارية ومساحات التجزئة والمكاتب، مع التقارير التي يتوقعها مستثمروك."
+      "Manage retail centers and storefronts, from complex commercial lease terms to multi-tenant portfolio reporting.",
+      "أدر مراكز ومحلات التجزئة، من شروط الإيجار التجاري المعقدة إلى تقارير المحفظة متعددة المستأجرين."
     ),
     sections: [
       {
@@ -482,6 +638,26 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
           L("Complex commercial lease terms", "شروط إيجار تجاري معقدة"),
           L("Multi-tenant portfolio reporting", "تقارير محفظة متعددة المستأجرين"),
           L("Facility and common-area management", "إدارة المرافق والمناطق المشتركة"),
+          L("Online payments and collections", "مدفوعات وتحصيل إلكتروني"),
+        ],
+      },
+    ],
+  },
+
+  "/markets/office": {
+    eyebrow: MARKETS,
+    title: L("Office", "مكاتب"),
+    body: L(
+      "Run office portfolios with the lease complexity, common-area management, and investor-ready reporting the asset class demands.",
+      "أدر محافظ المكاتب بما يتطلبه هذا النوع من الأصول من تعقيد في الإيجار وإدارة للمناطق المشتركة وتقارير جاهزة للمستثمرين."
+    ),
+    sections: [
+      {
+        kind: "bullets",
+        items: [
+          L("Multi-tenant office lease management", "إدارة عقود إيجار المكاتب متعددة المستأجرين"),
+          L("Shared facility and common-area billing", "فوترة المرافق والمناطق المشتركة"),
+          L("Investor-ready financial reporting", "تقارير مالية جاهزة للمستثمرين"),
           L("Online payments and collections", "مدفوعات وتحصيل إلكتروني"),
         ],
       },
@@ -508,41 +684,21 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ],
   },
 
-  "/markets/accommodation-housing": {
+  "/markets/mixed-use-developments": {
     eyebrow: MARKETS,
-    title: L("Accommodation & Housing", "الإسكان والسكن"),
+    title: L("Mixed-use Developments", "المشاريع متعددة الاستخدامات"),
     body: L(
-      "Support accommodation and housing portfolios with occupancy tracking and streamlined operations built in.",
-      "ادعم محافظ الإسكان والسكن مع تتبّع الإشغال وعمليات مبسّطة مدمجة."
+      "Coordinate residential, retail, and office components of one master-planned development on a single connected platform.",
+      "نسّق المكونات السكنية والتجارية والمكتبية لمشروع مخطط واحد على منصة واحدة متصلة."
     ),
     sections: [
       {
         kind: "bullets",
         items: [
-          L("Occupancy and unit tracking", "تتبّع الإشغال والوحدات"),
-          L("Digital handover and onboarding", "تسليم وإدراج رقمي"),
-          L("Service request workflows", "سير عمل طلبات الخدمة"),
-          L("Reporting across every property", "تقارير عبر كل عقار"),
-        ],
-      },
-    ],
-  },
-
-  "/markets/coworking-spaces": {
-    eyebrow: MARKETS,
-    title: L("Coworking Spaces", "مساحات العمل المشترك"),
-    body: L(
-      "Manage flexible desks, private offices, and meeting rooms with usage-based billing for coworking spaces.",
-      "أدر المكاتب المرنة والخاصة وقاعات الاجتماعات مع فوترة قائمة على الاستخدام لمساحات العمل المشترك."
-    ),
-    sections: [
-      {
-        kind: "bullets",
-        items: [
-          L("Co-working space management", "إدارة مساحات العمل المشترك"),
-          L("Desk and room booking", "حجز المكاتب والقاعات"),
-          L("Usage-based billing", "فوترة حسب الاستخدام"),
-          L("Community engagement tools", "أدوات تفاعل مجتمعي"),
+          L("One platform across residential, retail and office", "منصة واحدة عبر السكني والتجزئة والمكاتب"),
+          L("Shared facility and common-area management", "إدارة المرافق والمناطق المشتركة"),
+          L("Consolidated reporting across every asset type", "تقارير موحّدة عبر كل نوع من الأصول"),
+          L("Community engagement across every resident and tenant", "تفاعل مجتمعي مع كل ساكن ومستأجر"),
         ],
       },
     ],

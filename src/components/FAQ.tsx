@@ -1,30 +1,11 @@
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { useLocale } from "../i18n/LocaleContext";
 import { Plus, Minus, ArrowRight } from "./ui/Icon";
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import Button from "./ui/Button";
 
 export default function FAQ() {
   const { t } = useLocale();
   const [open, setOpen] = useState<number | null>(0);
-
-  // Email capture in the "Still have questions?" card
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState(false);
-  const [done, setDone] = useState(false);
-
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setDone(false);
-    if (!EMAIL_RE.test(email.trim())) {
-      setError(true);
-      return;
-    }
-    setError(false);
-    // TODO: await fetch("/api/contact-lead", { method: "POST", body: email })
-    setDone(true);
-    setEmail("");
-  }
 
   return (
     <section id="faq" className="scroll-mt-28 bg-white py-16 dark:bg-secondary-darker lg:py-20" aria-labelledby="faq-title">
@@ -65,56 +46,20 @@ export default function FAQ() {
         })}
       </div>
 
-      {/* Still have questions — email capture */}
+      {/* Still have questions — routes to the FAQ Hub or Contact page. */}
       <div id="contact" className="mx-auto mt-8 max-w-3xl scroll-mt-28 px-5 lg:px-8">
         <div className="rounded-[28px] bg-[#F6F7F8] p-8 text-center dark:bg-white/5">
           <h3 className="text-xl font-medium text-ink dark:text-white">{t.faq.stillTitle}</h3>
-          <p className="mt-2 text-ink-soft dark:text-white/70">{t.faq.stillBody}</p>
+          <p className="mt-2 text-ink-soft dark:text-white/70">{t.faq.homeStillBody}</p>
 
-          <form onSubmit={handleSubmit} noValidate className="mx-auto mt-5 flex max-w-md flex-col gap-3 sm:flex-row">
-            <div className="flex-1 text-start">
-              <label htmlFor="faq-email" className="sr-only">
-                {t.faq.emailPlaceholder}
-              </label>
-              <input
-                id="faq-email"
-                type="email"
-                inputMode="email"
-                autoComplete="email"
-                dir="ltr"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (error) setError(false);
-                }}
-                aria-required="true"
-                aria-invalid={error || undefined}
-                aria-describedby={error ? "faq-email-err" : undefined}
-                placeholder={t.faq.emailPlaceholder}
-                className={`w-full rounded-xl border bg-white px-4 py-3 text-ink placeholder:text-grey-600 focus:border-primary dark:bg-white/10 dark:text-white dark:placeholder:text-white/40 ${
-                  error ? "border-danger" : "border-grey-200 dark:border-white/15"
-                }`}
-              />
-            </div>
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-primary px-6 py-3 font-medium text-white transition-colors hover:bg-secondary"
-            >
-              <span>{t.faq.stillCta}</span>
-              <ArrowRight />
-            </button>
-          </form>
-
-          {error && (
-            <p id="faq-email-err" role="alert" className="mt-2 text-sm text-danger">
-              {t.faq.emailError}
-            </p>
-          )}
-          {done && (
-            <p role="status" className="mt-2 text-sm text-success">
-              {t.faq.emailSuccess}
-            </p>
-          )}
+          <div className="mx-auto mt-5 flex max-w-md flex-col justify-center gap-3 sm:flex-row">
+            <Button href="/faq" icon={<ArrowRight />}>
+              {t.faq.stillFaqCta}
+            </Button>
+            <Button href="/contact" variant="outline">
+              {t.faq.stillContactCta}
+            </Button>
+          </div>
         </div>
       </div>
     </section>

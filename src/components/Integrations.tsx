@@ -12,9 +12,14 @@ export default function Integrations() {
           {t.integrations.title}
         </h2>
         <p className="mt-4 text-ink-soft dark:text-white/70">{t.integrations.subtitle}</p>
-        <Button href="/contact" className="mt-6" icon={<ArrowRight />}>
-          {t.integrations.seeAll}
-        </Button>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <Button href="/integrations" icon={<ArrowRight />}>
+            {t.integrations.seeAll}
+          </Button>
+          <Button href="https://docs.goatar.com" variant="outline">
+            {t.integrations.apiDocs}
+          </Button>
+        </div>
       </div>
 
       <ul className="mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-5 px-5 lg:px-8">
@@ -29,7 +34,6 @@ export default function Integrations() {
           </li>
         ))}
       </ul>
-      <p className="mt-8 text-center text-sm text-ink-soft dark:text-white/60">{t.integrations.footnote}</p>
     </section>
   );
 }

@@ -34,25 +34,25 @@ export const en = {
   },
   features: [
     {
-      eyebrow: "Financial Management",
-      title: "Take full control of your property finances with ease",
-      body: "Gain complete control over your property's finances with our integrated tools. From automated rent collection and expense tracking to detailed financial reporting, manage your income and expenditures efficiently and accurately.",
+      eyebrow: "Sales Suite",
+      title: "Sell ready units and off-plan properties",
+      body: "Real estate sales automation for ready units and off-plan projects that helps you sell more and faster.",
     },
     {
-      eyebrow: "Service Management",
-      title: "Keep every service request organized, on time, and under control.",
-      body: "With Atar's Service Management, property issues are tracked from start to resolution. Tenants can easily submit maintenance requests, while managers assign tasks, monitor progress, and ensure timely completion.",
+      eyebrow: "Leasing Suite",
+      title: "Rent, renew, and retain",
+      body: "Rental management software to handle contracts, payments and renewals in one seamless interface.",
     },
     {
-      eyebrow: "Property Management",
-      title: "Manage every property with confidence, clarity, and control.",
-      body: "Atar simplifies the way you manage properties, whether it's one unit or an entire portfolio. Keep track of tenant details, lease agreements, payment status, inspections, and more, all from a centralized dashboard.",
+      eyebrow: "Property Operations Suite",
+      title: "Operate, maintain, and engage",
+      body: "Unify all post-sale and post-rental operations, including communication, maintenance, facility management and space and visitor management.",
     },
   ],
   featureCta: "Get Started",
   benefits: {
     title:
-      "Built for Property Managers Who Want Less Stress, More Control, and Real Results. That's Atar",
+      "Built for Developers and Managers Who Want Less Stress, More Control, and Real Results. That's Atar.",
     subtitle:
       "From streamlined operations to meaningful insights, Atar is built for those who expect more from property tech.",
     items: [
@@ -75,11 +75,11 @@ export const en = {
     ],
   },
   integrations: {
-    title: "Empowering your business with streamlined connectivity",
+    title: "Connect Atar to the tools you already use",
     subtitle:
-      "Optimize your business with our seamless connectivity solutions, unlocking efficiency and collaboration across platforms.",
-    seeAll: "Ask About Integrations",
-    footnote: "and more than 100+ tools to integrate",
+      "From identity verification and analytics platforms to point-solutions and ERPs, Atar connects natively to national infrastructure and other tools.",
+    seeAll: "See All Integrations",
+    apiDocs: "View API Docs",
   },
   faq: {
     title: "Got questions? we've got answers!",
@@ -87,32 +87,34 @@ export const en = {
       "Whether you're curious about features, pricing, or getting started, we've got you covered. If you don't find what you're looking for, our team is always ready to assist you",
     items: [
       {
-        q: "Service Management",
-        a: "Streamline maintenance and service requests with our centralised system. Schedule tasks, track progress, and ensure timely resolutions to enhance tenant satisfaction and property upkeep.",
+        q: "What is Atar and who is it for?",
+        a: "Atar is a Saudi real estate and community management platform built for real estate agents, property managers, developers, and owners' associations. It covers leasing, sales, accounting, service requests, and community operations in one place, and is used by 20+ enterprise accounts managing 14,000+ units across Saudi Arabia.",
       },
       {
-        q: "What real estate asset classes does Atar serve?",
-        // ASSUMPTION: answer hidden in Figma.
-        a: "Atar supports residential communities, commercial buildings, mixed-use developments, and individual units, scaling from a single property to an entire portfolio.",
+        q: "Is Atar built specifically for the Saudi real estate market?",
+        a: "Yes. Atar integrates directly with Saudi national infrastructure, including Nafath for ID verification, SADAD for payments, and ZATCA for e-invoicing, and supports Arabic alongside English throughout the platform.",
       },
       {
-        q: "What is Atar property management software?",
-        // ASSUMPTION: answer hidden in Figma.
-        a: "Atar is a national real estate management platform that brings leasing, accounting, service requests, contracts, and reporting into one centralized dashboard for owners, managers, and tenants.",
+        q: "How does Atar compare to global property management platforms?",
+        a: "Global platforms are typically built for markets outside Saudi Arabia and require third-party workarounds for local compliance. Atar is built natively for the Saudi market, with direct Nafath, SADAD, and ZATCA integration, Arabic-first support, and local customer support, without needing extra middleware to operate compliantly here.",
       },
       {
-        q: "How does Atar handle payments and accounting?",
-        // ASSUMPTION: 4th item de-duplicated from Figma (was a repeat).
-        a: "Automate rent collection, track expenses, and generate detailed financial reports. Atar integrates with regional payment and e-invoicing tools so your books stay accurate and up to date.",
+        q: "Can I have a free trial?",
+        a: "Yes, Starter and Professional plans include a free 14-day trial with no credit card required to start.",
+      },
+      {
+        q: "Can I integrate Atar with software I already use?",
+        a: "Yes. Atar integrates with Nafath, SADAD, and ZATCA for Saudi-specific compliance and payments, and with enterprise systems including Oracle, SAP, Odoo, Microsoft Dynamics 365, Salesforce, and Zoho. It also connects with messaging platforms including Unifonic, Twilio, SendGrid, Meta, and WhatsApp. We also offer open API documentation for you to connect to any other tools you may be using.",
       },
     ],
     stillTitle: "Still have questions?",
     stillBody:
       "Can't find the answer you're looking for? Please contact to our friendly team.",
     stillCta: "Get in Touch",
-    emailPlaceholder: "Enter your email",
-    emailError: "Please enter a valid email address.",
-    emailSuccess: "Thanks! We'll be in touch shortly.",
+    // Home page's CTA card links out to two places instead of one, so it gets its own subtext + button labels.
+    homeStillBody: "Go to our FAQ Hub, or contact us for any other questions you may have.",
+    stillFaqCta: "FAQ Hub",
+    stillContactCta: "Contact Us",
   },
   cta: {
     title: "Looking for a true partner to help grow your business?",

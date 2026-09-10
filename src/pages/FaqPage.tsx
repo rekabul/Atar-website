@@ -1,73 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocale } from "../i18n/LocaleContext";
-import { pricingFaq, pick, type LStr } from "../data/pricing";
+import { pick } from "../data/pricing";
+import { faqHubCategories, allFaqHubItems, type FaqHubItem } from "../data/faqHub";
 import Reveal from "../components/ui/Reveal";
 import StaggerReveal from "../components/ui/StaggerReveal";
-import { Plus, Minus, ArrowRight, Search, Globe, Riyal, valueIcons } from "../components/ui/Icon";
+import { Plus, Minus, ArrowRight, Search } from "../components/ui/Icon";
 
 /**
- * Dedicated FAQ Hub — reuses the real, existing data/pricing.ts `pricingFaq`
- * question set (the same questions shown on /pricing) as its own page rather
- * than an in-page anchor, so "FAQ Hub" in the header/footer nav navigates
- * here instead of scrolling to /pricing#faq.
+ * Dedicated FAQ Hub — content lives in data/faqHub.ts (its own dataset, not
+ * shared with /pricing's FAQ) across 5 categories: the original Getting
+ * Started / Pricing & Plans / Product & Integrations, plus two new ones —
+ * Comparisons (the standalone Compare pages were dropped from nav, so their
+ * competitive-positioning content lives here now) and Security & Compliance.
  *
- * Categories are grouped from the real FAQ content itself (not invented
- * placeholder categories) and roughly track the site's own taxonomy:
- * onboarding, pricing (matches /pricing), and product/integrations (matches
- * /features and /integrations).
+ * Category filter uses the same pill-row pattern as the Integrations page
+ * category filter (rounded-full, filled when active, outlined otherwise).
  */
-function L(en: string, ar: string): LStr {
-  return { en, ar };
-}
 
-type IconRenderProps = { size?: number; className?: string };
-
-/** Riyal doesn't take a `size` prop like the other icons (it takes raw SVG props) — adapt it. */
-function PricingIcon({ size = 24, className }: IconRenderProps) {
-  return <Riyal width={size} height={size} className={className} />;
-}
-
-type Category = {
-  id: string;
-  label: LStr;
-  subtitle: LStr;
-  icon: (p: IconRenderProps) => JSX.Element;
-  indices: number[];
-};
-
-const categories: Category[] = [
-  {
-    id: "getting-started",
-    label: L("Getting Started", "البدء"),
-    subtitle: L(
-      "The basics — what Atar is, who it's for, and how to move your data over.",
-      "الأساسيات — ما هو أتار، ولمن هو موجّه، وكيفية نقل بياناتك إليه."
-    ),
-    icon: valueIcons.rocket,
-    indices: [0, 4, 9],
-  },
-  {
-    id: "pricing-plans",
-    label: L("Pricing & Plans", "الأسعار والباقات"),
-    subtitle: L(
-      "Trials, plan limits, and how billing works as your portfolio grows.",
-      "التجارب المجانية وحدود الباقات وكيفية عمل الفوترة مع نمو محفظتك."
-    ),
-    icon: PricingIcon,
-    indices: [1, 2, 3, 5],
-  },
-  {
-    id: "product-integrations",
-    label: L("Product & Integrations", "المنتج والتكاملات"),
-    subtitle: L(
-      "What makes Atar different, the tools it connects to, and mobile access.",
-      "ما الذي يميّز أتار، والأدوات التي يتصل بها، والوصول عبر الجوال."
-    ),
-    icon: Globe,
-    indices: [6, 7, 8],
-  },
-];
+const categories = faqHubCategories;
 
 export default function FaqPage() {
   const { t, locale } = useLocale();
@@ -83,22 +34,42 @@ export default function FaqPage() {
     };
   }, []);
 
+  // FAQPage structured data (schema.org) so search engines / AI answer
+  // engines can surface these Q&As directly.
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: allFaqHubItems.map((item) => ({
+        "@type": "Question",
+        name: pick(item.q, locale),
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: pick(item.a, locale),
+        },
+      })),
+    });
+    document.head.appendChild(script);
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [locale]);
+
   const trimmedQuery = query.trim().toLowerCase();
   const isSearching = trimmedQuery.length > 0;
   const activeCategoryData = categories.find((c) => c.id === activeCategory) ?? categories[0];
 
-  const visibleIndices = useMemo(() => {
+  const visibleItems: FaqHubItem[] = useMemo(() => {
     if (isSearching) {
-      return pricingFaq.items
-        .map((item, i) => ({ item, i }))
-        .filter(
-          ({ item }) =>
-            pick(item.q, locale).toLowerCase().includes(trimmedQuery) ||
-            pick(item.a, locale).toLowerCase().includes(trimmedQuery)
-        )
-        .map(({ i }) => i);
+      return allFaqHubItems.filter(
+        (item) =>
+          pick(item.q, locale).toLowerCase().includes(trimmedQuery) ||
+          pick(item.a, locale).toLowerCase().includes(trimmedQuery)
+      );
     }
-    return activeCategoryData.indices;
+    return activeCategoryData.items;
   }, [isSearching, trimmedQuery, activeCategoryData, locale]);
 
   return (
@@ -147,10 +118,13 @@ export default function FaqPage() {
         <section className="bg-white pb-4 dark:bg-secondary-darker">
           <div className="mx-auto max-w-5xl px-5 lg:px-8">
             <Reveal>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3" role="group" aria-label={locale === "ar" ? "الفئات" : "Categories"}>
+              <div
+                className="flex flex-wrap justify-center gap-2.5"
+                role="group"
+                aria-label={locale === "ar" ? "الفئات" : "Categories"}
+              >
                 {categories.map((cat) => {
                   const isActive = cat.id === activeCategory;
-                  const Icon = cat.icon;
                   return (
                     <button
                       key={cat.id}
@@ -162,14 +136,11 @@ export default function FaqPage() {
                       aria-pressed={isActive}
                       className={
                         isActive
-                          ? "flex flex-col items-center gap-3 rounded-2xl border-2 border-primary bg-primary/5 px-4 py-6 text-center transition-colors"
-                          : "flex flex-col items-center gap-3 rounded-2xl border border-grey-200 bg-white px-4 py-6 text-center transition-colors hover:border-primary/50 dark:border-white/10 dark:bg-white/5"
+                          ? "rounded-full bg-primary px-4 py-2 text-sm font-medium text-white transition-colors"
+                          : "rounded-full border border-grey-200 px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:border-primary hover:text-primary dark:border-white/15 dark:text-white/70"
                       }
                     >
-                      <Icon size={26} className={isActive ? "text-primary" : "text-ink-muted dark:text-white/50"} />
-                      <span className={`text-sm font-medium ${isActive ? "text-primary" : "text-ink dark:text-white"}`}>
-                        {pick(cat.label, locale)}
-                      </span>
+                      {pick(cat.label, locale)}
                     </button>
                   );
                 })}
@@ -192,22 +163,21 @@ export default function FaqPage() {
             <p className="mt-3 text-ink-soft dark:text-white/70">
               {isSearching
                 ? locale === "ar"
-                  ? `${visibleIndices.length} نتيجة`
-                  : `${visibleIndices.length} result${visibleIndices.length === 1 ? "" : "s"}`
+                  ? `${visibleItems.length} نتيجة`
+                  : `${visibleItems.length} result${visibleItems.length === 1 ? "" : "s"}`
                 : pick(activeCategoryData.subtitle, locale)}
             </p>
           </Reveal>
         </div>
 
         <StaggerReveal className="mx-auto mt-10 max-w-3xl space-y-3 px-5 lg:px-8" y={16}>
-          {visibleIndices.map((i) => {
-            const item = pricingFaq.items[i];
+          {visibleItems.map((item, i) => {
             const isOpen = openFaq === i;
             const panelId = `faq-hub-panel-${i}`;
             const btnId = `faq-hub-btn-${i}`;
             return (
               <div
-                key={i}
+                key={`${activeCategoryData.id}-${i}-${pick(item.q, locale)}`}
                 className="overflow-hidden rounded-2xl border border-grey-200 bg-white dark:border-white/10 dark:bg-white/5"
               >
                 <h3>
@@ -236,7 +206,7 @@ export default function FaqPage() {
               </div>
             );
           })}
-          {visibleIndices.length === 0 && (
+          {visibleItems.length === 0 && (
             <p className="text-center text-ink-soft dark:text-white/70">
               {locale === "ar" ? "لا توجد نتائج مطابقة." : "No matching questions found."}
             </p>

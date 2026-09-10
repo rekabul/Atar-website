@@ -16,7 +16,6 @@ type Category =
   | "identity"
   | "payments"
   | "analytics"
-  | "housing"
   | "automation"
   | "trust"
   | "enterprise"
@@ -26,7 +25,6 @@ const categories: { id: Category; label: LStr }[] = [
   { id: "identity", label: L("Identity & Compliance", "الهوية والامتثال") },
   { id: "payments", label: L("Payments", "المدفوعات") },
   { id: "analytics", label: L("Analytics & Reporting", "التحليلات والتقارير") },
-  { id: "housing", label: L("Government & Housing", "الجهات الحكومية والإسكان") },
   { id: "automation", label: L("Automation", "الأتمتة") },
   { id: "trust", label: L("Trust & Verification", "الثقة والتحقق") },
   { id: "enterprise", label: L("Enterprise Systems", "أنظمة المؤسسات") },
@@ -54,13 +52,6 @@ const integrationCopy: Record<string, { category: Category; description: LStr }>
     description: L(
       "Turn portfolio, financial, and occupancy data into custom dashboards and reports.",
       "حوّل بيانات المحفظة والماليات والإشغال إلى لوحات تحكم وتقارير مخصصة."
-    ),
-  },
-  Sakani: {
-    category: "housing",
-    description: L(
-      "Connect listings and eligible units with the Ministry of Housing's national housing program.",
-      "اربط الإعلانات والوحدات المؤهلة ببرنامج سكني الوطني التابع لوزارة الإسكان."
     ),
   },
   Zapier: {
@@ -289,10 +280,6 @@ export default function IntegrationsPage() {
               );
             })}
           </StaggerReveal>
-
-          <p className="mt-10 text-center text-sm text-ink-soft dark:text-white/60">
-            {locale === "ar" ? "وأكثر من 100+ أداة قابلة للتكامل" : "and 100+ more tools to integrate"}
-          </p>
         </div>
       </section>
 

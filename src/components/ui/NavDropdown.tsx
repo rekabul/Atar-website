@@ -70,20 +70,46 @@ export default function NavDropdown({
           aria-labelledby={btnId}
           className="absolute start-0 top-full z-50 mt-3 w-[320px] rounded-2xl border border-grey-100 bg-white p-2.5 shadow-lift dark:border-white/10 dark:bg-secondary-darker"
         >
-          <ul className="flex flex-col">
-            {group.items.map((item) => (
-              <li key={item.to} role="none">
-                <Link
-                  role="menuitem"
-                  to={item.to}
-                  onClick={() => setOpen(false)}
-                  className="block rounded-xl px-3.5 py-2.5 text-sm leading-snug text-ink transition-colors hover:bg-grey-50 hover:text-primary dark:text-white dark:hover:bg-white/5 dark:hover:text-primary-light"
-                >
-                  {pick(item.label, locale)}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {group.sections ? (
+            <div className="flex flex-col gap-1">
+              {group.sections.map((section, i) => (
+                <div key={section.label.en} className={i > 0 ? "mt-1 border-t border-grey-100 pt-2 dark:border-white/10" : ""}>
+                  <p className="px-3.5 pb-1 pt-1.5 text-xs font-medium uppercase tracking-wider text-ink-muted dark:text-white/40">
+                    {pick(section.label, locale)}
+                  </p>
+                  <ul className="flex flex-col">
+                    {section.items.map((item) => (
+                      <li key={item.to} role="none">
+                        <Link
+                          role="menuitem"
+                          to={item.to}
+                          onClick={() => setOpen(false)}
+                          className="block rounded-xl px-3.5 py-2.5 text-sm leading-snug text-ink transition-colors hover:bg-grey-50 hover:text-primary dark:text-white dark:hover:bg-white/5 dark:hover:text-primary-light"
+                        >
+                          {pick(item.label, locale)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <ul className="flex flex-col">
+              {(group.items ?? []).map((item) => (
+                <li key={item.to} role="none">
+                  <Link
+                    role="menuitem"
+                    to={item.to}
+                    onClick={() => setOpen(false)}
+                    className="block rounded-xl px-3.5 py-2.5 text-sm leading-snug text-ink transition-colors hover:bg-grey-50 hover:text-primary dark:text-white dark:hover:bg-white/5 dark:hover:text-primary-light"
+                  >
+                    {pick(item.label, locale)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
     </div>

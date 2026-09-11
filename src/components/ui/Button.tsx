@@ -46,7 +46,7 @@ export default function Button({
   }
 
   return (
-    <a href={href} className={classes}>
+    <a href={href} className={classes} target="_blank" rel="noopener noreferrer">
       <span>{children}</span>
       {icon}
     </a>

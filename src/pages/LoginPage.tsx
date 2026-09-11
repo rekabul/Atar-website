@@ -4,8 +4,9 @@ import { useLocale } from "../i18n/LocaleContext";
 import { useTheme } from "../theme/ThemeContext";
 import Reveal from "../components/ui/Reveal";
 import Logo, { LogoMark } from "../components/ui/Logo";
-import { dashboard } from "../assets";
-import { ArrowRight, ArrowLeft, Sun, Moon, Globe, Check } from "../components/ui/Icon";
+import AuthBrandPanel from "../components/auth/AuthBrandPanel";
+import AuthToggleBar from "../components/auth/AuthToggleBar";
+import { ArrowRight, ArrowLeft, Check } from "../components/ui/Icon";
 
 type LStr = { en: string; ar: string };
 type Locale = "en" | "ar";
@@ -33,21 +34,13 @@ const copy = {
   resend: { en: "Resend code", ar: "إعادة إرسال الرمز" },
   changeNumber: { en: "Change number", ar: "تغيير الرقم" },
   noAccount: { en: "New to Atar?", ar: "جديد على أتار؟" },
-  contactSales: { en: "Talk to sales", ar: "تحدث مع المبيعات" },
+  signUpCta: { en: "Sign Up", ar: "إنشاء حساب" },
   doneTitle: { en: "You're in", ar: "تم الدخول" },
   doneBody: {
     en: "You're verified. (Demo only, connect this screen to your auth backend.)",
     ar: "تم التحقق بنجاح. (نسخة تجريبية، اربط هذه الشاشة ببوابة الدخول الفعلية.)",
   },
   backToSite: { en: "Back to atar.com", ar: "العودة إلى atar.com" },
-  panelEyebrow: { en: "Property management, simplified", ar: "إدارة عقارية مبسّطة" },
-  panelTitleA: { en: "Manage Your", ar: "أدِر" },
-  panelTitleHighlight: { en: "Properties", ar: "عقاراتك" },
-  panelTitleB: { en: "With Ease", ar: "بكل سهولة" },
-  panelBody: {
-    en: "Leasing, accounting, service requests, and reporting, all from one smart dashboard. Sign in to stay in control of your portfolio.",
-    ar: "التأجير والمحاسبة وطلبات الخدمة والتقارير، كل ذلك من لوحة تحكم ذكية واحدة. سجّل الدخول لتبقى في السيطرة على محفظتك.",
-  },
   privacy: { en: "Privacy & Terms", ar: "الخصوصية والشروط" },
   contactUs: { en: "Contact us", ar: "تواصل معنا" },
   support: { en: "Support", ar: "الدعم" },
@@ -56,8 +49,8 @@ const copy = {
 const RESEND_SECONDS = 45;
 
 export default function LoginPage() {
-  const { locale, toggle } = useLocale();
-  const { theme, toggle: toggleTheme } = useTheme();
+  const { locale } = useLocale();
+  const { theme } = useTheme();
   const [step, setStep] = useState<"phone" | "otp" | "done">("phone");
 
   const [business, setBusiness] = useState("");
@@ -169,68 +162,9 @@ export default function LoginPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [otp]);
 
-  const ToggleBar = (
-    <div className="flex items-center gap-3">
-      <button
-        type="button"
-        onClick={toggleTheme}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full text-ink-muted transition-colors hover:text-primary dark:text-white/70 dark:hover:text-white"
-        aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-      >
-        {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
-      </button>
-      <button
-        type="button"
-        onClick={toggle}
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-muted transition-colors hover:text-primary dark:text-white/70 dark:hover:text-white"
-        aria-label={locale === "en" ? "Switch to Arabic" : "Switch to English"}
-      >
-        <Globe size={16} />
-        {locale === "en" ? "عربي" : "EN"}
-      </button>
-    </div>
-  );
-
   return (
     <div className="flex min-h-screen dark:bg-secondary-darker">
-      {/* Left — brand panel with product screenshot. Hidden below lg. */}
-      <div className="relative hidden w-[44%] shrink-0 overflow-hidden bg-gradient-to-br from-primary-lighter via-primary-lighter to-white dark:from-secondary-dark dark:via-secondary-darker dark:to-secondary-darker lg:flex lg:flex-col">
-        <LogoMark className="pointer-events-none absolute -top-10 -start-16 h-56 w-56 -rotate-12 text-primary/10 dark:text-white/[0.05]" />
-        <LogoMark className="pointer-events-none absolute -end-24 bottom-24 h-72 w-72 rotate-12 text-primary/10 dark:text-white/[0.04]" />
-
-        <div className="relative z-10 px-12 pt-14">
-          <Link to="/" aria-label="Atar home" className="inline-block">
-            <Logo light={theme === "dark"} className="h-9 w-auto" />
-          </Link>
-        </div>
-
-        <div className="relative z-10 mt-16 flex-1 px-12">
-          <p className="text-sm font-medium uppercase tracking-wider text-primary">
-            {pick(copy.panelEyebrow, locale)}
-          </p>
-          <h2 className="mt-4 text-4xl font-medium leading-tight tracking-tight text-ink dark:text-white">
-            {pick(copy.panelTitleA, locale)}{" "}
-            <span className="text-primary">{pick(copy.panelTitleHighlight, locale)}</span>{" "}
-            {pick(copy.panelTitleB, locale)}
-          </h2>
-          <p className="mt-5 max-w-md leading-relaxed text-ink-soft dark:text-white/70">
-            {pick(copy.panelBody, locale)}
-          </p>
-        </div>
-
-        {/* Product screenshot, bleeding off the bottom edge for depth */}
-        <div className="relative z-10 mt-10 px-12">
-          <div className="overflow-hidden rounded-t-2xl border border-b-0 border-grey-100 bg-white shadow-[0_-16px_40px_-16px_rgba(8,15,26,0.2)] dark:border-white/10">
-            <img
-              src={dashboard}
-              alt=""
-              aria-hidden="true"
-              className="block w-full translate-y-4"
-              loading="eager"
-            />
-          </div>
-        </div>
-      </div>
+      <AuthBrandPanel />
 
       {/* Right — auth form */}
       <div className="hero-bg relative flex flex-1 flex-col">
@@ -240,7 +174,7 @@ export default function LoginPage() {
           <Link to="/" aria-label="Atar home" className="lg:hidden">
             <Logo light={theme === "dark"} className="h-8 w-auto" />
           </Link>
-          {ToggleBar}
+          <AuthToggleBar />
         </header>
 
         <main className="relative z-10 flex flex-1 items-center justify-center px-5 py-6">
@@ -446,8 +380,8 @@ export default function LoginPage() {
             {step !== "done" && (
               <p className="mt-6 text-center text-sm text-ink-soft dark:text-white/60">
                 {pick(copy.noAccount, locale)}{" "}
-                <Link to="/contact" className="font-medium text-primary hover:underline">
-                  {pick(copy.contactSales, locale)}
+                <Link to="/signup" className="font-medium text-primary hover:underline">
+                  {pick(copy.signUpCta, locale)}
                 </Link>
               </p>
             )}

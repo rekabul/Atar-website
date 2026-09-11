@@ -386,12 +386,21 @@ function MagneticCta({ to, children }: { to: string; children: ReactNode }) {
     };
   }, []);
 
+  const className =
+    "mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white shadow-card transition-colors hover:bg-secondary";
+
+  // External (e.g. the HubSpot demo-booking link) → plain anchor, new tab;
+  // internal route → SPA navigation.
+  if (/^https?:\/\//.test(to)) {
+    return (
+      <a ref={ref} href={to} target="_blank" rel="noopener noreferrer" className={className}>
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <Link
-      ref={ref}
-      to={to}
-      className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white shadow-card transition-colors hover:bg-secondary"
-    >
+    <Link ref={ref} to={to} className={className}>
       {children}
     </Link>
   );
@@ -621,7 +630,7 @@ export default function FeaturesPage() {
                   ? "هل تحتاج إلى مزيد من المعلومات؟ احجز عرضاً توضيحياً لمعرفة المزيد"
                   : "Need more information? Book a demo to learn more"}
               </p>
-              <MagneticCta to="/contact">
+              <MagneticCta to="https://meetings.hubspot.com/atar/demo-meeting">
                 <span>{locale === "ar" ? "احجز عرضاً توضيحياً" : "Book a Demo"}</span>
                 <ArrowRight />
               </MagneticCta>

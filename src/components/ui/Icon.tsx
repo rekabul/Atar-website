@@ -527,6 +527,27 @@ export function BriefcaseIcon({ size = 18, ...p }: IconProps) {
   );
 }
 
+/** Sign-up form — name field adornment. */
+export function UserIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5" />
+    </svg>
+  );
+}
+
+/** Sign-up form — National ID / Residence Permit field adornment. */
+export function IdCardIcon({ size = 18, ...p }: IconProps) {
+  return (
+    <svg {...base(size)} {...p}>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <circle cx="8" cy="12" r="2" />
+      <path d="M13 10h5M13 14h5" />
+    </svg>
+  );
+}
+
 /** Header mega-menu — Compounds & Communities market concept. */
 export function CompoundIcon({ size = 18, ...p }: IconProps) {
   return (

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -159,13 +159,15 @@ export default function PlaceholderPage() {
                     ? "هل تحتاج إلى مزيد من المعلومات؟ احجز عرضاً توضيحياً لمعرفة المزيد"
                     : "Need more information? Book a demo to learn more"}
                 </p>
-                <Link
-                  to="/contact"
+                <a
+                  href="https://meetings.hubspot.com/atar/demo-meeting"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-secondary"
                 >
                   <span>{locale === "ar" ? "احجز عرضاً توضيحياً" : "Book a Demo"}</span>
                   <ArrowRight />
-                </Link>
+                </a>
               </div>
             </Reveal>
           </div>

@@ -23,7 +23,7 @@ export default function Hero() {
           <Button href="/contact" fullWidth icon={<ArrowRight />}>
             {t.hero.getStarted}
           </Button>
-          <Button href="/contact" variant="outline" fullWidth>
+          <Button href="https://meetings.hubspot.com/atar/demo-meeting" variant="outline" fullWidth>
             {t.hero.getDemo}
           </Button>
         </div>

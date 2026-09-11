@@ -6,6 +6,7 @@ import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutPage";
 import PricingPage from "./pages/PricingPage";
 import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 import IntegrationsPage from "./pages/IntegrationsPage";
 import FaqPage from "./pages/FaqPage";
 import PlaceholderPage from "./pages/PlaceholderPage";
@@ -53,10 +54,11 @@ export default function App() {
     <Routes>
       {/* Auth screens sit outside the marketing Layout — no site nav/footer,
           just their own minimal header, matching how most SaaS sign-in flows
-          keep the flow focused. Sign Up reuses the same phone+business+OTP
-          flow as Log In rather than duplicating a near-identical page. */}
+          keep the flow focused. Sign Up is its own dedicated registration
+          form (see SignupPage.tsx), sharing the same brand panel + toggle
+          bar as Log In via components/auth/*. */}
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
 
       <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />

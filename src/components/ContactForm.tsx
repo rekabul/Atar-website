@@ -58,10 +58,14 @@ export default function ContactForm({ hideEyebrow = false }: { hideEyebrow?: boo
   function update<K extends keyof Fields>(key: K, val: string) {
     setValues((v) => ({ ...v, [key]: val }));
     if (errors[key]) setErrors((e) => ({ ...e, [key]: undefined }));
+    // A "message sent" banner from a previous submit shouldn't linger once
+    // the user starts composing a new one — stale success feedback is worse
+    // than none, since it no longer reflects what's about to be submitted.
+    if (done) setDone(false);
   }
 
   const fieldClass = (err?: string) =>
-    `w-full rounded-xl border px-4 py-3 text-ink placeholder:text-grey-600 focus:border-primary dark:bg-white/5 dark:text-white dark:placeholder:text-white/30 ${
+    `w-full rounded-xl border px-4 py-3 text-ink placeholder:text-grey-600 transition-colors focus:border-primary focus:outline-none dark:bg-white/5 dark:text-white dark:placeholder:text-white/30 ${
       err ? "border-danger" : "border-grey-200 dark:border-white/15"
     }`;
 
@@ -73,7 +77,7 @@ export default function ContactForm({ hideEyebrow = false }: { hideEyebrow?: boo
           {!hideEyebrow && (
             <p className="text-sm font-medium uppercase tracking-wider text-primary">{c.eyebrow}</p>
           )}
-          <h2 id="contact-title" className="mt-3 text-3xl font-medium text-ink dark:text-white lg:text-4xl">
+          <h2 id="contact-title" className="mt-3 text-3xl font-medium tracking-tight text-ink dark:text-white lg:text-4xl">
             {c.title}
           </h2>
           <p className="mt-4 text-lg text-ink-soft dark:text-white/70">{c.subtitle}</p>
@@ -194,16 +198,18 @@ export default function ContactForm({ hideEyebrow = false }: { hideEyebrow?: boo
 
           <button
             type="submit"
-            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-secondary sm:w-auto"
+            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-all duration-150 hover:bg-secondary active:bg-secondary motion-safe:active:scale-[0.97] sm:w-auto"
           >
             <span>{c.submit}</span>
             <ArrowRight />
           </button>
 
           {done && (
-            <p role="status" className="mt-4 rounded-lg bg-success/10 px-4 py-3 text-sm text-success">
-              {c.success}
-            </p>
+            <Reveal y={8}>
+              <p role="status" className="mt-4 rounded-lg bg-success/10 px-4 py-3 text-sm text-success">
+                {c.success}
+              </p>
+            </Reveal>
           )}
           <p className="mt-4 text-xs text-ink-soft dark:text-white/50">{c.note}</p>
         </form>

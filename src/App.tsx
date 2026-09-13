@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import IntegrationsPage from "./pages/IntegrationsPage";
 import FaqPage from "./pages/FaqPage";
+import BlogPostPage from "./pages/BlogPostPage";
 import PlaceholderPage from "./pages/PlaceholderPage";
 
 // Every path in data/placeholderPages.ts gets a route here, all sharing the
@@ -68,6 +69,7 @@ export default function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/integrations" element={<IntegrationsPage />} />
         <Route path="/faq" element={<FaqPage />} />
+        <Route path="/resources/blog/:slug" element={<BlogPostPage />} />
         {PLACEHOLDER_PATHS.map((path) => (
           <Route key={path} path={path} element={<PlaceholderPage />} />
         ))}

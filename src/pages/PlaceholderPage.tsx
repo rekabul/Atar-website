@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,7 +11,9 @@ import {
   type PageSection,
 } from "../data/placeholderPages";
 import { caseStudyPhotos } from "../data/assetsMap";
+import { brandedAppMockup } from "../assets";
 import Reveal from "../components/ui/Reveal";
+import Button from "../components/ui/Button";
 import Clients from "../components/Clients";
 import Logo, { LogoMark } from "../components/ui/Logo";
 import {
@@ -28,6 +30,10 @@ import {
   TicketIcon,
   FacilityIcon,
   PaymentIcon,
+  AppleLogo,
+  GoogleLogo,
+  TagIcon,
+  BellIcon,
 } from "../components/ui/Icon";
 import { prefersReducedMotion } from "../hooks/useInView";
 
@@ -112,6 +118,7 @@ export default function PlaceholderPage() {
   const isSalesSuite = pathname === "/products/sales-suite";
   const isLeasingSuite = pathname === "/products/leasing-suite";
   const isOperationsSuite = pathname === "/products/operations-suite";
+  const isBrandedMobileApp = pathname === "/products/addons/branded-mobile-app";
 
   useEffect(() => {
     const prev = document.title;
@@ -143,13 +150,16 @@ export default function PlaceholderPage() {
         {isSalesSuite && <SalesFlowStepper locale={locale} />}
         {isLeasingSuite && <LeasingFlowStepper locale={locale} />}
         {isOperationsSuite && <OperationsFlowStepper locale={locale} />}
+        {isBrandedMobileApp && <BrandedAppShowcase locale={locale} />}
       </section>
 
       {copy.sections?.map((section, i) => (
         <SectionBlock key={i} section={section} locale={locale} />
       ))}
 
-      {!copy.minimalFooter && (
+      {isBrandedMobileApp && <MobileFeatureShowcase locale={locale} />}
+
+      {!copy.minimalFooter && (isBrandedMobileApp ? <DownloadCTA locale={locale} /> : (
         <section className="bg-white py-16 dark:bg-secondary-darker lg:py-24" aria-label="Talk to us">
           <div className="mx-auto max-w-3xl px-5 lg:px-8">
             <Reveal>
@@ -163,7 +173,7 @@ export default function PlaceholderPage() {
                   href="https://meetings.hubspot.com/atar/demo-meeting"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-secondary"
+                  className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-all duration-150 hover:bg-secondary active:bg-secondary motion-safe:active:scale-[0.97]"
                 >
                   <span>{locale === "ar" ? "احجز عرضاً توضيحياً" : "Book a Demo"}</span>
                   <ArrowRight />
@@ -172,8 +182,40 @@ export default function PlaceholderPage() {
             </Reveal>
           </div>
         </section>
-      )}
+      ))}
     </>
+  );
+}
+
+/**
+ * Branded Mobile App page's closing CTA — replaces the generic "Book a
+ * Demo" block with App Store / Google Play download buttons, since the
+ * page's own goal is getting the app installed, not booking a demo.
+ * Store links are placeholders ("#") until the app is actually published.
+ */
+function DownloadCTA({ locale }: { locale: "en" | "ar" }) {
+  return (
+    <section className="bg-white py-16 dark:bg-secondary-darker lg:py-24" aria-label="Download the app">
+      <div className="mx-auto max-w-3xl px-5 lg:px-8">
+        <Reveal>
+          <div className="rounded-[28px] border border-grey-100 bg-[#F6F7F8] p-8 text-center dark:border-white/10 dark:bg-white/5 lg:p-10">
+            <p className="leading-relaxed text-ink-soft dark:text-white/70">
+              {locale === "ar"
+                ? "جاهز تبدأ؟ حمّل تطبيق أتار على iOS أو Android"
+                : "Ready to get started? Download the Atar app on iOS or Android"}
+            </p>
+            <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Button href="#" icon={<AppleLogo />} className="motion-safe:active:scale-[0.97]">
+                {locale === "ar" ? "تحميل على أب ستور" : "Download on the App Store"}
+              </Button>
+              <Button href="#" variant="outline" icon={<GoogleLogo />} className="motion-safe:active:scale-[0.97]">
+                {locale === "ar" ? "التحميل من جوجل بلاي" : "Get it on Google Play"}
+              </Button>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
   );
 }
 
@@ -521,6 +563,205 @@ function OperationsFlowStepper({ locale }: { locale: "en" | "ar" }) {
         </div>
       </Reveal>
     </div>
+  );
+}
+
+/**
+ * Branded Mobile App hero visual — a client-provided photorealistic iPhone
+ * frame with the app screenshot already composited inside it, used as-is
+ * (no CSS-drawn bezel needed). The line below states iOS + Android
+ * availability as plain text rather than pill "buttons" — the real,
+ * clickable App Store / Google Play buttons live once, at DownloadCTA,
+ * so this doesn't duplicate an inert-looking control the visitor might
+ * try to tap.
+ */
+function BrandedAppShowcase({ locale }: { locale: "en" | "ar" }) {
+  return (
+    <div className="mx-auto mt-8 flex flex-col items-center px-5 pb-4">
+      <Reveal delay={80}>
+        <img
+          src={brandedAppMockup}
+          alt="Atar branded mobile app — resident home screen"
+          className="w-64 motion-safe:animate-float sm:w-72"
+        />
+      </Reveal>
+      <Reveal delay={160}>
+        <p className="mt-6 text-sm text-ink-soft dark:text-white/60">
+          {locale === "ar"
+            ? "متوفر على iOS وAndroid — استخدم أتار في أي مكان وأي وقت"
+            : "Available on iOS and Android — use Atar anywhere, anytime"}
+        </p>
+      </Reveal>
+    </div>
+  );
+}
+
+/**
+ * Mobile feature section for the Branded Mobile App page — a phone mockup
+ * beside an icon-led list of 4 features. On desktop (lg+), the section pins
+ * in place while scrolling: cards step through one at a time (dimmed →
+ * active) and the phone gives a small "screen change" pulse in sync, so the
+ * page holds still until all 4 features have had their turn instead of
+ * flying past in a normal scroll. Below lg, ScrollTrigger's pin is skipped
+ * (pinning is a poor fit for small screens) and cards just reveal normally
+ * via Reveal as the user scrolls past them.
+ *
+ * Only one real screenshot exists today, so the "screen change" is a scale/
+ * opacity pulse on the same image rather than a true content swap — once
+ * per-feature screenshots exist, swap the single <img> for a per-index src
+ * inside the onUpdate active-index branch below.
+ */
+function MobileFeatureShowcase({ locale }: { locale: "en" | "ar" }) {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<Array<HTMLLIElement | null>>([]);
+  const phoneRef = useRef<HTMLImageElement>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion() || !stageRef.current) return;
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 1024px)", () => {
+        const cards = cardRefs.current.filter((c): c is HTMLLIElement => !!c);
+        if (cards.length < 2 || !stageRef.current) return;
+
+        gsap.set(cards.slice(1), { opacity: 0.35, y: 16 });
+
+        let activeIndex = 0;
+        const trigger = ScrollTrigger.create({
+          trigger: stageRef.current,
+          start: () => {
+            const header = document.getElementById("top");
+            return `top ${header?.offsetHeight ?? 0}`;
+          },
+          end: () => `+=${cards.length * 380}`,
+          pin: true,
+          scrub: 0.5,
+          snap: 1 / (cards.length - 1),
+          onUpdate: (self) => {
+            const idx = Math.min(cards.length - 1, Math.floor(self.progress * cards.length));
+            if (idx === activeIndex) return;
+            activeIndex = idx;
+            cards.forEach((card, i) => {
+              gsap.to(card, {
+                opacity: i === idx ? 1 : 0.35,
+                y: i === idx ? 0 : 16,
+                duration: 0.35,
+                ease: "power2.out",
+              });
+            });
+            if (phoneRef.current) {
+              gsap.fromTo(
+                phoneRef.current,
+                { scale: 0.97, opacity: 0.85 },
+                { scale: 1, opacity: 1, duration: 0.4, ease: "power2.out" }
+              );
+            }
+          },
+        });
+
+        return () => trigger.kill();
+      });
+
+      return () => mm.revert();
+    },
+    { scope: stageRef, dependencies: [locale] }
+  );
+
+  const features: { Icon: (p: { size?: number }) => JSX.Element; title: string; body: string }[] =
+    locale === "ar"
+      ? [
+          {
+            Icon: TagIcon,
+            title: "علامتك التجارية، في كل مكان",
+            body: "شعارك وألوانك وقائمتك الخاصة في متجر التطبيقات — يرى المقيمون علامتك التجارية.",
+          },
+          {
+            Icon: TicketIcon,
+            title: "طلبات الخدمة، ببساطة",
+            body: "يقدّم المقيمون طلبات الصيانة ويتابعونها دون الحاجة لمكالمة هاتفية.",
+          },
+          {
+            Icon: PaymentIcon,
+            title: "المدفوعات، في متناول اليد",
+            body: "مدفوعات وكشوف حساب داخل التطبيق — دون الحاجة لبوابة منفصلة.",
+          },
+          {
+            Icon: BellIcon,
+            title: "دائماً على اطلاع",
+            body: "إشعارات فورية للإعلانات والتحديثات فور صدورها.",
+          },
+        ]
+      : [
+          {
+            Icon: TagIcon,
+            title: "Your brand, everywhere",
+            body: "Custom logo, colors and app store listing — residents see your name, not ours.",
+          },
+          {
+            Icon: TicketIcon,
+            title: "Service requests, simplified",
+            body: "Residents submit and track maintenance requests without a phone call.",
+          },
+          {
+            Icon: PaymentIcon,
+            title: "Payments, in their pocket",
+            body: "In-app payments and statements — no separate portal to log into.",
+          },
+          {
+            Icon: BellIcon,
+            title: "Always in the loop",
+            body: "Push notifications for announcements and updates, the moment they go out.",
+          },
+        ];
+
+  return (
+    <section className={sectionPad}>
+      <div className={wrap}>
+        <Reveal>
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-medium text-ink dark:text-white sm:text-3xl">
+              {locale === "ar" ? "مصمم لهاتف مقيميك" : "Built for your residents' phones"}
+            </h2>
+            <p className="mt-3 leading-relaxed text-ink-soft dark:text-white/70">
+              {locale === "ar"
+                ? "كل ما يحتاجه المقيم والمالك، في تطبيق واحد يحمل علامتك التجارية."
+                : "Everything a resident or owner needs, in one app that carries your brand."}
+            </p>
+          </div>
+        </Reveal>
+
+        <div ref={stageRef} className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-5 lg:items-center lg:gap-16">
+          <Reveal className="flex justify-center lg:col-span-2">
+            <img
+              ref={phoneRef}
+              src={brandedAppMockup}
+              alt="Atar branded mobile app on a resident's phone"
+              className="w-52 motion-safe:animate-float sm:w-60"
+            />
+          </Reveal>
+
+          <ul className="space-y-4 lg:col-span-3">
+            {features.map((f, i) => (
+              <Reveal key={i} delay={i * 60}>
+                <li
+                  ref={(el) => (cardRefs.current[i] = el)}
+                  className="flex items-start gap-4 rounded-2xl border border-grey-100 bg-grey-100/40 p-5 dark:border-white/10 dark:bg-white/5"
+                >
+                  <span className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-primary/10 text-primary dark:bg-primary/20">
+                    <f.Icon size={20} />
+                  </span>
+                  <div>
+                    <h3 className="font-medium text-ink dark:text-white">{f.title}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-ink-soft dark:text-white/70">{f.body}</p>
+                  </div>
+                </li>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -893,7 +1134,7 @@ function CaseStudiesSection({
                   <p className="text-sm font-medium uppercase tracking-wider text-primary">
                     {pick(item.tag, locale)}
                   </p>
-                  <h3 className="mt-3 text-2xl font-medium text-ink dark:text-white lg:text-3xl">
+                  <h3 className="mt-3 text-2xl font-medium tracking-tight text-ink dark:text-white lg:text-3xl">
                     {pick(item.title, locale)}
                   </h3>
 
@@ -1021,7 +1262,7 @@ function NewsSection({
       <div className={wrap}>
         {section.heading && (
           <Reveal>
-            <h2 className="mb-10 text-center text-2xl font-medium text-ink dark:text-white sm:text-3xl">
+            <h2 className="mb-10 text-center text-2xl font-medium tracking-tight text-ink dark:text-white sm:text-3xl">
               {pick(section.heading, locale)}
             </h2>
           </Reveal>
@@ -1029,13 +1270,26 @@ function NewsSection({
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {section.items.map((n, i) => (
             <Reveal key={i} delay={(i % 3) * 90} className="h-full">
-              <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-grey-100 bg-white shadow-card transition-shadow hover:shadow-lift dark:border-white/10 dark:bg-white/5">
-                <div className="flex aspect-[16/9] items-center justify-center bg-gradient-to-br from-secondary to-primary">
+              {/* Static preview card — the full story lives at its own page
+                  (see BlogPostPage.tsx), so "View Details" is a real link
+                  rather than an in-card expand. */}
+              <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-grey-100 bg-white shadow-card dark:border-white/10 dark:bg-white/5">
+                <div className="flex aspect-[16/9] shrink-0 items-center justify-center bg-gradient-to-br from-secondary to-primary">
                   <Logo light className="h-9 w-auto opacity-90" />
                 </div>
                 <div className="flex flex-1 flex-col p-5">
                   <p className="text-xs font-medium uppercase tracking-wider text-primary">{formatDate(n.date)}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-soft dark:text-white/70">{pick(n.body, locale)}</p>
+                  <p className="mt-2 font-medium leading-snug text-ink dark:text-white">{pick(n.title, locale)}</p>
+                  <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-ink-soft dark:text-white/70">
+                    {pick(n.body, locale)}
+                  </p>
+                  <Link
+                    to={`/resources/blog/${n.slug}`}
+                    className="mt-4 inline-flex items-center justify-center gap-2 self-start rounded-xl border border-grey-200 px-4 py-2.5 text-sm font-medium text-ink transition-all duration-150 hover:border-primary hover:text-primary active:bg-grey-50 motion-safe:active:scale-95 dark:border-white/15 dark:text-white dark:active:bg-white/5"
+                  >
+                    <span>{locale === "ar" ? "عرض التفاصيل" : "View Details"}</span>
+                    <ArrowRight size={15} />
+                  </Link>
                 </div>
               </article>
             </Reveal>

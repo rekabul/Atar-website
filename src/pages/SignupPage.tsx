@@ -67,6 +67,9 @@ export default function SignupPage() {
   const { theme } = useTheme();
 
   const [step, setStep] = useState<1 | 2>(1);
+  // Tracks navigation direction so step transitions mirror their path —
+  // Continue rises forward into step 2, Back retraces that path in reverse.
+  const [goingBack, setGoingBack] = useState(false);
   const [done, setDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -102,6 +105,7 @@ export default function SignupPage() {
     setNationalIdError(!nationalIdOk);
 
     if (!firstNameOk || !lastNameOk || !nationalIdOk) return;
+    setGoingBack(false);
     setStep(2);
   }
 
@@ -159,14 +163,14 @@ export default function SignupPage() {
                     </div>
                     <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-grey-100 dark:bg-white/10">
                       <div
-                        className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
+                        className="h-full rounded-full bg-primary transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
                         style={{ width: step === 1 ? "50%" : "100%" }}
                       />
                     </div>
                   </div>
 
                   {step === 1 ? (
-                    <Reveal key="step-1" className="mt-6 space-y-5">
+                    <Reveal key="step-1" y={goingBack ? -16 : 24} className="mt-6 space-y-5">
                       <Field
                         id="firstName"
                         icon={<UserIcon size={17} />}
@@ -236,7 +240,7 @@ export default function SignupPage() {
                       <button
                         type="button"
                         onClick={handleContinue}
-                        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-secondary"
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-all duration-150 hover:bg-secondary active:bg-secondary motion-safe:active:scale-[0.97]"
                       >
                         <span>{pick(copy.continueLabel, locale)}</span>
                         <ArrowRight />
@@ -330,8 +334,11 @@ export default function SignupPage() {
                         <div className="flex gap-3">
                           <button
                             type="button"
-                            onClick={() => setStep(1)}
-                            className="inline-flex items-center justify-center gap-2 rounded-xl border border-grey-200 px-5 py-3.5 font-medium text-ink transition-colors hover:bg-grey-50 dark:border-white/15 dark:text-white dark:hover:bg-white/5"
+                            onClick={() => {
+                              setGoingBack(true);
+                              setStep(1);
+                            }}
+                            className="inline-flex items-center justify-center gap-2 rounded-xl border border-grey-200 px-5 py-3.5 font-medium text-ink transition-all duration-150 hover:bg-grey-50 active:bg-grey-100 motion-safe:active:scale-[0.97] dark:border-white/15 dark:text-white dark:hover:bg-white/5 dark:active:bg-white/10"
                           >
                             <ArrowLeft />
                             <span>{pick(copy.backLabel, locale)}</span>
@@ -339,7 +346,7 @@ export default function SignupPage() {
                           <button
                             type="submit"
                             disabled={submitting}
-                            className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-70"
+                            className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-all duration-150 hover:bg-secondary active:bg-secondary motion-safe:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-70 disabled:active:scale-100"
                           >
                             <span>{submitting ? pick(copy.submitting, locale) : pick(copy.submit, locale)}</span>
                             {!submitting && <ArrowRight />}
@@ -350,7 +357,7 @@ export default function SignupPage() {
                   )}
                 </>
               ) : (
-                <div className="py-2 text-center">
+                <Reveal key="done" className="py-2 text-center">
                   <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-success-light text-success">
                     <Check size={26} />
                   </div>
@@ -358,12 +365,12 @@ export default function SignupPage() {
                   <p className="mt-2 leading-relaxed text-ink-soft dark:text-white/70">{pick(copy.doneBody, locale)}</p>
                   <Link
                     to="/login"
-                    className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-secondary"
+                    className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-all duration-150 hover:bg-secondary active:bg-secondary motion-safe:active:scale-[0.97]"
                   >
                     <span>{pick(copy.signIn, locale)}</span>
                     <ArrowRight />
                   </Link>
-                </div>
+                </Reveal>
               )}
             </div>
 

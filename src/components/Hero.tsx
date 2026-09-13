@@ -1,5 +1,5 @@
 import { useLocale } from "../i18n/LocaleContext";
-import { dashboard } from "../assets";
+import { dashboardV2 } from "../assets";
 import Button from "./ui/Button";
 import Reveal from "./ui/Reveal";
 import { ArrowRight } from "./ui/Icon";
@@ -32,11 +32,11 @@ export default function Hero() {
       <div id="platform" className="mx-auto max-w-6xl scroll-mt-28 px-5 pb-16 lg:px-8">
         <Reveal className="overflow-hidden rounded-2xl bg-white shadow-[0_24px_50px_-24px_rgba(8,15,26,0.25)]">
           <img
-            src={dashboard}
+            src={dashboardV2}
             alt={t.hero.dashboardAlt}
             className="block w-full"
-            width={1600}
-            height={1146}
+            width={2600}
+            height={1689}
             loading="eager"
             decoding="async"
           />

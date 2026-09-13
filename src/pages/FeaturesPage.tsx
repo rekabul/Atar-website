@@ -38,8 +38,11 @@ import {
 import { prefersReducedMotion } from "../hooks/useInView";
 import { type LStr, pick } from "../data/lifecycle";
 import InteractiveLifecycleStrip from "../components/features/InteractiveLifecycleStrip";
-import OrbitalLifecycleTimeline from "../components/features/OrbitalLifecycleTimeline";
-import CardStackLifecycle from "../components/features/CardStackLifecycle";
+// OrbitalLifecycleTimeline and CardStackLifecycle were two alternative takes on
+// this same diagram, compared side by side via a variant switcher during
+// review — Linear (InteractiveLifecycleStrip) is the one that shipped, so the
+// switcher and the other two are gone. Their component files are still in
+// ../components/features/ if either is needed again.
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
@@ -52,19 +55,14 @@ gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
  * than AppFolio's partner-marketplace card-grid, which represents third-party
  * add-ons rather than first-party modules.
  *
- * The "Continuous Cycle" strip has interchangeable variants (see
- * ../components/features/) so we can compare them before settling on one —
- * switched via the `cycleVariant` state below, not a permanent feature.
- * (The PDF-recreation variant was dropped from the picker; its component
- * file is still there if it's needed again.)
+ * The "Continuous Cycle" strip shows as a single static diagram (Linear) —
+ * it previously had Orbital/Stack alternatives behind a review-only variant
+ * switcher; both the switcher and the other two takes are gone now that
+ * Linear is the one that shipped. It's also no longer clickable: it's a
+ * decorative illustration of a continuous loop, not a step-by-step wizard,
+ * so a click-to-expand affordance that didn't lead anywhere was more
+ * confusing than helpful.
  */
-type CycleVariantId = "linear" | "orbital" | "stack";
-
-const cycleVariants: { id: CycleVariantId; label: LStr }[] = [
-  { id: "linear", label: { en: "Linear", ar: "بسيط" } },
-  { id: "orbital", label: { en: "Orbital", ar: "مداري" } },
-  { id: "stack", label: { en: "Stack", ar: "مكدس" } },
-];
 
 type ModuleColor = "primary" | "secondary" | "success" | "neutral";
 type IconType = (p: { size?: number; className?: string }) => ReactElement;
@@ -410,7 +408,6 @@ export default function FeaturesPage() {
   const { locale } = useLocale();
   const heroTitleRef = useRef<HTMLHeadingElement>(null);
   const [query, setQuery] = useState("");
-  const [cycleVariant, setCycleVariant] = useState<CycleVariantId>("linear");
 
   const q = query.trim().toLowerCase();
   const visibleCategories = moduleCategories
@@ -448,8 +445,6 @@ export default function FeaturesPage() {
     { scope: heroTitleRef }
   );
 
-  const isOrbital = cycleVariant === "orbital";
-
   const heroText = (
     <Reveal>
       <p className="inline-flex items-center gap-2 text-sm font-medium uppercase tracking-wider text-primary">
@@ -464,11 +459,7 @@ export default function FeaturesPage() {
       >
         Everything to Scale Your Real Estate Business
       </h1>
-      <p
-        className={`mt-5 text-lg leading-relaxed text-ink-soft dark:text-white/70 ${
-          isOrbital ? "max-w-xl" : "mx-auto max-w-2xl"
-        }`}
-      >
+      <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-white/70">
         Financial automation, AI-powered insights, compliance, and integrations, all built for Saudi Arabia's property market.
       </p>
     </Reveal>
@@ -476,75 +467,24 @@ export default function FeaturesPage() {
 
   return (
     <>
-      {/* Hero — a two-column layout (text start-aligned, orbital cycle on
-          the other side) when the Orbital variant is picked below; the
-          plain centred hero otherwise. See the Continuous Cycle section for
-          the variant switcher. */}
       <section className="hero-bg" aria-labelledby="features-title">
         <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8 lg:py-20">
-          {isOrbital ? (
-            <div className="grid items-center gap-10 text-start lg:grid-cols-2 lg:gap-16">
-              {heroText}
-              <Reveal delay={100}>
-                <OrbitalLifecycleTimeline locale={locale} compact />
-              </Reveal>
-            </div>
-          ) : (
-            <div className="mx-auto max-w-3xl text-center">{heroText}</div>
-          )}
+          <div className="mx-auto max-w-3xl text-center">{heroText}</div>
         </div>
       </section>
 
-      {/* Continuous Cycle — page 6's 8-stage lifecycle, built as
-          interchangeable variants so they can be compared side by side
-          before picking one (see ../components/features/ for each). This
-          switcher is a review tool, not meant to ship as a permanent
-          user-facing control. Orbital renders inline in the hero above
-          instead of a second time here. */}
-      <section className="py-12 lg:py-16" aria-label="Continuous cycle — variant preview">
+      {/* Continuous Cycle — page 6's 8-stage lifecycle, shown as a single
+          static diagram (no variant switcher — see the file-header comment
+          above for why, and no click-to-expand, since it's meant to
+          illustrate a continuous loop rather than invite interaction). */}
+      <section className="py-12 lg:py-16" aria-label="Continuous cycle">
         <div className="mx-auto max-w-6xl px-5 lg:px-8">
-          {/* Pinned to the true page edge (breaks out of the centred
-              max-w-6xl column on purpose) rather than sitting indented
-              alongside the heading — per feedback, moved as far start-side
-              as the section itself. Buttons stack vertically now that
-              there are three variants to choose from. */}
-          <div className="relative start-1/2 -ms-[50vw] mt-4 w-screen">
-            <div className="inline-flex flex-col items-stretch gap-1 rounded-[1.75rem] border border-grey-200 bg-grey-50 p-1 ps-4 dark:border-white/10 dark:bg-white/5 sm:ps-6">
-              {cycleVariants.map((v) => (
-                <button
-                  key={v.id}
-                  type="button"
-                  onClick={() => setCycleVariant(v.id)}
-                  aria-pressed={cycleVariant === v.id}
-                  className={`rounded-full px-4 py-1.5 text-start text-xs font-semibold uppercase tracking-wide transition-colors ${
-                    cycleVariant === v.id
-                      ? "bg-primary text-white shadow-card"
-                      : "text-ink-soft hover:text-primary dark:text-white/60"
-                  }`}
-                >
-                  {pick(v.label, locale)}
-                </button>
-              ))}
-            </div>
+          <div className="mt-10">
+            <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
+              {locale === "ar" ? "الدورة المستمرة" : "Continuous Cycle"}
+            </p>
+            <InteractiveLifecycleStrip locale={locale} />
           </div>
-
-          {cycleVariant === "linear" && (
-            <div className="mt-10">
-              <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
-                {locale === "ar" ? "الدورة المستمرة" : "Continuous Cycle"}
-              </p>
-              <InteractiveLifecycleStrip locale={locale} />
-            </div>
-          )}
-
-          {cycleVariant === "stack" && (
-            <div className="mt-10">
-              <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
-                {locale === "ar" ? "الدورة المستمرة" : "Continuous Cycle"}
-              </p>
-              <CardStackLifecycle locale={locale} />
-            </div>
-          )}
         </div>
       </section>
 
@@ -602,13 +542,15 @@ export default function FeaturesPage() {
                       return (
                         <div
                           key={item.en}
-                          className="rounded-2xl border border-grey-100 bg-white p-6 shadow-card transition-shadow hover:shadow-lift dark:border-white/10 dark:bg-white/5 lg:p-7"
+                          className="flex items-start gap-4 rounded-2xl border border-grey-100 bg-white p-5 shadow-card transition-shadow hover:shadow-lift dark:border-white/10 dark:bg-white/5"
                         >
-                          <ItemIcon size={32} className={c.iconText} />
-                          <p className="mt-5 text-xl font-medium text-ink dark:text-white">{pick(item, locale)}</p>
-                          <p className="mt-2 text-sm leading-relaxed text-ink-soft dark:text-white/60">
-                            {pick({ en: item.descEn, ar: item.descAr }, locale)}
-                          </p>
+                          <ItemIcon size={28} className={`mt-0.5 shrink-0 ${c.iconText}`} />
+                          <div>
+                            <p className="text-lg font-medium text-ink dark:text-white">{pick(item, locale)}</p>
+                            <p className="mt-1 text-sm leading-relaxed text-ink-soft dark:text-white/60">
+                              {pick({ en: item.descEn, ar: item.descAr }, locale)}
+                            </p>
+                          </div>
                         </div>
                       );
                     })}

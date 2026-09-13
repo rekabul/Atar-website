@@ -9,6 +9,18 @@ import type { NavGroup, NavLink } from "../../data/navigation";
  * accidentally dismiss it, short enough that it doesn't feel sticky. */
 const CLOSE_DELAY = 150;
 
+/** A section's item list stays at most this tall before wrapping into a new
+ * sub-column of its own (e.g. Products' 5 items become a 4 + 1 pair of
+ * columns) — keeps the panel a fixed, predictable height instead of growing
+ * as tall as whichever section happens to have the most items. */
+const MAX_ITEMS_PER_COLUMN = 4;
+
+function chunk<T>(items: T[], size: number): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < items.length; i += size) chunks.push(items.slice(i, i + size));
+  return chunks;
+}
+
 /**
  * Desktop mega-menu for the header's Products / Solutions / Markets
  * dropdowns — styled after DoorLoop's and TenantCloud's feature menus: a wide
@@ -110,24 +122,31 @@ export default function NavDropdown({
           aria-labelledby={btnId}
           className="absolute start-0 top-full z-50 mt-3 rounded-2xl border border-grey-100 bg-white p-5 shadow-lift dark:border-white/10 dark:bg-secondary-darker"
         >
-          <div
-            className="grid gap-x-10 gap-y-1"
-            style={{ gridTemplateColumns: `repeat(${columns.length}, minmax(200px, 232px))` }}
-          >
-            {columns.map((section) => (
-              <div key={section.label.en}>
-                {showColumnLabels && (
-                  <p className="mb-2 px-2.5 text-xs font-semibold uppercase tracking-wider text-ink-muted dark:text-white/40">
-                    {pick(section.label, locale)}
-                  </p>
-                )}
-                <ul className="flex flex-col">
-                  {section.items.map((item) => (
-                    <NavDropdownItem key={item.to} item={item} locale={locale} onNavigate={() => setOpen(false)} />
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <div className="flex gap-x-10">
+            {columns.map((section) => {
+              // Split each section's own items into ≤4-tall sub-columns
+              // rather than letting one long list (e.g. Products' 5 items)
+              // dictate the whole panel's height.
+              const subColumns = chunk(section.items, MAX_ITEMS_PER_COLUMN);
+              return (
+                <div key={section.label.en}>
+                  {showColumnLabels && (
+                    <p className="mb-2 px-2.5 text-xs font-semibold uppercase tracking-wider text-ink-muted dark:text-white/40">
+                      {pick(section.label, locale)}
+                    </p>
+                  )}
+                  <div className="flex gap-x-6">
+                    {subColumns.map((subColumnItems, i) => (
+                      <ul key={i} className="flex w-52 flex-col">
+                        {subColumnItems.map((item) => (
+                          <NavDropdownItem key={item.to} item={item} locale={locale} onNavigate={() => setOpen(false)} />
+                        ))}
+                      </ul>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

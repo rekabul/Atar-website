@@ -216,7 +216,13 @@ export default function OrbitalLifecycleTimeline({
                 </div>
 
                 {isExpanded && (
-                  <Card className="absolute left-1/2 top-20 w-64 -translate-x-1/2 overflow-visible shadow-lift">
+                  // Overrides the shared Card's `dark:bg-white/5` — this card floats
+                  // over the busy orbital ring (other nodes, connecting lines, the
+                  // pulsing center glow), so a near-transparent tint let all of that
+                  // show straight through and made the title/checkmark/text
+                  // unreadable in dark mode. A near-opaque backdrop-blurred surface
+                  // keeps the "floating glass" feel while guaranteeing legibility.
+                  <Card className="absolute left-1/2 top-20 w-64 -translate-x-1/2 overflow-visible bg-white/95 shadow-lift backdrop-blur-xl dark:bg-secondary-darker/95">
                     <div className="absolute -top-3 left-1/2 h-3 w-px -translate-x-1/2 bg-grey-300 dark:bg-white/30" />
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-start">

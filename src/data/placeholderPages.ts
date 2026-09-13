@@ -35,8 +35,12 @@ export type CaseStudyItem = {
 };
 export type TeamMember = { name: string; title: LStr };
 export type TimelineItem = { year: string; label: LStr };
-/** Same real partnership/milestone items already published on the About page. */
-export type NewsItem = { date: string; body: LStr };
+/** Same real partnership/milestone items already published on the About page.
+ * `slug` gives each item a stable, real detail page at
+ * /resources/blog/:slug (see pages/BlogPostPage.tsx) — `title` is a short
+ * heading for that page and the card, since the original copy is a full
+ * announcement paragraph with no headline of its own. */
+export type NewsItem = { date: string; slug: string; title: LStr; body: LStr };
 /** Placeholder testimonial — quote/name/title are dummy copy until a real customer quote is provided. */
 export type QuoteItem = { quote: LStr; name: string; title: LStr };
 /** Legal body text stays English-only — see note above; kept as plain strings, not LStr. */
@@ -369,17 +373,9 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
       "A white-labeled mobile app for your tenants, owners and buyers — service requests, payments and announcements, under your own brand.",
       "تطبيق جوال بعلامتك الخاصة لمستأجريك وملّاكك ومشتريك — طلبات الخدمة والمدفوعات والإعلانات، تحت علامتك التجارية."
     ),
-    sections: [
-      {
-        kind: "bullets",
-        items: [
-          L("Your logo, colors and app store listing", "شعارك وألوانك وقائمتك في متجر التطبيقات"),
-          L("Service requests and maintenance tracking", "طلبات الخدمة وتتبّع الصيانة"),
-          L("In-app payments and statements", "مدفوعات وكشوف حساب داخل التطبيق"),
-          L("Push notifications for announcements and updates", "إشعارات فورية للإعلانات والتحديثات"),
-        ],
-      },
-    ],
+    // No generic "bullets" section here — the same 4 points are covered by
+    // the bespoke MobileFeatureShowcase (heading + subheading + phone image
+    // per feature) rendered in PlaceholderPage.tsx for this route.
   },
 
   "/products/addons/powerbi-reports": {
@@ -1018,6 +1014,11 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
         items: [
           {
             date: "2024-10-28",
+            slug: "wathba-investment-partnership",
+            title: L(
+              "Wathba Investment Company Partners with Atar",
+              "شركة وثبة الاستثمارية تختار منصة أتار شريكاً"
+            ),
             body: L(
               "We are pleased to announce that Wathba Investment Company has chosen the Atar platform to be its partner in its journey towards digital transformation in real estate and residential community management.",
               "يسعدنا الإعلان عن اختيار شركة وثبة الاستثمارية لمنصة أتار شريكاً لها في رحلتها نحو التحول الرقمي في إدارة العقارات والمجتمعات السكنية."
@@ -1025,6 +1026,11 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
           },
           {
             date: "2024-10-30",
+            slug: "rafeh-real-estate-partnership",
+            title: L(
+              "Rafeh Real Estate Development Chooses Atar",
+              "شركة رافع للتطوير العقاري تختار أتار"
+            ),
             body: L(
               "We are pleased to announce that Rafeh Real Estate Development Company has chosen Atar platform to be its partner in its journey towards digital transformation in the management of real estate and residential communities.",
               "يسعدنا الإعلان عن اختيار شركة رافع للتطوير العقاري لمنصة أتار شريكاً لها في رحلتها نحو التحول الرقمي في إدارة العقارات والمجتمعات السكنية."
@@ -1032,6 +1038,11 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
           },
           {
             date: "2024-11-04",
+            slug: "mushid-company-partnership",
+            title: L(
+              "Mushid Company Selects Atar as Digital Transformation Partner",
+              "شركة مشيد تختار أتار شريكاً للتحول الرقمي"
+            ),
             body: L(
               "We are pleased to announce that Mushid Company has selected the Atar platform to be the primary partner in its digital transformation journey for managing real estate and residential communities.",
               "يسعدنا الإعلان عن اختيار شركة مشيد لمنصة أتار لتكون الشريك الأساسي في رحلة تحوّلها الرقمي لإدارة العقارات والمجتمعات السكنية."
@@ -1039,6 +1050,11 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
           },
           {
             date: "2023-03-09",
+            slug: "safa-investment-agreement",
+            title: L(
+              "Atar Signs Agreement with Safa Investment Company",
+              "أتار توقّع اتفاقية مع شركة صفا الاستثمارية"
+            ),
             body: L(
               "Under the patronage of the Minister of Municipalities and Housing, Mr. Majid Al-Hogail, and the Chairman of the Board of Directors of the Riyadh Chamber, Mr. Ajlan Al-Ajlan, we are pleased to announce the signing of an agreement with Safa Investment Company to provide a real estate and residential communities management system.",
               "برعاية معالي وزير الشؤون البلدية والقروية والإسكان الأستاذ ماجد الحقيل، ورئيس مجلس إدارة غرفة الرياض الأستاذ عجلان العجلان، يسعدنا الإعلان عن توقيع اتفاقية مع شركة صفا الاستثمارية لتوفير نظام إدارة العقارات والمجتمعات السكنية."
@@ -1046,6 +1062,11 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
           },
           {
             date: "2023-09-12",
+            slug: "al-sulaiman-cityscape-agreement",
+            title: L(
+              "Atar and Al Sulaiman Real Estate Sign Cooperation Agreement at Cityscape World",
+              "أتار والسليمان العقارية توقّعان اتفاقية تعاون في سيتي سكيب العالمي"
+            ),
             body: L(
               "On the sidelines of the #Cityscape_World exhibition, a cooperation agreement was signed between Atar Real Estate Services Company, in the presence of CEO / Hasib Mohammed, and Al Sulaiman Real Estate Company, in the presence of Business Development Manager / Othman Al Sulaiman.",
               "على هامش معرض #سيتي_سكيب العالمي، تم توقيع اتفاقية تعاون بين شركة أتار للخدمات العقارية، بحضور الرئيس التنفيذي / حسيب محمد، وشركة السليمان العقارية، بحضور مدير تطوير الأعمال / عثمان السليمان."
@@ -1053,6 +1074,11 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
           },
           {
             date: "2024-11-08",
+            slug: "khawaled-real-estate-launch",
+            title: L(
+              "Khawaled Real Estate Launches on Atar in 48 Hours",
+              "الخوالد العقارية تطلق منصتها على أتار خلال 48 ساعة"
+            ),
             body: L(
               "We are very pleased to proudly announce the launch of the Khawaled Real Estate Company platform in a record time of no more than 48 hours. The platform aims to provide all property and residential community management services and raise the quality of life for residents.",
               "يسرّنا الإعلان بكل فخر عن إطلاق منصة شركة الخوالد العقارية في وقت قياسي لا يتجاوز 48 ساعة. تهدف المنصة إلى توفير جميع خدمات إدارة العقارات والمجتمعات السكنية والارتقاء بجودة حياة السكان."
@@ -1355,3 +1381,14 @@ export const placeholderFallback: PlaceholderCopy = {
     "هذه الصفحة قيد الإعداد. في هذه الأثناء، تواصل معنا وسيساعدك فريقنا مباشرة."
   ),
 };
+
+/** All blog announcement items, in the order they render on /resources/blog — used by BlogPostPage.tsx to look up a single story by slug (`getBlogPostBySlug`) and by its "more stories" list. */
+export const blogPosts: NewsItem[] = (
+  placeholderPages["/resources/blog"].sections?.find((s) => s.kind === "news") as
+    | { kind: "news"; heading?: LStr; items: NewsItem[] }
+    | undefined
+)?.items ?? [];
+
+export function getBlogPostBySlug(slug: string): NewsItem | undefined {
+  return blogPosts.find((post) => post.slug === slug);
+}

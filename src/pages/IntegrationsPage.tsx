@@ -224,8 +224,8 @@ export default function IntegrationsPage() {
                 aria-pressed={filter === "all"}
                 className={
                   filter === "all"
-                    ? "rounded-full bg-primary px-4 py-2 text-sm font-medium text-white transition-colors"
-                    : "rounded-full border border-grey-200 px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:border-primary hover:text-primary dark:border-white/15 dark:text-white/70"
+                    ? "rounded-full bg-primary px-4 py-2 text-sm font-medium text-white transition-all duration-150 active:bg-secondary motion-safe:active:scale-95"
+                    : "rounded-full border border-grey-200 px-4 py-2 text-sm font-medium text-ink-soft transition-all duration-150 hover:border-primary hover:text-primary active:bg-grey-50 motion-safe:active:scale-95 dark:border-white/15 dark:text-white/70 dark:active:bg-white/5"
                 }
               >
                 {locale === "ar" ? "الكل" : "All"}
@@ -238,8 +238,8 @@ export default function IntegrationsPage() {
                   aria-pressed={filter === c.id}
                   className={
                     filter === c.id
-                      ? "rounded-full bg-primary px-4 py-2 text-sm font-medium text-white transition-colors"
-                      : "rounded-full border border-grey-200 px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:border-primary hover:text-primary dark:border-white/15 dark:text-white/70"
+                      ? "rounded-full bg-primary px-4 py-2 text-sm font-medium text-white transition-all duration-150 active:bg-secondary motion-safe:active:scale-95"
+                      : "rounded-full border border-grey-200 px-4 py-2 text-sm font-medium text-ink-soft transition-all duration-150 hover:border-primary hover:text-primary active:bg-grey-50 motion-safe:active:scale-95 dark:border-white/15 dark:text-white/70 dark:active:bg-white/5"
                   }
                 >
                   {pick(c.label, locale)}
@@ -248,7 +248,10 @@ export default function IntegrationsPage() {
             </div>
           </Reveal>
 
-          <StaggerReveal className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" y={20}>
+          {/* Keyed on the active filter so switching categories remounts the
+              grid and replays the coordinated fade-up entrance — otherwise
+              the filtered set would just pop in instantly with no transition. */}
+          <StaggerReveal key={filter} className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" y={20}>
             {visible.map(({ asset, copy }) => {
               const categoryLabel = categories.find((c) => c.id === copy.category)?.label;
               return (
@@ -297,7 +300,7 @@ export default function IntegrationsPage() {
               <CardFooter className="justify-center px-0 pb-0 pt-5">
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-secondary"
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-all duration-150 hover:bg-secondary active:bg-secondary motion-safe:active:scale-[0.97]"
                 >
                   <span>{locale === "ar" ? "اسأل عن التكاملات" : "Ask about integrations"}</span>
                   <ArrowRight />

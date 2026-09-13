@@ -1,116 +1,110 @@
-import { useState } from "react";
-import { Zap } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { useLayoutEffect, useRef, useState } from "react";
 import { buildStageDetails } from "../../data/lifecycle";
 
 /**
- * "Linear" variant — a Swiss-precision flat stepper: a single brand-tinted
- * spine connecting eight numbered nodes, each clickable to reveal the same
- * stage detail panel the Orbital variant shows (identical icon/label/data
- * from data/lifecycle.ts). No horizontal scroll — the row wraps to a 4x2
- * grid below the sm breakpoint instead of clipping or requiring a scrollbar.
+ * "Linear" — a Swiss-precision flat diagram of the 8-stage continuous
+ * lifecycle: a zigzag brand-tinted spine connecting eight numbered, icon +
+ * label nodes (data from data/lifecycle.ts). Purely illustrative — it
+ * depicts a continuous loop rather than a sequence to step through, so
+ * there's no click-to-expand affordance; every node's stage number, icon,
+ * and title are always visible instead of being gated behind an
+ * interaction. No horizontal scroll — the row wraps to a 4x2 grid below the
+ * sm breakpoint instead of clipping or requiring a scrollbar (the spine is
+ * sm+ only, since a zigzag wouldn't read correctly across two wrapped rows).
+ *
+ * The spine's vertical position is measured (not a hardcoded pixel guess) —
+ * it reads the first icon's actual on-screen center relative to the row —
+ * so it always lands exactly behind the icon circles regardless of font
+ * metrics. The icon circles themselves are opaque (dark mode used to be a
+ * near-transparent bg-white/5, which let the spine show through) so no part
+ * of the line is ever visible cutting across a node.
  */
 export default function InteractiveLifecycleStrip({ locale }: { locale: string }) {
   const stages = buildStageDetails(locale);
-  const [activeId, setActiveId] = useState<number | null>(null);
-  const active = stages.find((s) => s.id === activeId) ?? null;
+  const rowRef = useRef<HTMLDivElement>(null);
+  const firstIconRef = useRef<HTMLSpanElement>(null);
+  const [lineY, setLineY] = useState<number | null>(null);
 
-  const toggle = (id: number) => setActiveId((prev) => (prev === id ? null : id));
+  useLayoutEffect(() => {
+    function measure() {
+      if (!rowRef.current || !firstIconRef.current) return;
+      const rowTop = rowRef.current.getBoundingClientRect().top;
+      const iconRect = firstIconRef.current.getBoundingClientRect();
+      setLineY(iconRect.top - rowTop + iconRect.height / 2);
+    }
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (rowRef.current) ro.observe(rowRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  // Zigzag path: a smooth curve that passes exactly through every node's x
+  // position (so each end is guaranteed to sit on the node's own center,
+  // hidden behind the opaque icon circle) and bows toward a midpoint —
+  // alternating up/down — between each pair of nodes. Built as quadratic
+  // Bézier segments (using each midpoint as the curve's control point,
+  // rather than a vertex the line actually passes through) instead of a
+  // polyline, so the bends are smooth curves rather than sharp angles.
+  const n = stages.length;
+  const AMP = 11;
+  let path = "M 0,20";
+  for (let i = 0; i < n - 1; i++) {
+    const midX = i * 100 + 50;
+    const midY = i % 2 === 0 ? 20 - AMP : 20 + AMP;
+    const nextX = (i + 1) * 100;
+    path += ` Q ${midX},${midY} ${nextX},20`;
+  }
 
   return (
     <div className="mx-auto max-w-5xl">
-      <div className="relative">
-        {/* Connecting spine — sm+ only, sits at the icon row's vertical
-            center regardless of viewport width; hidden on the wrapped
-            mobile grid where a straight line wouldn't read correctly. */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 left-[6.25%] right-[6.25%] top-[46px] hidden h-px bg-gradient-to-r from-primary/20 via-secondary/25 to-primary/20 sm:block dark:from-primary/25 dark:via-white/15 dark:to-primary/25"
-        />
+      <div ref={rowRef} className="relative">
+        {lineY !== null && (
+          <svg
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-[6.25%] hidden w-[87.5%] -translate-y-1/2 text-primary/25 sm:block dark:text-white/15"
+            style={{ top: lineY, height: 40 }}
+            viewBox={`0 0 ${(n - 1) * 100} 40`}
+            preserveAspectRatio="none"
+          >
+            <path
+              d={path}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+        )}
 
         <div className="grid grid-cols-4 gap-y-7 sm:grid-cols-8 sm:gap-y-0">
-          {stages.map((s) => {
+          {stages.map((s, i) => {
             const Icon = s.icon;
-            const isActive = s.id === activeId;
             return (
               <div key={s.id} className="flex flex-col items-center gap-2 px-1">
-                <button
-                  type="button"
-                  onClick={() => toggle(s.id)}
-                  aria-pressed={isActive}
-                  className="flex flex-col items-center gap-2 rounded-xl py-1 transition-transform duration-200 hover:-translate-y-0.5"
-                >
-                  <span
-                    className={`font-mono text-[11px] tracking-wider transition-colors ${
-                      isActive ? "font-semibold text-primary dark:text-primary-light" : "text-ink-muted/70 dark:text-white/40"
-                    }`}
-                  >
-                    {s.stageNo}
-                  </span>
+                <span className="font-mono text-[11px] tracking-wider text-ink-muted/70 dark:text-white/40">
+                  {s.stageNo}
+                </span>
 
-                  <span className="relative z-10 flex h-11 w-11 items-center justify-center">
-                    {isActive && (
-                      <span className="absolute -inset-1.5 animate-ping rounded-full border border-primary/30 opacity-70" />
-                    )}
-                    <span
-                      className={`flex h-11 w-11 items-center justify-center rounded-full border-2 transition-all duration-300 ${
-                        isActive
-                          ? "scale-110 border-primary bg-primary text-white shadow-[0_0_0_6px_rgba(0,142,165,0.12)]"
-                          : "border-grey-200 bg-white text-ink-soft shadow-card hover:border-primary/40 hover:text-primary dark:border-white/15 dark:bg-white/5 dark:text-white/70"
-                      }`}
-                    >
-                      <Icon size={17} />
-                    </span>
-                  </span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => toggle(s.id)}
-                  className={`max-w-[6.5rem] text-center text-xs font-semibold leading-snug transition-colors sm:text-sm ${
-                    isActive ? "text-primary dark:text-primary-light" : "text-ink hover:text-primary dark:text-white dark:hover:text-primary-light"
-                  }`}
+                <span
+                  ref={i === 0 ? firstIconRef : undefined}
+                  className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border-2 border-grey-200 bg-white text-ink-soft shadow-card dark:border-white/15 dark:bg-secondary-dark dark:text-white/70"
                 >
+                  <Icon size={17} />
+                </span>
+
+                <span className="max-w-[6.5rem] text-center text-xs font-semibold leading-snug text-ink dark:text-white sm:text-sm">
                   {s.title}
-                </button>
+                </span>
               </div>
             );
           })}
         </div>
       </div>
-
-      {active && (
-        <div className="mt-4 flex justify-center">
-          <Card key={active.id} className="w-full max-w-md animate-fade-in-up shadow-lift">
-            <div className="mx-auto -mt-3 h-3 w-px bg-grey-300 dark:bg-white/30" aria-hidden="true" />
-            <CardHeader className="pb-2">
-              <div className="flex items-center justify-start">
-                <span className="font-mono text-xs text-ink-muted dark:text-white/50">{active.stageNo}</span>
-              </div>
-              <CardTitle className="mt-2 text-sm">{active.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="text-xs text-ink-soft dark:text-white/70">
-              <p>{active.content}</p>
-
-              <div className="mt-4 border-t border-grey-100 pt-3 dark:border-white/10">
-                <div className="mb-1 flex items-center justify-between text-xs">
-                  <span className="flex items-center">
-                    <Zap size={10} className="me-1" />
-                    {locale === "ar" ? "تغطية الوحدات" : "Module coverage"}
-                  </span>
-                  <span className="font-mono">{active.energy}%</span>
-                </div>
-                <div className="h-1 w-full overflow-hidden rounded-full bg-grey-100 dark:bg-white/10">
-                  <div
-                    className="h-full bg-gradient-to-r from-primary to-secondary"
-                    style={{ width: `${active.energy}%` }}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
     </div>
   );
 }

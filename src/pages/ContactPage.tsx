@@ -72,7 +72,7 @@ export default function ContactPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${cp.mapCta} ${cp.newTab}`}
-                className="mt-6 inline-flex items-center gap-2 self-start rounded-xl bg-primary px-5 py-3 font-medium text-white transition-colors hover:bg-white hover:text-secondary"
+                className="mt-6 inline-flex items-center gap-2 self-start rounded-xl bg-primary px-5 py-3 font-medium text-white transition-all duration-150 hover:bg-white hover:text-secondary active:bg-white active:text-secondary motion-safe:active:scale-[0.97]"
               >
                 <span>{cp.mapCta}</span>
                 <ArrowRight />

@@ -20,6 +20,22 @@ import { Check, Riyal } from "./ui/Icon";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "./ui/chart";
+import { integrationAsset } from "../assets";
+
+// Real partner logos (already used on the Integrations page via the same
+// assetsMap.ts entries) — overlaid on the step cards below so "SADAD" /
+// "Nafath" in the copy is backed by the actual mark, not just the wordmark.
+const sadadLogo = integrationAsset("sadad.png");
+const nafathLogo = integrationAsset("Frame 1707480351.svg");
+
+/** Small circular brand-logo badge that overlaps a card's top corner. */
+function LogoBadge({ src, alt }: { src: string; alt: string }) {
+  return (
+    <span className="absolute -top-4 -end-4 grid h-16 w-16 place-items-center rounded-full border border-grey-100 bg-white p-2.5 shadow-card dark:border-white/10 dark:bg-secondary-darker">
+      <img src={src} alt={alt} className="h-full w-full object-contain" />
+    </span>
+  );
+}
 
 /** Financial Management — collection rate trending up, real bar chart. */
 const financialData = [
@@ -354,7 +370,8 @@ export function LeadsChart() {
 /** Step 3 — Secure bookings; a SADAD booking-payment confirmation. */
 export function BookingConfirm() {
   return (
-    <Card className="p-6 sm:p-7">
+    <Card className="relative overflow-visible p-6 sm:p-7">
+      <LogoBadge src={sadadLogo} alt="SADAD" />
       <div className="flex items-center justify-between">
         <span className="grid h-10 w-10 place-items-center rounded-full bg-success-light text-success dark:bg-success/15">
           <Check size={18} />
@@ -381,7 +398,8 @@ export function SignatureCheck() {
     { who: "Seller", status: "Signed via Nafath", time: "09:44 AM" },
   ];
   return (
-    <Card className="space-y-3 p-6 sm:p-7">
+    <Card className="relative space-y-3 overflow-visible p-6 sm:p-7">
+      <LogoBadge src={nafathLogo} alt="Nafath" />
       {rows.map((r, i) => (
         <div key={i} className="flex items-center gap-3 rounded-xl border border-grey-100 px-4 py-3 dark:border-white/10">
           <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-success-light text-success dark:bg-success/15">

@@ -196,6 +196,8 @@ export const additionalLinksGroup: NavGroup = {
   items: [apiDocsLink, integrationsLink, caseStudiesLink, pricingLink],
 };
 
+// Legal's 4 links now live in the footer's bottom bar (see Footer.tsx)
+// instead of their own grid column — that slot is a Contact column instead.
 export const footerGroups: NavGroup[] = [
   { label: productsGroup.label, items: groupItems(productsGroup) },
   { label: solutionsGroup.label, items: groupItems(solutionsGroup) },
@@ -203,5 +205,4 @@ export const footerGroups: NavGroup[] = [
   additionalLinksGroup,
   companyGroup,
   resourcesGroup,
-  legalGroup,
 ];

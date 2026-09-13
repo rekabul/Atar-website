@@ -51,12 +51,17 @@ export default {
           from: { opacity: "0", transform: "translateY(8px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
       },
       animation: {
         marquee: "marquee 40s linear infinite",
         "marquee-rtl": "marqueeRtl 40s linear infinite",
         "spin-slow": "spin 3s linear infinite",
         "fade-in-up": "fadeInUp 0.4s cubic-bezier(0.16,1,0.3,1) both",
+        float: "float 6s ease-in-out infinite",
       },
     },
   },

@@ -52,6 +52,9 @@ export default function LoginPage() {
   const { locale } = useLocale();
   const { theme } = useTheme();
   const [step, setStep] = useState<"phone" | "otp" | "done">("phone");
+  // Tracks navigation direction so step transitions can mirror their path —
+  // forward steps rise into place, "Change number" retraces that path in reverse.
+  const [goingBack, setGoingBack] = useState(false);
 
   const [business, setBusiness] = useState("");
   const [businessError, setBusinessError] = useState(false);
@@ -93,6 +96,7 @@ export default function LoginPage() {
       setSubmitting(false);
       setOtp(Array(6).fill(""));
       setResendIn(RESEND_SECONDS);
+      setGoingBack(false);
       setStep("otp");
     }, 800);
   }
@@ -108,6 +112,7 @@ export default function LoginPage() {
     // TODO: await fetch("/api/auth/verify-otp", { method: "POST", body: JSON.stringify({ phone, code }) })
     setTimeout(() => {
       setVerifying(false);
+      setGoingBack(false);
       setStep("done");
     }, 800);
   }
@@ -148,6 +153,7 @@ export default function LoginPage() {
   }
 
   function changeNumber() {
+    setGoingBack(true);
     setStep("phone");
     setOtp(Array(6).fill(""));
     setOtpError(false);
@@ -181,7 +187,7 @@ export default function LoginPage() {
           <Reveal className="w-full max-w-md">
             <div className="rounded-[28px] border border-grey-100 bg-white/95 p-8 shadow-lift backdrop-blur-sm dark:border-white/10 dark:bg-white/[0.06] sm:p-10">
               {step === "phone" && (
-                <>
+                <Reveal key="phone" y={goingBack ? -16 : 24}>
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-sm font-medium uppercase tracking-wider text-primary">
@@ -262,21 +268,21 @@ export default function LoginPage() {
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-70"
+                      className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-all duration-150 hover:bg-secondary active:bg-secondary motion-safe:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-70 disabled:active:scale-100"
                     >
                       <span>{submitting ? pick(copy.sending, locale) : pick(copy.sendCode, locale)}</span>
                       {!submitting && <ArrowRight />}
                     </button>
                   </form>
-                </>
+                </Reveal>
               )}
 
               {step === "otp" && (
-                <>
+                <Reveal key="otp" y={goingBack ? -16 : 24}>
                   <button
                     type="button"
                     onClick={changeNumber}
-                    className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-soft transition-colors hover:text-primary dark:text-white/60"
+                    className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-soft transition-opacity duration-100 hover:text-primary active:opacity-60 dark:text-white/60"
                   >
                     <ArrowLeft size={16} />
                     {pick(copy.changeNumber, locale)}
@@ -343,7 +349,7 @@ export default function LoginPage() {
                     <button
                       type="submit"
                       disabled={verifying}
-                      className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-70"
+                      className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-all duration-150 hover:bg-secondary active:bg-secondary motion-safe:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-70 disabled:active:scale-100"
                     >
                       <span>{verifying ? pick(copy.verifying, locale) : pick(copy.verify, locale)}</span>
                       {!verifying && <ArrowRight />}
@@ -356,24 +362,31 @@ export default function LoginPage() {
                         <button
                           type="button"
                           onClick={handleResend}
-                          className="font-medium text-primary hover:underline"
+                          className="font-medium text-primary transition-opacity duration-100 hover:underline active:opacity-60"
                         >
                           {pick(copy.resend, locale)}
                         </button>
                       )}
                     </p>
                   </form>
-                </>
+                </Reveal>
               )}
 
               {step === "done" && (
-                <div className="py-2 text-center">
+                <Reveal key="done" className="py-2 text-center">
                   <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-success-light text-success">
                     <Check size={26} />
                   </div>
                   <h1 className="mt-4 text-2xl font-medium text-ink dark:text-white">{pick(copy.doneTitle, locale)}</h1>
                   <p className="mt-2 leading-relaxed text-ink-soft dark:text-white/70">{pick(copy.doneBody, locale)}</p>
-                </div>
+                  <Link
+                    to="/"
+                    className="mt-6 inline-flex items-center gap-2 rounded-xl border border-grey-200 px-6 py-3.5 font-medium text-ink transition-all duration-150 hover:bg-grey-50 active:bg-grey-100 motion-safe:active:scale-[0.97] dark:border-white/15 dark:text-white dark:hover:bg-white/5 dark:active:bg-white/10"
+                  >
+                    <span>{pick(copy.backToSite, locale)}</span>
+                    <ArrowRight />
+                  </Link>
+                </Reveal>
               )}
             </div>
 

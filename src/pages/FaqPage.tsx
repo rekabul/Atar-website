@@ -5,7 +5,7 @@ import { pick } from "../data/pricing";
 import { faqHubCategories, allFaqHubItems, type FaqHubItem } from "../data/faqHub";
 import Reveal from "../components/ui/Reveal";
 import StaggerReveal from "../components/ui/StaggerReveal";
-import { Plus, Minus, ArrowRight, Search } from "../components/ui/Icon";
+import { Plus, ArrowRight, Search } from "../components/ui/Icon";
 
 /**
  * Dedicated FAQ Hub — content lives in data/faqHub.ts (its own dataset, not
@@ -90,14 +90,21 @@ export default function FaqPage() {
               <input
                 type="search"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  // A newly-typed search swaps in an unrelated result set, so
+                  // whatever was open a moment ago shouldn't stay open just
+                  // because it happens to land on the same index — nothing
+                  // should appear expanded without the user having clicked it.
+                  setOpenFaq(null);
+                }}
                 placeholder={locale === "ar" ? "اطرح سؤالاً..." : "Ask a question..."}
                 aria-label={locale === "ar" ? "ابحث في الأسئلة الشائعة" : "Search the FAQ"}
                 className="w-full bg-transparent px-1 py-2.5 text-sm text-ink outline-none placeholder:text-ink-muted dark:text-white dark:placeholder:text-white/40"
               />
               <button
                 type="submit"
-                className="shrink-0 whitespace-nowrap rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-secondary"
+                className="shrink-0 whitespace-nowrap rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white transition-all duration-150 hover:bg-secondary active:bg-secondary motion-safe:active:scale-95"
               >
                 {locale === "ar" ? "بحث" : "Search"}
               </button>
@@ -136,8 +143,8 @@ export default function FaqPage() {
                       aria-pressed={isActive}
                       className={
                         isActive
-                          ? "rounded-full bg-primary px-4 py-2 text-sm font-medium text-white transition-colors"
-                          : "rounded-full border border-grey-200 px-4 py-2 text-sm font-medium text-ink-soft transition-colors hover:border-primary hover:text-primary dark:border-white/15 dark:text-white/70"
+                          ? "rounded-full bg-primary px-4 py-2 text-sm font-medium text-white transition-all duration-150 active:bg-secondary motion-safe:active:scale-95"
+                          : "rounded-full border border-grey-200 px-4 py-2 text-sm font-medium text-ink-soft transition-all duration-150 hover:border-primary hover:text-primary active:bg-grey-50 motion-safe:active:scale-95 dark:border-white/15 dark:text-white/70 dark:active:bg-white/5"
                       }
                     >
                       {pick(cat.label, locale)}
@@ -153,7 +160,7 @@ export default function FaqPage() {
       <section className="bg-white py-10 dark:bg-secondary-darker lg:py-14">
         <div className="mx-auto max-w-3xl px-5 text-center lg:px-8">
           <Reveal>
-            <h2 className="text-2xl font-medium text-ink dark:text-white lg:text-3xl">
+            <h2 className="text-2xl font-medium tracking-tight text-ink dark:text-white lg:text-3xl">
               {isSearching
                 ? locale === "ar"
                   ? `نتائج البحث عن "${query}"`
@@ -170,7 +177,15 @@ export default function FaqPage() {
           </Reveal>
         </div>
 
-        <StaggerReveal className="mx-auto mt-10 max-w-3xl space-y-3 px-5 lg:px-8" y={16}>
+        {/* Keyed on the active category (not the search query) so picking a
+            new category replays the coordinated entrance, while typing in
+            the search box updates results instantly without re-animating on
+            every keystroke — that would read as lag, not fluidity. */}
+        <StaggerReveal
+          key={isSearching ? "search" : activeCategory}
+          className="mx-auto mt-10 max-w-3xl space-y-3 px-5 lg:px-8"
+          y={16}
+        >
           {visibleItems.map((item, i) => {
             const isOpen = openFaq === i;
             const panelId = `faq-hub-panel-${i}`;
@@ -187,22 +202,38 @@ export default function FaqPage() {
                     aria-expanded={isOpen}
                     aria-controls={panelId}
                     onClick={() => setOpenFaq(isOpen ? null : i)}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start font-medium text-ink dark:text-white"
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start font-medium text-ink transition-colors duration-150 active:bg-grey-50 dark:text-white dark:active:bg-white/5"
                   >
                     <span>{pick(item.q, locale)}</span>
-                    <span className="shrink-0 text-primary">{isOpen ? <Minus /> : <Plus />}</span>
+                    <span className="shrink-0 text-primary">
+                      <Plus
+                        className={`transition-transform duration-200 ease-out motion-reduce:transition-none ${
+                          isOpen ? "rotate-45" : "rotate-0"
+                        }`}
+                      />
+                    </span>
                   </button>
                 </h3>
-                {isOpen && (
-                  <div
-                    id={panelId}
-                    role="region"
-                    aria-labelledby={btnId}
-                    className="px-5 pb-4 leading-relaxed text-ink-soft dark:text-white/70"
-                  >
-                    {pick(item.a, locale)}
+                {/* CSS-only height reveal (grid-template-rows 0fr -> 1fr) instead of an
+                    instant conditional swap, so the answer materializes into place rather
+                    than popping in; collapses to an instant toggle under reduced motion. */}
+                <div
+                  className={`grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
+                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                  aria-hidden={!isOpen}
+                >
+                  <div className="overflow-hidden">
+                    <div
+                      id={panelId}
+                      role="region"
+                      aria-labelledby={btnId}
+                      className="px-5 pb-4 leading-relaxed text-ink-soft dark:text-white/70"
+                    >
+                      {pick(item.a, locale)}
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}
@@ -222,7 +253,7 @@ export default function FaqPage() {
               <p className="mt-3 leading-relaxed text-ink-soft dark:text-white/70">{t.faq.stillBody}</p>
               <Link
                 to="/contact"
-                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-colors hover:bg-secondary"
+                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-all duration-150 hover:bg-secondary active:bg-secondary motion-safe:active:scale-[0.97]"
               >
                 <span>{t.faq.stillCta}</span>
                 <ArrowRight />

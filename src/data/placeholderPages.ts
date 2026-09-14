@@ -364,26 +364,6 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
   },
 
   // ---- Products > Atar OS --------------------------------------------------
-  "/products/atar-os": {
-    eyebrow: PRODUCTS,
-    title: L("Atar OS", "نظام أتار"),
-    body: L(
-      "The connected operating system underneath every Atar suite — one data model for properties, customers, contracts, financials, and workflows.",
-      "نظام التشغيل المتصل الذي يقف خلف كل حزمة من حزم أتار — نموذج بيانات واحد للعقارات والعملاء والعقود والماليات وسير العمل."
-    ),
-    sections: [
-      {
-        kind: "bullets",
-        items: [
-          L("One data model shared across sales, leasing and operations", "نموذج بيانات واحد مشترك بين المبيعات والتأجير والعمليات"),
-          L("Role-based access control across every module", "التحكم في الوصول حسب الدور عبر كل وحدة"),
-          L("Native Nafath, SADAD and ZATCA compliance built in", "امتثال أصلي مدمج مع نفاذ وسداد وزاتكا"),
-          L("Open API for connecting your existing tools", "واجهة برمجية مفتوحة لربط أدواتك الحالية"),
-        ],
-      },
-    ],
-  },
-
   // ---- Products > Add-ons --------------------------------------------------
   "/products/addons/listing-website": {
     eyebrow: L("Add-ons", "الإضافات"),

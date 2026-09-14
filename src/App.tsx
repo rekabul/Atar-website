@@ -18,7 +18,6 @@ const PLACEHOLDER_PATHS = [
   "/products/sales-suite",
   "/products/leasing-suite",
   "/products/operations-suite",
-  "/products/atar-os",
   "/products/addons/listing-website",
   "/products/addons/branded-mobile-app",
   "/products/addons/powerbi-reports",

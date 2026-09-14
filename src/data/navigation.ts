@@ -5,7 +5,7 @@
  *
  * A NavGroup is either a flat list (`items`) or split into labeled sub-sections
  * (`sections`) — used by Products, which shows a "Products" sub-heading (the
- * three suites + Atar OS + All Modules) and an "Add-ons" sub-heading (Listing
+ * three suites + All Modules) and an "Add-ons" sub-heading (Listing
  * Website, Branded Mobile App, PowerBI Reports) inside one dropdown/column.
  *
  * Duplicate-avoidance: items that already have a real page reuse that page's route
@@ -22,7 +22,6 @@ import {
   TrendingUpIcon,
   LeaseIcon,
   FacilityIcon,
-  CpuIcon,
   GridIcon,
   Globe,
   SmartphoneIcon,
@@ -78,7 +77,6 @@ export const productsGroup: NavGroup = {
         { label: L("Sales Suite", "حزمة المبيعات"), to: "/products/sales-suite", icon: TrendingUpIcon },
         { label: L("Leasing Suite", "حزمة التأجير"), to: "/products/leasing-suite", icon: LeaseIcon },
         { label: L("Operations Suite", "حزمة العمليات"), to: "/products/operations-suite", icon: FacilityIcon },
-        { label: L("Atar OS", "نظام أتار"), to: "/products/atar-os", icon: CpuIcon },
         { label: L("All Modules", "جميع الوحدات"), to: "/features", icon: GridIcon },
       ],
     },

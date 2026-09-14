@@ -73,7 +73,7 @@ export type PageSection =
   | { kind: "stats"; heading?: LStr; items: Stat[] }
   | { kind: "bullets"; heading?: LStr; items: LStr[] }
   | { kind: "chips"; heading?: LStr; items: LStr[] }
-  | { kind: "compare"; otherLabel: LStr; rows: CompareRow[] }
+  | { kind: "compare"; heading?: LStr; subtitle?: LStr; otherLabel: LStr; rows: CompareRow[] }
   | { kind: "caseStudies"; items: CaseStudyItem[] }
   | { kind: "logos" }
   | { kind: "team"; heading: LStr; items: TeamMember[] }
@@ -356,19 +356,16 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     // The generic "bullets" checklist is replaced by a bespoke feature grid
     // (ListingWebsiteFeatureGrid in PlaceholderPage.tsx) with concrete,
     // competitor-informed specifics instead of generic claims — see the
-    // competitive UX audit. Stats + compare below stay data-driven since the
-    // existing StatsSection/CompareSection renderers already fit as-is.
+    // competitive UX audit. Compare below stays data-driven since the
+    // existing CompareSection renderer already fits as-is.
     sections: [
       {
-        kind: "stats",
-        items: [
-          { value: "< 5 min", label: L("From saved in Atar to live on your site", "من الحفظ في أتار إلى النشر على موقعك") },
-          { value: "100%", label: L("Of listings kept in sync automatically", "من الإعلانات تبقى متزامنة تلقائياً") },
-          { value: "AR / EN", label: L("Both languages included from day one", "اللغتان جاهزتان من اليوم الأول") },
-        ],
-      },
-      {
         kind: "compare",
+        heading: L("Why not just post to the portals yourself?", "لماذا لا تنشر بنفسك على المنصات؟"),
+        subtitle: L(
+          "A quick look at what changes when your listings live on your own site instead of being re-entered everywhere by hand.",
+          "نظرة سريعة على ما يتغيّر عندما تكون إعلاناتك على موقعك الخاص بدلاً من إعادة إدخالها يدوياً في كل مكان."
+        ),
         otherLabel: L("Posting Manually to Portals", "النشر يدوياً على المنصات"),
         rows: [
           {

@@ -50,28 +50,38 @@ export const clientLogos: ClientLogo[] = [
 ].map((c) => ({ ...c, url: clientAsset(c.file) }));
 
 // Integration order + pastel circle backgrounds match the Figma row.
+//
+// Every logo below was replaced with a real vector (or, for Sadq, a clean
+// raster) from the client-provided "Integration LOGO" folder, then
+// normalized with a script (crop each to its own tight content bbox via a
+// cairosvg raster + alpha-bbox pass, then rewrite the SVG's viewBox to that
+// box and drop any explicit width/height so only the tight viewBox governs
+// aspect ratio). The previous files mixed hand-picked Figma exports with
+// low-res raster logos (some as small as 42px tall) that were both blurry
+// and wildly inconsistent in apparent size once scaled to fill their circle
+// — this replaces all of them with one consistently-processed set instead.
 export const integrations: Integration[] = [
-  { file: "Group 48095644.svg", name: "Zapier", bg: "#FBE9EC" },
-  { file: "Frame 1707480246.svg", name: "Sadq", bg: "#E6F6EC" },
-  { file: "Group 48095601.svg", name: "Power BI", bg: "#FCF4DD" },
-  { file: "image 72.svg", name: "Edaat", bg: "#E7E9FB" },
-  { file: "Frame 1707480351.svg", name: "Nafath", bg: "#DDF3F0" },
+  { file: "zapier.svg", name: "Zapier", bg: "#FBE9EC" },
+  { file: "sadq.png", name: "Sadq", bg: "#E6F6EC" },
+  { file: "power-bi.svg", name: "Power BI", bg: "#FCF4DD" },
+  { file: "edaat.svg", name: "Edaat", bg: "#E7E9FB" },
+  { file: "nafath.svg", name: "Nafath", bg: "#DDF3F0" },
   // Added from the Company Profile "Ecosystem" page (p.13) — every logo on
   // that page not already represented above.
-  { file: "sadad.png", name: "SADAD", bg: "#FDEEE1" },
-  { file: "zatca.png", name: "ZATCA", bg: "#DFF3F3" },
-  { file: "hyperpay.png", name: "HyperPay", bg: "#E7ECF2" },
-  { file: "oracle.png", name: "Oracle", bg: "#FBEAEA" },
-  { file: "sap.png", name: "SAP", bg: "#E3F1FD" },
-  { file: "microsoft-dynamics-365.png", name: "Microsoft Dynamics 365", bg: "#E1F3F0" },
-  { file: "odoo.png", name: "Odoo", bg: "#EDE6F3" },
-  { file: "zoho.png", name: "Zoho", bg: "#FDEAE7" },
-  { file: "salesforce.png", name: "Salesforce", bg: "#E3F0FB" },
-  { file: "unifonic.png", name: "Unifonic", bg: "#FCF6DD" },
-  { file: "twilio.png", name: "Twilio", bg: "#FBE5E5" },
-  { file: "sendgrid.png", name: "SendGrid", bg: "#E1EDFB" },
-  { file: "meta.png", name: "Meta", bg: "#E3ECFB" },
-  { file: "whatsapp.png", name: "WhatsApp", bg: "#E1F5E6" },
+  { file: "sadad.svg", name: "SADAD", bg: "#FDEEE1" },
+  { file: "zatca.svg", name: "ZATCA", bg: "#DFF3F3" },
+  { file: "hyperpay.svg", name: "HyperPay", bg: "#E7ECF2" },
+  { file: "oracle.svg", name: "Oracle", bg: "#FBEAEA" },
+  { file: "sap.svg", name: "SAP", bg: "#E3F1FD" },
+  { file: "microsoft-dynamics-365.svg", name: "Microsoft Dynamics 365", bg: "#E1F3F0" },
+  { file: "odoo.svg", name: "Odoo", bg: "#EDE6F3" },
+  { file: "zoho.svg", name: "Zoho", bg: "#FDEAE7" },
+  { file: "salesforce.svg", name: "Salesforce", bg: "#E3F0FB" },
+  { file: "unifonic.svg", name: "Unifonic", bg: "#FCF6DD" },
+  { file: "twilio.svg", name: "Twilio", bg: "#FBE5E5" },
+  { file: "sendgrid.svg", name: "SendGrid", bg: "#E1EDFB" },
+  { file: "meta.svg", name: "Meta", bg: "#E3ECFB" },
+  { file: "whatsapp.svg", name: "WhatsApp", bg: "#E1F5E6" },
 ].map((i) => ({ ...i, url: integrationAsset(i.file) }));
 
 // One illustration per feature block, in order.

@@ -1192,17 +1192,28 @@ function WhatsAppGlyph({ size = 12 }: { size?: number }) {
  */
 function ListingWebsiteShowcase({ locale }: { locale: "en" | "ar" }) {
   return (
-    <Reveal delay={150} className="mx-auto mt-4 max-w-5xl px-5 lg:mt-6 lg:px-8">
-      <img
-        src={listingWebsiteMockup}
-        alt={
-          locale === "ar"
-            ? "لقطة شاشة لموقع الإعلانات الفعلي — الصفحة الرئيسية وقسم استكشاف المجتمعات"
-            : "Screenshot of the actual listing website — homepage and Explore Communities section"
-        }
-        className="w-full"
-      />
-    </Reveal>
+    <div className="mx-auto mt-4 max-w-5xl px-5 pb-10 lg:mt-6 lg:px-8 lg:pb-14">
+      {/* Same card treatment as the Home hero's dashboard screenshot
+          (components/Hero.tsx) — overflow-hidden rounded-2xl bg-white, same
+          shadow color/opacity — but centered (no y-offset) so it reads
+          evenly on all four sides, including the bottom, instead of only
+          below like Home's directional version. The pb-10/lg:pb-14 above
+          is load-bearing: without it the shadow was rendered correctly but
+          immediately painted over by the next (opaque) section, since the
+          hero section ended right at the image's edge with no gap for the
+          shadow to actually be visible in. */}
+      <Reveal delay={150} className="overflow-hidden rounded-2xl bg-white shadow-[0_0_50px_-12px_rgba(8,15,26,0.25)]">
+        <img
+          src={listingWebsiteMockup}
+          alt={
+            locale === "ar"
+              ? "لقطة شاشة لموقع الإعلانات الفعلي — الصفحة الرئيسية وقسم استكشاف المجتمعات"
+              : "Screenshot of the actual listing website — homepage and Explore Communities section"
+          }
+          className="block w-full"
+        />
+      </Reveal>
+    </div>
   );
 }
 
@@ -1687,6 +1698,20 @@ function CompareSection({
   return (
     <section className={sectionPad}>
       <div className={wrap}>
+        {section.heading && (
+          <Reveal>
+            <div className="mx-auto mb-10 max-w-2xl text-center">
+              <h2 className="text-2xl font-medium text-ink dark:text-white sm:text-3xl">
+                {pick(section.heading, locale)}
+              </h2>
+              {section.subtitle && (
+                <p className="mt-3 leading-relaxed text-ink-soft dark:text-white/70">
+                  {pick(section.subtitle, locale)}
+                </p>
+              )}
+            </div>
+          </Reveal>
+        )}
         <Reveal>
           {/* Face-off header: Atar vs. the alternative, matching the page's own "vs." framing */}
           <div className="mb-10 flex items-center justify-center gap-3 sm:gap-5">

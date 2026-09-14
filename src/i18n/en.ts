@@ -208,7 +208,7 @@ export const en = {
     address: "Al Imam Saud bin Faisal Road, Al Malqa, Riyadh, Saudi Arabia",
     phone: "+966 53 115 5105",
     email: "Info@goatar.com",
-    copyright: "© 2024 Atar Real Estate Services Company",
+    copyright: "© 2026 Atar Real Estate Services Company",
   },
 };
 

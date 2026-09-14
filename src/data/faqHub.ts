@@ -223,8 +223,8 @@ export const faqHubCategories: FaqHubCategory[] = [
           "هل أتار متوافق مع متطلبات الفوترة الإلكترونية السعودية (فاتورة)؟"
         ),
         a: L(
-          "Yes, Atar's Property & Portfolio Financials tools integrate directly with ZATCA for e-invoicing compliance.",
-          "نعم، تتكامل أدوات الماليات العقارية والمحفظة في أتار مباشرة مع فاتورة (زاتكا) للامتثال في الفوترة الإلكترونية."
+          "Yes, Atar's Billing & Financials tools integrate directly with ZATCA for e-invoicing compliance.",
+          "نعم، تتكامل أدوات الفوترة والماليات في أتار مباشرة مع فاتورة (زاتكا) للامتثال في الفوترة الإلكترونية."
         ),
       },
       {

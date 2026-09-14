@@ -353,14 +353,44 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
       "A branded, SEO-ready listing website for your sale and rental inventory, connected directly to your Atar data — no manual re-entry.",
       "موقع إعلانات بعلامتك التجارية ومهيّأ لمحركات البحث لعرض مخزون البيع والتأجير، متصل مباشرة ببيانات أتار دون إعادة إدخال يدوية."
     ),
+    // The generic "bullets" checklist is replaced by a bespoke feature grid
+    // (ListingWebsiteFeatureGrid in PlaceholderPage.tsx) with concrete,
+    // competitor-informed specifics instead of generic claims — see the
+    // competitive UX audit. Stats + compare below stay data-driven since the
+    // existing StatsSection/CompareSection renderers already fit as-is.
     sections: [
       {
-        kind: "bullets",
+        kind: "stats",
         items: [
-          L("Listings sync automatically from Atar", "إعلانات تتزامن تلقائياً من أتار"),
-          L("Lead capture on every listing view", "التقاط عملاء محتملين من كل مشاهدة إعلان"),
-          L("Your own domain and brand, fully hosted", "نطاقك وعلامتك التجارية، بالكامل مُستضاف"),
-          L("Arabic and English out of the box", "عربي وإنجليزي جاهزان مباشرة"),
+          { value: "< 5 min", label: L("From saved in Atar to live on your site", "من الحفظ في أتار إلى النشر على موقعك") },
+          { value: "100%", label: L("Of listings kept in sync automatically", "من الإعلانات تبقى متزامنة تلقائياً") },
+          { value: "AR / EN", label: L("Both languages included from day one", "اللغتان جاهزتان من اليوم الأول") },
+        ],
+      },
+      {
+        kind: "compare",
+        otherLabel: L("Posting Manually to Portals", "النشر يدوياً على المنصات"),
+        rows: [
+          {
+            aspect: L("Publishing a new listing", "نشر إعلان جديد"),
+            atar: L("Syncs automatically the moment it's added in Atar", "يتزامن تلقائياً فور إضافته في أتار"),
+            other: L("Re-entered by hand on every portal you use", "يُعاد إدخاله يدوياً على كل منصة تستخدمها"),
+          },
+          {
+            aspect: L("Price & fee transparency", "شفافية السعر والرسوم"),
+            atar: L("Full breakdown shown — price, RETT, fees, VAT", "تفصيل كامل — السعر وضريبة التصرفات والرسوم والقيمة المضافة"),
+            other: L("Usually just an asking price, nothing else", "غالباً سعر الطلب فقط دون تفاصيل"),
+          },
+          {
+            aspect: L("Leads", "العملاء المحتملون"),
+            atar: L("Captured straight into your Atar CRM", "تُلتقط مباشرة في نظام أتار لإدارة العملاء"),
+            other: L("Scattered across each portal's own inbox", "متفرقة بين صناديق وارد كل منصة"),
+          },
+          {
+            aspect: L("Branding", "العلامة التجارية"),
+            atar: L("Your own domain, fully hosted under your brand", "نطاقك الخاص، مُستضاف بالكامل تحت علامتك"),
+            other: L("Buried under the portal's own branding", "مدفون تحت علامة المنصة نفسها"),
+          },
         ],
       },
     ],
@@ -481,7 +511,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
 
   "/solutions/property-portfolio-financials": {
     eyebrow: SOLUTIONS,
-    title: L("Property & Portfolio Financials", "الماليات العقارية ومالية المحفظة"),
+    title: L("Billing & Financials", "الفوترة والماليات"),
     body: L(
       "Owner-ready financial reporting across your entire portfolio — revenue, collections, and occupancy in one connected view.",
       "تقارير مالية جاهزة للملّاك عبر كامل محفظتك — الإيرادات والتحصيل والإشغال في عرض واحد متصل."

@@ -15,8 +15,17 @@ import dashboardV2 from "./illustrations/dashboard-v2.webp";
 // already composited inside it — used as-is on the Branded Mobile App
 // add-on page instead of a CSS-drawn bezel.
 import brandedAppMockup from "./illustrations/branded-app-mockup.webp";
+// 3-phone marketing composite (My Dues / Home / Request screens) for the
+// Branded Mobile App page's Layout 2 hero — transparent background,
+// cropped from the client-provided render.
+import brandedApp3Phone from "./illustrations/branded-app-3phone.webp";
+// Client-provided browser-window mockup of the actual marketplace/listing
+// site (hero + "Explore our communities" search/filter/cards) — used as the
+// Listing Website add-on page's hero visual in place of the earlier
+// hand-drawn placeholder mockup.
+import listingWebsiteMockup from "./illustrations/listing-website-mockup.webp";
 
-export { atarLogo, atarLogoLight, dashboard, dashboardV2, brandedAppMockup };
+export { atarLogo, atarLogoLight, dashboard, dashboardV2, brandedAppMockup, brandedApp3Phone, listingWebsiteMockup };
 
 const clientGlob = import.meta.glob("./clients/*.svg", {
   eager: true,

@@ -26,10 +26,23 @@ export default function Integrations() {
         {integrations.map((it) => (
           <li key={it.file}>
             <span
-              className="flex h-20 w-20 items-center justify-center rounded-full p-4"
+              className="flex h-24 w-24 items-center justify-center rounded-full p-4"
               style={{ backgroundColor: it.bg }}
             >
-              <img src={it.url} alt={it.name} className="h-auto w-full" loading="lazy" />
+              {/* A fixed target height (not "fill the box width") so every
+                  logo reads at the same visual size regardless of how wide
+                  or narrow its own wordmark is — the old w-full approach
+                  made wide logos (Oracle, ZATCA, SendGrid) shrink to a
+                  near-invisible sliver while squarer ones (SAP, Salesforce)
+                  ballooned to fill the whole circle. max-w-full is just a
+                  safety net for the widest logos so they never overflow the
+                  circle. */}
+              <img
+                src={it.url}
+                alt={it.name}
+                className="h-8 w-auto max-w-full object-contain"
+                loading="lazy"
+              />
             </span>
           </li>
         ))}

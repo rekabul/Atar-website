@@ -449,7 +449,7 @@ export default function FeaturesPage() {
     <Reveal>
       <p className="inline-flex items-center gap-2 text-sm font-medium uppercase tracking-wider text-primary">
         <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary motion-safe:animate-pulse" />
-        Enterprise Features
+        All Modules
       </p>
       <h1
         ref={heroTitleRef}

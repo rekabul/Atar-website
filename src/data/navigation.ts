@@ -108,7 +108,7 @@ export const solutionsGroup: NavGroup = {
     {
       label: L("Operations & Finance", "العمليات والماليات"),
       items: [
-        { label: L("Property & Portfolio Financials", "الماليات العقارية ومالية المحفظة"), to: "/solutions/property-portfolio-financials", icon: WalletIcon },
+        { label: L("Billing & Financials", "الفوترة والماليات"), to: "/solutions/property-portfolio-financials", icon: WalletIcon },
         { label: L("Maintenance & Ticketing", "الصيانة والتذاكر"), to: "/solutions/maintenance-ticketing", icon: TicketIcon },
         { label: L("Facilities Management", "إدارة المرافق"), to: "/solutions/facilities-management", icon: FacilityIcon },
       ],

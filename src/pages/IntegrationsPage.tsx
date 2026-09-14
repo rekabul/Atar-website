@@ -259,10 +259,19 @@ export default function IntegrationsPage() {
                   <CardHeader className="grid-rows-1">
                     <div className="flex items-center gap-4">
                       <span
-                        className="flex h-14 w-14 flex-none items-center justify-center rounded-2xl p-3"
+                        className="flex h-14 w-14 flex-none items-center justify-center rounded-2xl p-2.5"
                         style={{ backgroundColor: asset.bg }}
                       >
-                        <img src={asset.url} alt={asset.name} className="h-auto w-full" loading="lazy" />
+                        {/* Fixed target height instead of "fill the box width" —
+                            see components/Integrations.tsx for why: it keeps
+                            wide wordmarks (Oracle, ZATCA) from shrinking to a
+                            sliver while square-ish ones (SAP) stay in proportion. */}
+                        <img
+                          src={asset.url}
+                          alt={asset.name}
+                          className="h-6 w-auto max-w-full object-contain"
+                          loading="lazy"
+                        />
                       </span>
                       <div>
                         <CardTitle className="text-base">{asset.name}</CardTitle>

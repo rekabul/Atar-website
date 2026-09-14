@@ -1,17 +1,17 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLocale } from "../i18n/LocaleContext";
-import { pick } from "../data/pricing";
+import { pick, type LStr } from "../data/pricing";
 import {
   placeholderPages,
   placeholderFallback,
   type PageSection,
 } from "../data/placeholderPages";
 import { caseStudyPhotos } from "../data/assetsMap";
-import { brandedAppMockup } from "../assets";
+import { brandedAppMockup, brandedApp3Phone, listingWebsiteMockup } from "../assets";
 import Reveal from "../components/ui/Reveal";
 import Button from "../components/ui/Button";
 import Clients from "../components/Clients";
@@ -20,6 +20,7 @@ import {
   ArrowRight,
   Check,
   Minus,
+  Plus,
   RentListIcon,
   RentersIcon,
   ApplicationIcon,
@@ -34,6 +35,11 @@ import {
   GoogleLogo,
   TagIcon,
   BellIcon,
+  Riyal,
+  Search,
+  GridIcon,
+  LinkIcon,
+  Globe,
 } from "../components/ui/Icon";
 import { prefersReducedMotion } from "../hooks/useInView";
 
@@ -119,6 +125,11 @@ export default function PlaceholderPage() {
   const isLeasingSuite = pathname === "/products/leasing-suite";
   const isOperationsSuite = pathname === "/products/operations-suite";
   const isBrandedMobileApp = pathname === "/products/addons/branded-mobile-app";
+  const isListingWebsite = pathname === "/products/addons/listing-website";
+  // Two selectable visual treatments for the Branded Mobile App page, so the
+  // team can compare them side by side before picking one. Toggle only
+  // renders on this one route; every other placeholder page is unaffected.
+  const [demoVariant, setDemoVariant] = useState<"a" | "b">("a");
 
   useEffect(() => {
     const prev = document.title;
@@ -130,34 +141,114 @@ export default function PlaceholderPage() {
 
   return (
     <>
-      <section className="hero-bg" aria-labelledby="placeholder-title">
-        <div className="mx-auto max-w-3xl px-5 py-16 text-center lg:px-8 lg:py-20">
-          <Reveal>
-            <p className="text-sm font-medium uppercase tracking-wider text-primary">
-              {pick(copy.eyebrow, locale)}
-            </p>
-            <h1
-              id="placeholder-title"
-              className="mt-3 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl"
+      {isBrandedMobileApp && (
+        <div className="fixed inset-x-0 bottom-6 z-50 flex justify-center px-4">
+          <div
+            role="group"
+            aria-label={locale === "ar" ? "تبديل تصميم الصفحة" : "Switch page layout"}
+            className="inline-flex items-center gap-1 rounded-full border border-grey-200 bg-white/95 p-1 shadow-lift backdrop-blur dark:border-white/15 dark:bg-secondary-darker/95"
+          >
+            <button
+              type="button"
+              onClick={() => setDemoVariant("a")}
+              aria-pressed={demoVariant === "a"}
+              className={`min-h-11 rounded-full px-4 text-sm font-medium transition-colors ${
+                demoVariant === "a" ? "bg-primary text-white" : "text-ink-soft dark:text-white/60"
+              }`}
             >
-              {pick(copy.title, locale)}
-            </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-white/70">
-              {pick(copy.body, locale)}
-            </p>
-          </Reveal>
+              {locale === "ar" ? "التصميم 1" : "Layout 1"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setDemoVariant("b")}
+              aria-pressed={demoVariant === "b"}
+              className={`min-h-11 rounded-full px-4 text-sm font-medium transition-colors ${
+                demoVariant === "b" ? "bg-primary text-white" : "text-ink-soft dark:text-white/60"
+              }`}
+            >
+              {locale === "ar" ? "التصميم 2" : "Layout 2"}
+            </button>
+          </div>
         </div>
+      )}
+
+      <section
+        className={`hero-bg ${isListingWebsite ? "relative overflow-hidden" : ""}`}
+        aria-labelledby="placeholder-title"
+      >
+        {/* Soft blurred glow behind the headline, echoing the reference
+            layout's cloudy hero background — fades to plain white well
+            before the screenshot below so the image itself sits on a clean
+            background rather than fading content. */}
+        {isListingWebsite && (
+          <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[420px] overflow-hidden" aria-hidden="true">
+            <div className="absolute -top-32 start-1/2 h-80 w-[560px] -translate-x-1/2 rounded-full bg-primary/15 blur-3xl dark:bg-primary/10" />
+            <div className="absolute -top-16 start-[15%] h-56 w-56 rounded-full bg-secondary/10 blur-3xl dark:bg-white/5" />
+            <div className="absolute -top-10 end-[12%] h-64 w-64 rounded-full bg-primary/10 blur-3xl dark:bg-primary/10" />
+            <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-white dark:to-secondary-darker" />
+          </div>
+        )}
+        {/* Layout 2 of the Branded Mobile App page replaces this generic
+            eyebrow/title/body block with its own pill + headline + store
+            badges (built inside BrandedAppShowcase) instead of stacking two
+            heroes on top of each other. */}
+        {!(isBrandedMobileApp && demoVariant === "b") && (
+          <div
+            className={`mx-auto max-w-3xl px-5 text-center lg:px-8 ${
+              isListingWebsite ? "pt-16 pb-4 lg:pt-20 lg:pb-6" : "py-16 lg:py-20"
+            }`}
+          >
+            <Reveal>
+              <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary dark:border-primary/30 dark:bg-white/5">
+                {pick(copy.eyebrow, locale)}
+              </span>
+              <h1
+                id="placeholder-title"
+                className="mt-4 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl"
+              >
+                {pick(copy.title, locale)}
+              </h1>
+              <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-white/70">
+                {pick(copy.body, locale)}
+              </p>
+              {isListingWebsite && (
+                <div className="mt-8">
+                  <Button href="https://meetings.hubspot.com/atar/demo-meeting" icon={<ArrowRight />}>
+                    {locale === "ar" ? "احجز عرضاً توضيحياً" : "Book a Demo"}
+                  </Button>
+                </div>
+              )}
+            </Reveal>
+          </div>
+        )}
         {isSalesSuite && <SalesFlowStepper locale={locale} />}
         {isLeasingSuite && <LeasingFlowStepper locale={locale} />}
         {isOperationsSuite && <OperationsFlowStepper locale={locale} />}
-        {isBrandedMobileApp && <BrandedAppShowcase locale={locale} />}
+        {isBrandedMobileApp && (
+          <BrandedAppShowcase
+            locale={locale}
+            variant={demoVariant}
+            title={copy.title}
+            body={copy.body}
+          />
+        )}
+        {isListingWebsite && <ListingWebsiteShowcase locale={locale} />}
       </section>
+
+      {isListingWebsite && <ListingWebsiteFeatureGrid locale={locale} />}
 
       {copy.sections?.map((section, i) => (
         <SectionBlock key={i} section={section} locale={locale} />
       ))}
 
-      {isBrandedMobileApp && <MobileFeatureShowcase locale={locale} />}
+      {isListingWebsite && <ListingWebsiteFAQ locale={locale} />}
+
+      {isBrandedMobileApp &&
+        (demoVariant === "a" ? (
+          <MobileFeatureShowcase locale={locale} />
+        ) : (
+          <BrandedAppVariantB locale={locale} />
+        ))}
 
       {!copy.minimalFooter && (isBrandedMobileApp ? <DownloadCTA locale={locale} /> : (
         <section className="bg-white py-16 dark:bg-secondary-darker lg:py-24" aria-label="Talk to us">
@@ -195,7 +286,7 @@ export default function PlaceholderPage() {
  */
 function DownloadCTA({ locale }: { locale: "en" | "ar" }) {
   return (
-    <section className="bg-white py-16 dark:bg-secondary-darker lg:py-24" aria-label="Download the app">
+    <section id="download" className="scroll-mt-28 bg-white py-16 dark:bg-secondary-darker lg:py-24" aria-label="Download the app">
       <div className="mx-auto max-w-3xl px-5 lg:px-8">
         <Reveal>
           <div className="rounded-[28px] border border-grey-100 bg-[#F6F7F8] p-8 text-center dark:border-white/10 dark:bg-white/5 lg:p-10">
@@ -204,13 +295,8 @@ function DownloadCTA({ locale }: { locale: "en" | "ar" }) {
                 ? "جاهز تبدأ؟ حمّل تطبيق أتار على iOS أو Android"
                 : "Ready to get started? Download the Atar app on iOS or Android"}
             </p>
-            <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button href="#" icon={<AppleLogo />} className="motion-safe:active:scale-[0.97]">
-                {locale === "ar" ? "تحميل على أب ستور" : "Download on the App Store"}
-              </Button>
-              <Button href="#" variant="outline" icon={<GoogleLogo />} className="motion-safe:active:scale-[0.97]">
-                {locale === "ar" ? "التحميل من جوجل بلاي" : "Get it on Google Play"}
-              </Button>
+            <div className="mt-5">
+              <StoreBadges locale={locale} />
             </div>
           </div>
         </Reveal>
@@ -567,15 +653,119 @@ function OperationsFlowStepper({ locale }: { locale: "en" | "ar" }) {
 }
 
 /**
+ * Real App Store / Google Play badges (black, two-line label), shared by
+ * Layout 2's hero and DownloadCTA so both places use the exact same button
+ * style instead of two different-looking "download" controls on one page.
+ */
+function StoreBadges({ locale }: { locale: "en" | "ar" }) {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-3">
+      <a
+        href="#download"
+        className="inline-flex items-center gap-2.5 rounded-xl bg-ink px-4 py-2.5 text-white transition-transform duration-150 hover:scale-[1.03] motion-safe:active:scale-[0.97] dark:bg-black"
+      >
+        <AppleLogo size={22} />
+        <span className="text-start leading-tight">
+          <span className="block text-[10px]">{locale === "ar" ? "التحميل من" : "Download on the"}</span>
+          <span className="block text-sm font-semibold">{locale === "ar" ? "أب ستور" : "App Store"}</span>
+        </span>
+      </a>
+      <a
+        href="#download"
+        className="inline-flex items-center gap-2.5 rounded-xl bg-ink px-4 py-2.5 text-white transition-transform duration-150 hover:scale-[1.03] motion-safe:active:scale-[0.97] dark:bg-black"
+      >
+        <GoogleLogo size={20} />
+        <span className="text-start leading-tight">
+          <span className="block text-[10px] uppercase">{locale === "ar" ? "احصل عليه من" : "Get it on"}</span>
+          <span className="block text-sm font-semibold">{locale === "ar" ? "جوجل بلاي" : "Google Play"}</span>
+        </span>
+      </a>
+    </div>
+  );
+}
+
+/**
  * Branded Mobile App hero visual — a client-provided photorealistic iPhone
  * frame with the app screenshot already composited inside it, used as-is
  * (no CSS-drawn bezel needed). The line below states iOS + Android
  * availability as plain text rather than pill "buttons" — the real,
- * clickable App Store / Google Play buttons live once, at DownloadCTA,
+ * clickable App Store / Google Play badges live once, at DownloadCTA,
  * so this doesn't duplicate an inert-looking control the visitor might
  * try to tap.
  */
-function BrandedAppShowcase({ locale }: { locale: "en" | "ar" }) {
+function BrandedAppShowcase({
+  locale,
+  variant,
+  title,
+  body,
+}: {
+  locale: "en" | "ar";
+  variant: "a" | "b";
+  title: LStr;
+  body: LStr;
+}) {
+  if (variant === "b") {
+    // Layout 2's own hero — a two-tone pill eyebrow, a headline with one
+    // highlighted phrase, the same real subtitle copy as Layout 1, and
+    // proper "Available on" App Store / Google Play badges — replacing the
+    // generic eyebrow/title/body block for this variant only (see the
+    // conditional render around this component in PlaceholderPage).
+    //
+    // The 3-phone hero composite needs more horizontal room than the
+    // max-w-3xl text column above it, so the text and the image live in two
+    // separately-sized wrappers inside one shared padded section.
+    return (
+      <div className="px-5 pb-4 pt-16 text-center lg:px-8 lg:pt-20">
+        <div className="mx-auto max-w-3xl">
+        <Reveal>
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 py-1.5 pe-4 ps-1.5 text-sm dark:border-primary/30 dark:bg-white/5">
+            <span className="rounded-full bg-white px-2.5 py-1 font-medium text-ink shadow-card dark:bg-secondary-darker dark:text-white">
+              + {locale === "ar" ? "إضافة" : "Add-on"}
+            </span>
+            <span className="font-medium text-secondary dark:text-white/80">{pick(title, locale)}</span>
+          </span>
+
+          <h1
+            id="placeholder-title"
+            className="mx-auto mt-6 max-w-2xl text-4xl font-medium leading-[1.1] tracking-tight text-ink dark:text-white sm:text-5xl"
+          >
+            {locale === "ar" ? (
+              <>
+                تطبيقك الجوال <span className="italic text-primary">بعلامتك التجارية</span> لإسعاد المقيمين
+              </>
+            ) : (
+              <>
+                Your Branded <span className="italic text-primary">Mobile App</span> For Happier Residents
+              </>
+            )}
+          </h1>
+
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-white/70">
+            {pick(body, locale)}
+          </p>
+        </Reveal>
+
+        <Reveal delay={120}>
+          <p className="mt-8 text-xs font-medium uppercase tracking-wider text-ink-muted dark:text-white/40">
+            {locale === "ar" ? "متوفر على" : "Available on"}
+          </p>
+          <div className="mt-3">
+            <StoreBadges locale={locale} />
+          </div>
+        </Reveal>
+        </div>
+
+        <Reveal delay={200} className="mx-auto mt-16 flex max-w-4xl justify-center lg:mt-20">
+          <img
+            src={brandedApp3Phone}
+            alt="Atar branded mobile app shown on three phones — dues, home, and service request screens"
+            className="w-full max-w-3xl motion-safe:animate-float"
+          />
+        </Reveal>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto mt-8 flex flex-col items-center px-5 pb-4">
       <Reveal delay={80}>
@@ -611,6 +801,57 @@ function BrandedAppShowcase({ locale }: { locale: "en" | "ar" }) {
  * per-feature screenshots exist, swap the single <img> for a per-index src
  * inside the onUpdate active-index branch below.
  */
+type MobileFeature = { Icon: (p: { size?: number }) => JSX.Element; title: string; body: string };
+
+/** Shared by MobileFeatureShowcase (Layout 1) and BrandedAppGrid (Layout 2) so the same 4 real feature points aren't duplicated in two data literals. */
+function getMobileFeatures(locale: "en" | "ar"): MobileFeature[] {
+  return locale === "ar"
+    ? [
+        {
+          Icon: TagIcon,
+          title: "علامتك التجارية، في كل مكان",
+          body: "شعارك وألوانك وقائمتك الخاصة في متجر التطبيقات — يرى المقيمون علامتك التجارية.",
+        },
+        {
+          Icon: TicketIcon,
+          title: "طلبات الخدمة، ببساطة",
+          body: "يقدّم المقيمون طلبات الصيانة ويتابعونها دون الحاجة لمكالمة هاتفية.",
+        },
+        {
+          Icon: PaymentIcon,
+          title: "المدفوعات، في متناول اليد",
+          body: "مدفوعات وكشوف حساب داخل التطبيق — دون الحاجة لبوابة منفصلة.",
+        },
+        {
+          Icon: BellIcon,
+          title: "دائماً على اطلاع",
+          body: "إشعارات فورية للإعلانات والتحديثات فور صدورها.",
+        },
+      ]
+    : [
+        {
+          Icon: TagIcon,
+          title: "Your brand, everywhere",
+          body: "Custom logo, colors and app store listing — residents see your name, not ours.",
+        },
+        {
+          Icon: TicketIcon,
+          title: "Service requests, simplified",
+          body: "Residents submit and track maintenance requests without a phone call.",
+        },
+        {
+          Icon: PaymentIcon,
+          title: "Payments, in their pocket",
+          body: "In-app payments and statements — no separate portal to log into.",
+        },
+        {
+          Icon: BellIcon,
+          title: "Always in the loop",
+          body: "Push notifications for announcements and updates, the moment they go out.",
+        },
+      ];
+}
+
 function MobileFeatureShowcase({ locale }: { locale: "en" | "ar" }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Array<HTMLLIElement | null>>([]);
@@ -668,52 +909,7 @@ function MobileFeatureShowcase({ locale }: { locale: "en" | "ar" }) {
     { scope: stageRef, dependencies: [locale] }
   );
 
-  const features: { Icon: (p: { size?: number }) => JSX.Element; title: string; body: string }[] =
-    locale === "ar"
-      ? [
-          {
-            Icon: TagIcon,
-            title: "علامتك التجارية، في كل مكان",
-            body: "شعارك وألوانك وقائمتك الخاصة في متجر التطبيقات — يرى المقيمون علامتك التجارية.",
-          },
-          {
-            Icon: TicketIcon,
-            title: "طلبات الخدمة، ببساطة",
-            body: "يقدّم المقيمون طلبات الصيانة ويتابعونها دون الحاجة لمكالمة هاتفية.",
-          },
-          {
-            Icon: PaymentIcon,
-            title: "المدفوعات، في متناول اليد",
-            body: "مدفوعات وكشوف حساب داخل التطبيق — دون الحاجة لبوابة منفصلة.",
-          },
-          {
-            Icon: BellIcon,
-            title: "دائماً على اطلاع",
-            body: "إشعارات فورية للإعلانات والتحديثات فور صدورها.",
-          },
-        ]
-      : [
-          {
-            Icon: TagIcon,
-            title: "Your brand, everywhere",
-            body: "Custom logo, colors and app store listing — residents see your name, not ours.",
-          },
-          {
-            Icon: TicketIcon,
-            title: "Service requests, simplified",
-            body: "Residents submit and track maintenance requests without a phone call.",
-          },
-          {
-            Icon: PaymentIcon,
-            title: "Payments, in their pocket",
-            body: "In-app payments and statements — no separate portal to log into.",
-          },
-          {
-            Icon: BellIcon,
-            title: "Always in the loop",
-            body: "Push notifications for announcements and updates, the moment they go out.",
-          },
-        ];
+  const features = getMobileFeatures(locale);
 
   return (
     <section className={sectionPad}>
@@ -759,6 +955,442 @@ function MobileFeatureShowcase({ locale }: { locale: "en" | "ar" }) {
               </Reveal>
             ))}
           </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Layout 2 for the Branded Mobile App page — the alternate visual treatment
+ * from the reference layout the team shared (hero + alternating feature
+ * spotlights + a compact "built for" grid + FAQ), rebuilt in Atar's own
+ * theme and content rather than copied literally. Wrapped in one
+ * `#mobile-features` anchor target so the Layout 2 hero's "See All
+ * Features" button can jump straight here.
+ */
+function BrandedAppVariantB({ locale }: { locale: "en" | "ar" }) {
+  return (
+    <>
+      <Clients />
+      <div id="mobile-features" className="scroll-mt-28">
+        <BrandedAppSpotlight locale={locale} />
+        <BrandedAppGrid locale={locale} />
+        <BrandedAppFAQ locale={locale} />
+      </div>
+    </>
+  );
+}
+
+/**
+ * Two alternating "feature spotlight" rows — a real product-screen mockup
+ * beside a heading + body, reusing the same ServiceLog / OnlinePaymentCard
+ * visuals already built for the Features/Products pages instead of drawing
+ * new illustrative graphics just for this variant.
+ */
+function BrandedAppSpotlight({ locale }: { locale: "en" | "ar" }) {
+  const rows: { Visual: () => JSX.Element; title: string; body: string }[] =
+    locale === "ar"
+      ? [
+          {
+            Visual: ServiceLog,
+            title: "طلبات الخدمة، دون أي مكالمة",
+            body: "يقدّم المقيمون طلبات الصيانة ويتابعون حالتها لحظة بلحظة، من داخل التطبيق مباشرة.",
+          },
+          {
+            Visual: OnlinePaymentCard,
+            title: "الدفع، من هاتفهم مباشرة",
+            body: "رسوم الخدمة والمدفوعات وكشوف الحساب — كل ذلك داخل التطبيق، دون بوابة منفصلة.",
+          },
+        ]
+      : [
+          {
+            Visual: ServiceLog,
+            title: "Service requests, without the phone call",
+            body: "Residents submit maintenance requests and track status in real time, right from the app.",
+          },
+          {
+            Visual: OnlinePaymentCard,
+            title: "Payments, straight from their phone",
+            body: "Service charges, fees and statements — all in the app, no separate portal to log into.",
+          },
+        ];
+
+  return (
+    <section className="bg-white py-14 dark:bg-secondary-darker lg:py-20">
+      <div className={wrap}>
+        <div className="space-y-10 lg:space-y-14">
+          {rows.map((r, i) => {
+            const flip = i % 2 === 1;
+            return (
+              <Reveal key={i} delay={i * 80}>
+                <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
+                  <div className={flip ? "lg:order-2" : ""}>
+                    <r.Visual />
+                  </div>
+                  <div className={flip ? "lg:order-1" : ""}>
+                    <h3 className="text-xl font-medium text-ink dark:text-white lg:text-2xl">{r.title}</h3>
+                    <p className="mt-3 leading-relaxed text-ink-soft dark:text-white/70">{r.body}</p>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Compact 2x2 recap of all 4 feature points, reusing the exact same data as Layout 1's MobileFeatureShowcase via getMobileFeatures. */
+function BrandedAppGrid({ locale }: { locale: "en" | "ar" }) {
+  const features = getMobileFeatures(locale);
+
+  return (
+    <section className={sectionPad}>
+      <div className={wrap}>
+        <Reveal>
+          <h2 className="mx-auto max-w-2xl text-center text-2xl font-medium text-ink dark:text-white sm:text-3xl">
+            {locale === "ar" ? "مبني لفِرَق إدارة العقارات ومقيميهم" : "Built for property teams and residents alike"}
+          </h2>
+        </Reveal>
+
+        <div className="mt-10 grid gap-4 sm:grid-cols-2">
+          {features.map((f, i) => (
+            <Reveal key={i} delay={i * 60}>
+              <div className="h-full rounded-2xl border border-grey-100 bg-grey-100/40 p-6 dark:border-white/10 dark:bg-white/5">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary dark:bg-primary/20">
+                  <f.Icon size={20} />
+                </span>
+                <h3 className="mt-4 font-medium text-ink dark:text-white">{f.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-ink-soft dark:text-white/70">{f.body}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Small local FAQ accordion with app-specific questions — deliberately not
+ * the sitewide <FAQ> component, since that one carries the general Atar FAQ
+ * content plus its own "Still have questions" links, neither of which fit
+ * this page. Same open/close + Plus/Minus interaction pattern, though.
+ */
+function BrandedAppFAQ({ locale }: { locale: "en" | "ar" }) {
+  const [open, setOpen] = useState<number | null>(0);
+  const items: { q: string; a: string }[] =
+    locale === "ar"
+      ? [
+          {
+            q: "هل يحتاج المقيمون إلى حساب جديد؟",
+            a: "لا — يسجّلون الدخول بنفس بياناتهم الحالية، والتطبيق فقط يحمل علامتك التجارية.",
+          },
+          {
+            q: "هل يعمل التطبيق على iOS وAndroid؟",
+            a: "نعم، تطبيق واحد يعمل على الجهازين حتى يستخدمه كل مقيم بغض النظر عن هاتفه.",
+          },
+          {
+            q: "هل يمكن الدفع وتقديم طلبات الخدمة من داخل التطبيق؟",
+            a: "نعم — المدفوعات وكشوف الحساب وطلبات الخدمة متوفرة داخل التطبيق منذ اليوم الأول.",
+          },
+          {
+            q: "كم يستغرق إعداد العلامة التجارية الخاصة بنا؟",
+            a: "أرسل لنا شعارك وألوانك، ونتولى الباقي حتى إعداد قائمتك في متجر التطبيقات.",
+          },
+        ]
+      : [
+          {
+            q: "Do residents need to create a new account?",
+            a: "No — they sign in with the same details you already give them; the app just carries your brand.",
+          },
+          {
+            q: "Does it work on both iPhone and Android?",
+            a: "Yes, one app built for both, so every resident can use it regardless of their phone.",
+          },
+          {
+            q: "Can residents pay and submit requests from the app?",
+            a: "Yes — in-app payments, statements and service requests are all built in from day one.",
+          },
+          {
+            q: "How long does branding take to set up?",
+            a: "Send your logo and colors — we handle the rest, including your app store listing.",
+          },
+        ];
+
+  return (
+    <section className="bg-[#F6F7F8] py-14 dark:bg-white/5 lg:py-20">
+      <div className="mx-auto max-w-3xl px-5 lg:px-8">
+        <Reveal>
+          <h2 className="text-center text-2xl font-medium text-ink dark:text-white sm:text-3xl">
+            {locale === "ar" ? "أسئلة شائعة" : "Got questions? We've got answers"}
+          </h2>
+        </Reveal>
+
+        <div className="mt-8 space-y-3">
+          {items.map((item, i) => {
+            const isOpen = open === i;
+            const panelId = `mobile-faq-panel-${i}`;
+            const btnId = `mobile-faq-btn-${i}`;
+            return (
+              <div
+                key={i}
+                className="overflow-hidden rounded-2xl border border-grey-200 bg-white dark:border-white/10 dark:bg-secondary-darker"
+              >
+                <h3>
+                  <button
+                    id={btnId}
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start font-medium text-ink dark:text-white"
+                  >
+                    <span>{item.q}</span>
+                    <span className="shrink-0 text-primary">{isOpen ? <Minus /> : <Plus />}</span>
+                  </button>
+                </h3>
+                {isOpen && (
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={btnId}
+                    className="px-5 pb-4 leading-relaxed text-ink-soft dark:text-white/70"
+                  >
+                    {item.a}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Small inline WhatsApp glyph — same path used for the footer's social icon, kept local here since this is the only other spot on the site that needs it as a standalone contact affordance. */
+function WhatsAppGlyph({ size = 12 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12.01 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.43 1.27 4.87L2 22l5.28-1.24A9.96 9.96 0 0 0 12.01 22c5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.2a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.13.83.84-3.05-.2-.31A8.2 8.2 0 1 1 20.2 12a8.2 8.2 0 0 1-8.19 8.2zm4.51-6.13c-.25-.12-1.46-.72-1.69-.8-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.96-.15.16-.29.18-.53.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.24-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.23.24-.86.84-.86 2.05s.88 2.38 1 2.54c.13.16 1.74 2.66 4.22 3.73.59.25 1.05.4 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.66-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.28z" />
+    </svg>
+  );
+}
+
+/**
+ * Listing Website add-on's hero visual — the client-provided screenshot of
+ * the actual marketplace site (browser-window mockup with the real hero +
+ * "Explore our communities" search/filter/cards), replacing the earlier
+ * hand-drawn placeholder mockup now that a real screenshot is available. The
+ * competitive UX audit (DoorLoop, TenantCloud, Wasalt, Property Finder SA)
+ * found this page had zero visual proof a listing website exists at all,
+ * unlike every competitor's own feature page — this closes that gap with the
+ * real thing instead of a mockup.
+ */
+function ListingWebsiteShowcase({ locale }: { locale: "en" | "ar" }) {
+  return (
+    <Reveal delay={150} className="mx-auto mt-4 max-w-5xl px-5 lg:mt-6 lg:px-8">
+      <img
+        src={listingWebsiteMockup}
+        alt={
+          locale === "ar"
+            ? "لقطة شاشة لموقع الإعلانات الفعلي — الصفحة الرئيسية وقسم استكشاف المجتمعات"
+            : "Screenshot of the actual listing website — homepage and Explore Communities section"
+        }
+        className="w-full"
+      />
+    </Reveal>
+  );
+}
+
+/**
+ * Concrete, competitor-informed feature grid — replaces the old generic
+ * 4-item checklist (sync / lead capture / own domain / bilingual) with
+ * specifics buyers actually compare across listing sites, per the
+ * competitive UX audit (Wasalt, Property Finder SA both sell on exactly
+ * these kinds of specifics rather than generic claims).
+ */
+function ListingWebsiteFeatureGrid({ locale }: { locale: "en" | "ar" }) {
+  const features: { Icon: (p: { size?: number }) => JSX.Element; title: string; body: string }[] = [
+    {
+      Icon: (p) => <WhatsAppGlyph size={p.size ?? 20} />,
+      title: locale === "ar" ? "واتساب واتصال على كل إعلان" : "WhatsApp & Call on every listing",
+      body:
+        locale === "ar"
+          ? "يتواصل المهتم معك مباشرة من بطاقة الإعلان، دون نموذج تواصل بطيء."
+          : "A buyer can reach you straight from the listing card — no slow contact form in between.",
+    },
+    {
+      Icon: (p) => <Riyal size={p.size ?? 20} />,
+      title: locale === "ar" ? "السعر ظاهر منذ البداية" : "Price shown up front",
+      body:
+        locale === "ar"
+          ? "السعر ظاهر على كل بطاقة، مع تفصيل الرسوم والضريبة في صفحة الوحدة."
+          : "Every card shows the price, with the full fee and tax breakdown on the unit page.",
+    },
+    {
+      Icon: (p) => <GridIcon size={p.size ?? 20} />,
+      title: locale === "ar" ? "معرض صور كامل لكل وحدة" : "Full photo gallery per unit",
+      body:
+        locale === "ar"
+          ? "عدة صور لكل وحدة بدل صورة واحدة، لثقة أكبر قبل التواصل."
+          : "Multiple photos per unit instead of a single image, so buyers trust it before they call.",
+    },
+    {
+      Icon: (p) => <Search size={p.size ?? 20} />,
+      title: locale === "ar" ? "مهيّأ لمحركات البحث فعلياً" : "SEO-ready with real structured data",
+      body:
+        locale === "ar"
+          ? "بيانات منظمة (schema.org) على كل صفحة إعلان، لا مجرد وعد تسويقي."
+          : "Real schema.org structured data on every listing page — not just a marketing claim.",
+    },
+    {
+      Icon: (p) => <LinkIcon size={p.size ?? 20} />,
+      title: locale === "ar" ? "نطاقك الخاص، مُستضاف بالكامل" : "Your own domain, fully hosted",
+      body:
+        locale === "ar"
+          ? "الموقع يحمل علامتك ونطاقك، وليس علامة أتار."
+          : "The site carries your brand and your domain — not Atar's.",
+    },
+    {
+      Icon: (p) => <Globe size={p.size ?? 20} />,
+      title: locale === "ar" ? "عربي وإنجليزي جاهزان مباشرة" : "Arabic and English out of the box",
+      body:
+        locale === "ar"
+          ? "كل إعلان جاهز باللغتين دون عمل إضافي."
+          : "Every listing is ready in both languages with no extra work.",
+    },
+  ];
+
+  return (
+    <section className={sectionPad}>
+      <div className={wrap}>
+        <Reveal>
+          <h2 className="mx-auto max-w-2xl text-center text-2xl font-medium text-ink dark:text-white sm:text-3xl">
+            {locale === "ar" ? "كل ما يقارنه المشتري بين المواقع" : "Everything a buyer compares between listing sites"}
+          </h2>
+        </Reveal>
+
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((f, i) => (
+            <Reveal key={i} delay={i * 60}>
+              <div className="h-full rounded-2xl border border-grey-100 bg-grey-100/40 p-6 dark:border-white/10 dark:bg-white/5">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary dark:bg-primary/20">
+                  <f.Icon size={20} />
+                </span>
+                <h3 className="mt-4 font-medium text-ink dark:text-white">{f.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-ink-soft dark:text-white/70">{f.body}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Small local FAQ accordion for the Listing Website add-on — same
+ * open/close + Plus/Minus pattern as BrandedAppFAQ, not the sitewide <FAQ>
+ * component, since that one carries unrelated general content.
+ */
+function ListingWebsiteFAQ({ locale }: { locale: "en" | "ar" }) {
+  const [open, setOpen] = useState<number | null>(0);
+  const items: { q: string; a: string }[] =
+    locale === "ar"
+      ? [
+          {
+            q: "كم يستغرق ظهور إعلان جديد على الموقع؟",
+            a: "يتزامن تلقائياً من أتار خلال دقائق من حفظه — لا حاجة لإعادة إدخاله يدوياً.",
+          },
+          {
+            q: "هل يمكنني استخدام نطاقي الخاص؟",
+            a: "نعم، الموقع مُستضاف بالكامل تحت نطاقك وعلامتك التجارية.",
+          },
+          {
+            q: "هل يغني هذا عن النشر على منصات أخرى مثل عقار أو وصلت؟",
+            a: "لا يحل محلها بالضرورة — إنه موقعك الخاص المتحكم فيه بالكامل، إلى جانب أي منصة أخرى تنشر عليها.",
+          },
+          {
+            q: "هل الموقع متوافق مع الجوال؟",
+            a: "نعم، كل صفحة مصممة لتعمل بسلاسة على الجوال أولاً.",
+          },
+          {
+            q: "ماذا عن تهيئة محركات البحث؟",
+            a: "كل صفحة إعلان تحمل بيانات منظمة (schema.org) وتُبنى بسرعة تحميل عالية بالعربية والإنجليزية.",
+          },
+        ]
+      : [
+          {
+            q: "How fast does a new listing appear on the site?",
+            a: "It syncs automatically from Atar within minutes of being saved — no manual re-entry.",
+          },
+          {
+            q: "Can I use my own domain?",
+            a: "Yes, the site is fully hosted under your own domain and brand.",
+          },
+          {
+            q: "Does this replace posting to other portals like Aqar or Wasalt?",
+            a: "Not necessarily — it's your own fully-controlled site, alongside whatever other portals you already use.",
+          },
+          {
+            q: "Is the site mobile-friendly?",
+            a: "Yes, every page is built mobile-first from the ground up.",
+          },
+          {
+            q: "What about SEO?",
+            a: "Every listing page carries real schema.org structured data and loads fast in both Arabic and English.",
+          },
+        ];
+
+  return (
+    <section className="bg-[#F6F7F8] py-14 dark:bg-white/5 lg:py-20">
+      <div className="mx-auto max-w-3xl px-5 lg:px-8">
+        <Reveal>
+          <h2 className="text-center text-2xl font-medium text-ink dark:text-white sm:text-3xl">
+            {locale === "ar" ? "أسئلة شائعة" : "Got questions? We've got answers"}
+          </h2>
+        </Reveal>
+
+        <div className="mt-8 space-y-3">
+          {items.map((item, i) => {
+            const isOpen = open === i;
+            const panelId = `listing-faq-panel-${i}`;
+            const btnId = `listing-faq-btn-${i}`;
+            return (
+              <div
+                key={i}
+                className="overflow-hidden rounded-2xl border border-grey-200 bg-white dark:border-white/10 dark:bg-secondary-darker"
+              >
+                <h3>
+                  <button
+                    id={btnId}
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start font-medium text-ink dark:text-white"
+                  >
+                    <span>{item.q}</span>
+                    <span className="shrink-0 text-primary">{isOpen ? <Minus /> : <Plus />}</span>
+                  </button>
+                </h3>
+                {isOpen && (
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={btnId}
+                    className="px-5 pb-4 leading-relaxed text-ink-soft dark:text-white/70"
+                  >
+                    {item.a}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

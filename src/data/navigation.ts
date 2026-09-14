@@ -77,7 +77,7 @@ export const productsGroup: NavGroup = {
       items: [
         { label: L("Sales Suite", "حزمة المبيعات"), to: "/products/sales-suite", icon: TrendingUpIcon },
         { label: L("Leasing Suite", "حزمة التأجير"), to: "/products/leasing-suite", icon: LeaseIcon },
-        { label: L("Property Operations Suite", "حزمة عمليات العقارات"), to: "/products/operations-suite", icon: FacilityIcon },
+        { label: L("Operations Suite", "حزمة العمليات"), to: "/products/operations-suite", icon: FacilityIcon },
         { label: L("Atar OS", "نظام أتار"), to: "/products/atar-os", icon: CpuIcon },
         { label: L("All Modules", "جميع الوحدات"), to: "/features", icon: GridIcon },
       ],

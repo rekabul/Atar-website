@@ -9,9 +9,19 @@ import {
   placeholderPages,
   placeholderFallback,
   type PageSection,
+  type SolutionIcon,
 } from "../data/placeholderPages";
 import { caseStudyPhotos } from "../data/assetsMap";
-import { brandedAppMockup, brandedApp3Phone, listingWebsiteMockup } from "../assets";
+import {
+  brandedAppMockup,
+  brandedApp3Phone,
+  listingWebsiteMockup,
+  salesHandoverMockup,
+  leasingContractMockup,
+  maintenanceTicketingMockup,
+  facilitiesManagementMockup,
+  realEstateCrmMockup,
+} from "../assets";
 import Reveal from "../components/ui/Reveal";
 import Button from "../components/ui/Button";
 import Clients from "../components/Clients";
@@ -40,6 +50,22 @@ import {
   GridIcon,
   LinkIcon,
   Globe,
+  UsersIcon,
+  FileTextIcon,
+  WalletIcon,
+  ClipboardIcon,
+  CalendarIcon,
+  LayersIcon,
+  SmartphoneIcon,
+  TrendingUpIcon,
+  BriefcaseIcon,
+  IdCardIcon,
+  CompoundIcon,
+  RefreshIcon,
+  UserCircleIcon,
+  BarChartIcon,
+  CpuIcon,
+  Share2Icon,
 } from "../components/ui/Icon";
 import { prefersReducedMotion } from "../hooks/useInView";
 
@@ -125,7 +151,63 @@ export default function PlaceholderPage() {
   const isLeasingSuite = pathname === "/products/leasing-suite";
   const isOperationsSuite = pathname === "/products/operations-suite";
   const isBrandedMobileApp = pathname === "/products/addons/branded-mobile-app";
-  const isListingWebsite = pathname === "/products/addons/listing-website";
+  // /solutions/listing-website is a deliberate exception to every other
+  // Solutions page below: instead of the generic dummy-hero + iconFeatures +
+  // whyAtar treatment, it reuses the Products add-on page's content and
+  // components verbatim (real screenshot, feature grid, compare table,
+  // FAQ) — see data/placeholderPages.ts, whose entry for this route is kept
+  // an exact copy of the add-on page's.
+  const isListingWebsite =
+    pathname === "/products/addons/listing-website" || pathname === "/solutions/listing-website";
+  // Every other Solutions-by-capability page shares the Listing Website
+  // add-on's hero treatment — cloudy background, Book a Demo button, dummy
+  // hero image below — so the layout is consistent without touching that
+  // add-on page's own real screenshot or copy.
+  const isSolutionsPage = pathname.startsWith("/solutions/");
+  // Sales & Handover and Leasing & Contract Management have real client
+  // screenshots now — every other Solutions page still falls back to the
+  // generic dummy placeholder (SolutionHeroPlaceholder) until its own image
+  // is provided, at which point it's added to this lookup.
+  const solutionHeroImages: Partial<Record<string, { src: string; alt: LStr }>> = {
+    "/solutions/sales-handover": {
+      src: salesHandoverMockup,
+      alt: {
+        en: "Screenshot of the actual Sales module — Booking Details timeline and customer information",
+        ar: "لقطة شاشة لوحدة المبيعات الفعلية — الجدول الزمني لتفاصيل الحجز وبيانات العميل",
+      },
+    },
+    "/solutions/leasing-contract-management": {
+      src: leasingContractMockup,
+      alt: {
+        en: "Screenshot of the actual Leasing module — lease KPIs, collection gauges and the leases table",
+        ar: "لقطة شاشة لوحدة التأجير الفعلية — مؤشرات العقود ومقاييس التحصيل وجدول العقود",
+      },
+    },
+    "/solutions/maintenance-ticketing": {
+      src: maintenanceTicketingMockup,
+      alt: {
+        en: "Screenshot of the actual Service Request module — request timeline, rating and review",
+        ar: "لقطة شاشة لوحدة طلبات الخدمة الفعلية — الجدول الزمني للطلب والتقييم والمراجعة",
+      },
+    },
+    "/solutions/facilities-management": {
+      src: facilitiesManagementMockup,
+      alt: {
+        en: "Screenshot of the actual Facility Booking Details screen",
+        ar: "لقطة شاشة لتفاصيل حجز المرفق الفعلية",
+      },
+    },
+    "/solutions/real-estate-crm": {
+      src: realEstateCrmMockup,
+      alt: {
+        en: "Screenshot of the actual CRM module — Customer Overview and lead details",
+        ar: "لقطة شاشة لوحدة إدارة علاقات العملاء الفعلية — نظرة عامة على العميل وتفاصيل العميل المحتمل",
+      },
+    },
+  };
+  const solutionHeroImage = solutionHeroImages[pathname]?.src;
+  const solutionHeroImageAlt = solutionHeroImages[pathname]?.alt;
+  const hasCloudyHero = isListingWebsite || isSolutionsPage;
   // Two selectable visual treatments for the Branded Mobile App page, so the
   // team can compare them side by side before picking one. Toggle only
   // renders on this one route; every other placeholder page is unaffected.
@@ -173,14 +255,14 @@ export default function PlaceholderPage() {
       )}
 
       <section
-        className={`hero-bg ${isListingWebsite ? "relative overflow-hidden" : ""}`}
+        className={`hero-bg ${hasCloudyHero ? "relative overflow-hidden" : ""}`}
         aria-labelledby="placeholder-title"
       >
         {/* Soft blurred glow behind the headline, echoing the reference
             layout's cloudy hero background — fades to plain white well
             before the screenshot below so the image itself sits on a clean
             background rather than fading content. */}
-        {isListingWebsite && (
+        {hasCloudyHero && (
           <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[420px] overflow-hidden" aria-hidden="true">
             <div className="absolute -top-32 start-1/2 h-80 w-[560px] -translate-x-1/2 rounded-full bg-primary/15 blur-3xl dark:bg-primary/10" />
             <div className="absolute -top-16 start-[15%] h-56 w-56 rounded-full bg-secondary/10 blur-3xl dark:bg-white/5" />
@@ -195,7 +277,7 @@ export default function PlaceholderPage() {
         {!(isBrandedMobileApp && demoVariant === "b") && (
           <div
             className={`mx-auto max-w-3xl px-5 text-center lg:px-8 ${
-              isListingWebsite ? "pt-16 pb-4 lg:pt-20 lg:pb-6" : "py-16 lg:py-20"
+              hasCloudyHero ? "pt-16 pb-4 lg:pt-20 lg:pb-6" : "py-16 lg:py-20"
             }`}
           >
             <Reveal>
@@ -211,7 +293,7 @@ export default function PlaceholderPage() {
               <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-white/70">
                 {pick(copy.body, locale)}
               </p>
-              {isListingWebsite && (
+              {hasCloudyHero && (
                 <div className="mt-8">
                   <Button href="https://meetings.hubspot.com/atar/demo-meeting" icon={<ArrowRight />}>
                     {locale === "ar" ? "احجز عرضاً توضيحياً" : "Book a Demo"}
@@ -233,6 +315,9 @@ export default function PlaceholderPage() {
           />
         )}
         {isListingWebsite && <ListingWebsiteShowcase locale={locale} />}
+        {isSolutionsPage && !isListingWebsite && (
+          <SolutionHeroPlaceholder locale={locale} image={solutionHeroImage} imageAlt={solutionHeroImageAlt} />
+        )}
       </section>
 
       {isListingWebsite && <ListingWebsiteFeatureGrid locale={locale} />}
@@ -317,6 +402,10 @@ function SectionBlock({ section, locale }: { section: PageSection; locale: "en" 
       return <StatsSection section={section} locale={locale} />;
     case "bullets":
       return <BulletsSection section={section} locale={locale} />;
+    case "iconFeatures":
+      return <IconFeaturesSection section={section} locale={locale} />;
+    case "whyAtar":
+      return <WhyAtarSection section={section} locale={locale} />;
     case "chips":
       return <ChipsSection section={section} locale={locale} />;
     case "compare":
@@ -1625,6 +1714,204 @@ function BulletsSection({
             ))}
           </ul>
         </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/** Small inline shield glyph for the "Built for Saudi compliance" whyAtar card — no standalone Shield icon exists in ui/Icon.tsx yet, same pattern as WhatsAppGlyph below. */
+function ShieldGlyph({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  );
+}
+
+/**
+ * Icon lookup for the "iconFeatures" and "whyAtar" sections — keyed by the
+ * `SolutionIcon` string union in data/placeholderPages.ts, so that data file
+ * never has to import a React component directly.
+ */
+const solutionIconMap: Record<SolutionIcon, (p: { size?: number }) => JSX.Element> = {
+  users: (p) => <UsersIcon size={p.size} />,
+  globe: (p) => <Globe size={p.size} />,
+  handover: (p) => <HandoverIcon size={p.size} />,
+  file: (p) => <FileTextIcon size={p.size} />,
+  wallet: (p) => <WalletIcon size={p.size} />,
+  ticket: (p) => <TicketIcon size={p.size} />,
+  facility: (p) => <FacilityIcon size={p.size} />,
+  message: (p) => <MessageIcon size={p.size} />,
+  userCircle: (p) => <UserCircleIcon size={p.size} />,
+  chart: (p) => <BarChartIcon size={p.size} />,
+  refresh: (p) => <RefreshIcon size={p.size} />,
+  shield: (p) => <ShieldGlyph size={p.size} />,
+  clipboard: (p) => <ClipboardIcon size={p.size} />,
+  bell: (p) => <BellIcon size={p.size} />,
+  calendar: (p) => <CalendarIcon size={p.size} />,
+  tag: (p) => <TagIcon size={p.size} />,
+  layers: (p) => <LayersIcon size={p.size} />,
+  share: (p) => <Share2Icon size={p.size} />,
+  smartphone: (p) => <SmartphoneIcon size={p.size} />,
+  link: (p) => <LinkIcon size={p.size} />,
+  trending: (p) => <TrendingUpIcon size={p.size} />,
+  cpu: (p) => <CpuIcon size={p.size} />,
+  briefcase: (p) => <BriefcaseIcon size={p.size} />,
+  idCard: (p) => <IdCardIcon size={p.size} />,
+  compound: (p) => <CompoundIcon size={p.size} />,
+  search: (p) => <Search size={p.size} />,
+  riyal: (p) => <Riyal size={p.size} />,
+  grid: (p) => <GridIcon size={p.size} />,
+};
+
+/**
+ * Hero visual for every Solutions-by-capability page. Defaults to a skeleton
+ * "product preview" card (browser-style dot bar + placeholder blocks) in the
+ * same shadow/rounded-card treatment as the Listing Website add-on's real
+ * screenshot, so the layout reads correctly before a page has its own image.
+ * Once a page is given a real screenshot (via the `image` prop), it renders
+ * that instead, full width, same card treatment — no structural change
+ * needed when swapping dummy for real per page.
+ */
+function SolutionHeroPlaceholder({
+  locale,
+  image,
+  imageAlt,
+}: {
+  locale: "en" | "ar";
+  image?: string;
+  imageAlt?: LStr;
+}) {
+  if (image) {
+    return (
+      <div className="mx-auto mt-4 max-w-5xl px-5 pb-10 lg:mt-6 lg:px-8 lg:pb-14">
+        <Reveal delay={150} className="overflow-hidden rounded-2xl bg-white shadow-[0_0_50px_-12px_rgba(8,15,26,0.25)]">
+          <img src={image} alt={imageAlt ? pick(imageAlt, locale) : ""} className="block w-full" />
+        </Reveal>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto mt-4 max-w-5xl px-5 pb-10 lg:mt-6 lg:px-8 lg:pb-14">
+      <Reveal
+        delay={150}
+        className="overflow-hidden rounded-2xl bg-white shadow-[0_0_50px_-12px_rgba(8,15,26,0.25)] dark:bg-white/5"
+      >
+        <div className="flex items-center gap-1.5 border-b border-grey-100 px-4 py-3 dark:border-white/10">
+          <span className="h-2.5 w-2.5 rounded-full bg-grey-200 dark:bg-white/15" />
+          <span className="h-2.5 w-2.5 rounded-full bg-grey-200 dark:bg-white/15" />
+          <span className="h-2.5 w-2.5 rounded-full bg-grey-200 dark:bg-white/15" />
+        </div>
+        <div className="grid gap-4 bg-[#F6F7F8] p-6 dark:bg-white/[0.03] sm:grid-cols-3 sm:p-10">
+          <div className="space-y-3 sm:col-span-1">
+            <div className="h-3 w-2/3 rounded-full bg-grey-200 dark:bg-white/10" />
+            <div className="h-20 rounded-xl bg-white shadow-sm dark:bg-white/5" />
+            <div className="h-20 rounded-xl bg-white shadow-sm dark:bg-white/5" />
+          </div>
+          <div className="space-y-3 sm:col-span-2">
+            <div className="h-3 w-1/3 rounded-full bg-grey-200 dark:bg-white/10" />
+            <div className="h-48 rounded-xl bg-white shadow-sm dark:bg-white/5 sm:h-56" />
+          </div>
+        </div>
+        <div className="border-t border-grey-100 px-4 py-2.5 text-center text-xs font-medium tracking-wide text-ink-soft/70 dark:border-white/10 dark:text-white/40">
+          {locale === "ar"
+            ? "معاينة — سيتم استبدالها بصورة المنتج الفعلية"
+            : "Preview — will be replaced with the real product image"}
+        </div>
+      </Reveal>
+    </div>
+  );
+}
+
+/**
+ * Icon + title + body feature grid — the Solutions pages' equivalent of
+ * ListingWebsiteFeatureGrid, but data-driven off `section.items` instead of
+ * a hardcoded list, since it's reused across 10 different pages.
+ */
+function IconFeaturesSection({
+  section,
+  locale,
+}: {
+  section: Extract<PageSection, { kind: "iconFeatures" }>;
+  locale: "en" | "ar";
+}) {
+  return (
+    <section className={sectionPad}>
+      <div className={wrap}>
+        {section.heading && (
+          <Reveal>
+            <h2 className="mx-auto max-w-2xl text-center text-2xl font-medium text-ink dark:text-white sm:text-3xl">
+              {pick(section.heading, locale)}
+            </h2>
+          </Reveal>
+        )}
+        <div className={`grid gap-4 sm:grid-cols-2 lg:grid-cols-3 ${section.heading ? "mt-10" : ""}`}>
+          {section.items.map((item, i) => {
+            const Icon = solutionIconMap[item.icon];
+            return (
+              <Reveal key={i} delay={i * 60}>
+                <div className="h-full rounded-2xl border border-grey-100 bg-grey-100/40 p-6 dark:border-white/10 dark:bg-white/5">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary dark:bg-primary/20">
+                    <Icon size={20} />
+                  </span>
+                  <h3 className="mt-4 font-medium text-ink dark:text-white">{pick(item.title, locale)}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-ink-soft dark:text-white/70">{pick(item.body, locale)}</p>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * "Why Atar" horizontal card row — replaces the compare/screenshot pattern
+ * from the Listing Website add-on page on every Solutions page. A tinted
+ * band (rather than plain white) and elevated cards give it a distinct
+ * "closing argument" feel instead of reading as just another feature grid.
+ */
+function WhyAtarSection({
+  section,
+  locale,
+}: {
+  section: Extract<PageSection, { kind: "whyAtar" }>;
+  locale: "en" | "ar";
+}) {
+  return (
+    <section className="bg-primary/5 py-14 dark:bg-white/[0.03] lg:py-20">
+      <div className={wrap}>
+        <Reveal>
+          <h2 className="mx-auto max-w-2xl text-center text-2xl font-medium text-ink dark:text-white sm:text-3xl">
+            {pick(section.heading, locale)}
+          </h2>
+        </Reveal>
+        {section.subtitle && (
+          <Reveal delay={60}>
+            <p className="mx-auto mt-3 max-w-2xl text-center leading-relaxed text-ink-soft dark:text-white/70">
+              {pick(section.subtitle, locale)}
+            </p>
+          </Reveal>
+        )}
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {section.cards.map((card, i) => {
+            const Icon = solutionIconMap[card.icon];
+            return (
+              <Reveal key={i} delay={i * 70}>
+                <div className="h-full rounded-2xl bg-white p-6 shadow-[0_2px_20px_-6px_rgba(8,15,26,0.12)] dark:bg-secondary-darker dark:shadow-none dark:ring-1 dark:ring-white/10">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
+                    <Icon size={18} />
+                  </span>
+                  <h3 className="mt-4 font-medium text-ink dark:text-white">{pick(card.title, locale)}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-ink-soft dark:text-white/70">{pick(card.body, locale)}</p>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

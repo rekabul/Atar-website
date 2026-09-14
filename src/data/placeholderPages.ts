@@ -66,6 +66,43 @@ export type DetailedVisualKey =
   | "onlinePayment";
 export type DetailedStep = { title: LStr; body: LStr; visual: DetailedVisualKey };
 
+/**
+ * Small icon set shared by the "iconFeatures" and "whyAtar" sections below —
+ * keys only, so this data file never needs to import React icon components.
+ * Looked up against `solutionIconMap` in pages/PlaceholderPage.tsx.
+ */
+export type SolutionIcon =
+  | "users"
+  | "globe"
+  | "handover"
+  | "file"
+  | "wallet"
+  | "ticket"
+  | "facility"
+  | "message"
+  | "userCircle"
+  | "chart"
+  | "refresh"
+  | "shield"
+  | "clipboard"
+  | "bell"
+  | "calendar"
+  | "tag"
+  | "layers"
+  | "share"
+  | "smartphone"
+  | "link"
+  | "trending"
+  | "cpu"
+  | "briefcase"
+  | "idCard"
+  | "compound"
+  | "search"
+  | "riyal"
+  | "grid";
+export type IconFeatureItem = { icon: SolutionIcon; title: LStr; body: LStr };
+export type WhyAtarCard = { icon: SolutionIcon; title: LStr; body: LStr };
+
 export type PageSection =
   | { kind: "steps"; heading?: LStr; items: Step[] }
   | { kind: "stepsVisual"; heading?: LStr; visual: VisualKey; items: Step[] }
@@ -74,6 +111,8 @@ export type PageSection =
   | { kind: "bullets"; heading?: LStr; items: LStr[] }
   | { kind: "chips"; heading?: LStr; items: LStr[] }
   | { kind: "compare"; heading?: LStr; subtitle?: LStr; otherLabel: LStr; rows: CompareRow[] }
+  | { kind: "iconFeatures"; heading?: LStr; items: IconFeatureItem[] }
+  | { kind: "whyAtar"; heading: LStr; subtitle?: LStr; cards: WhyAtarCard[] }
   | { kind: "caseStudies"; items: CaseStudyItem[] }
   | { kind: "logos" }
   | { kind: "team"; heading: LStr; items: TeamMember[] }
@@ -426,6 +465,12 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
   },
 
   // ---- Solutions by capability ---------------------------------------------
+  // Every Solutions page below shares the Listing Website add-on page's
+  // layout (cloudy hero, Book a Demo button, dummy hero image, icon feature
+  // grid) via the isSolutionsPage flag in pages/PlaceholderPage.tsx — only
+  // the content is unique per page. The compare/screenshot pattern from that
+  // add-on page is deliberately NOT reused here; instead each page closes its
+  // intro with a "why Atar" card row tailored to that specific capability.
   "/solutions/real-estate-crm": {
     eyebrow: SOLUTIONS,
     title: L("Real Estate CRM", "إدارة علاقات العملاء العقارية"),
@@ -435,32 +480,131 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
         items: [
-          L("One pipeline across sales and leasing leads", "مسار واحد لعملاء المبيعات والتأجير المحتملين"),
-          L("Automatic lead capture from your listings", "التقاط تلقائي للعملاء المحتملين من إعلاناتك"),
-          L("Full activity history per contact", "سجل نشاط كامل لكل جهة اتصال"),
-          L("Follow-up reminders and task assignment", "تذكيرات متابعة وتوزيع مهام"),
+          {
+            icon: "users",
+            title: L("One pipeline across sales and leasing leads", "مسار واحد لعملاء المبيعات والتأجير المحتملين"),
+            body: L(
+              "Buyer and tenant enquiries sit in the same pipeline, so nothing gets worked twice by two different teams.",
+              "تجتمع طلبات المشترين والمستأجرين في مسار واحد، فلا يعمل فريقان على نفس العميل مرتين."
+            ),
+          },
+          {
+            icon: "refresh",
+            title: L("Automatic lead capture from your listings", "التقاط تلقائي للعملاء المحتملين من إعلاناتك"),
+            body: L(
+              "Enquiries from your listing site and marketplace drop straight into the CRM — no forwarding, no copy-paste.",
+              "تصل الاستفسارات من موقع الإعلانات والسوق مباشرة إلى نظام إدارة العملاء دون تحويل أو نسخ يدوي."
+            ),
+          },
+          {
+            icon: "clipboard",
+            title: L("Full activity history per contact", "سجل نشاط كامل لكل جهة اتصال"),
+            body: L(
+              "Calls, viewings, offers and notes stay attached to the contact record instead of scattered across inboxes.",
+              "تبقى المكالمات والمعاينات والعروض والملاحظات مرتبطة بسجل جهة الاتصال بدل تشتتها بين صناديق البريد."
+            ),
+          },
+          {
+            icon: "bell",
+            title: L("Follow-up reminders and task assignment", "تذكيرات متابعة وتوزيع مهام"),
+            body: L(
+              "Reminders and owner assignment keep every lead moving, instead of going cold in someone's spreadsheet.",
+              "تُبقي التذكيرات وتكليف المسؤول كل عميل محتمل قيد المتابعة بدل أن يبرد في جدول بيانات منسي."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Real Estate CRM", "لماذا أتار لإدارة علاقات العملاء العقارية"),
+        subtitle: L(
+          "The advantages that only show up once your CRM shares one platform with sales, leasing and operations.",
+          "المزايا التي تظهر فقط عندما يشارك نظام إدارة العملاء منصة واحدة مع المبيعات والتأجير والعمليات."
+        ),
+        cards: [
+          {
+            icon: "refresh",
+            title: L("Live, not batch", "مباشر لا دفعي"),
+            body: L(
+              "Every lead status updates in real time across your team — no waiting on an end-of-day import.",
+              "تتحدّث حالة كل عميل محتمل فورياً لدى فريقك بأكمله، دون انتظار استيراد نهاية اليوم."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Built for Saudi compliance", "مصمم للامتثال السعودي"),
+            body: L(
+              "Contact and consent data is handled in line with Saudi data protection requirements from day one.",
+              "تُدار بيانات جهات الاتصال والموافقات وفق متطلبات حماية البيانات السعودية منذ اليوم الأول."
+            ),
+          },
+          {
+            icon: "layers",
+            title: L("One system, not five", "نظام واحد لا خمسة"),
+            body: L(
+              "Your CRM sits inside the same platform as sales, leasing and operations — not a bolt-on tool with its own login.",
+              "يعمل نظام إدارة العملاء ضمن نفس منصة المبيعات والتأجير والعمليات، لا كأداة منفصلة بتسجيل دخول خاص بها."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Support in Arabic and English", "دعم بالعربية والإنجليزية"),
+            body: L(
+              "Your sales team gets local support in both languages, not a ticket queue in another time zone.",
+              "يحصل فريق المبيعات على دعم محلي باللغتين، لا طابور تذاكر في منطقة زمنية أخرى."
+            ),
+          },
         ],
       },
     ],
   },
 
+  // Deliberate exception: this route is an exact copy of the
+  // "/products/addons/listing-website" entry (eyebrow, title, body and the
+  // compare section), and pages/PlaceholderPage.tsx's isListingWebsite flag
+  // treats this path the same as that add-on page — same real screenshot,
+  // same feature grid, same FAQ — per an explicit request to reuse that
+  // page wholesale here rather than the generic Solutions template used by
+  // every other route below.
   "/solutions/listing-website": {
-    eyebrow: SOLUTIONS,
+    eyebrow: L("Add-ons", "الإضافات"),
     title: L("Listing Website", "موقع الإعلانات"),
     body: L(
-      "Publish your sale and rental inventory to a fast, branded listing website that stays in sync with your Atar data automatically.",
-      "انشر مخزون البيع والتأجير على موقع إعلانات سريع وبعلامتك التجارية يبقى متزامناً تلقائياً مع بيانات أتار."
+      "A branded, SEO-ready listing website for your sale and rental inventory, connected directly to your Atar data — no manual re-entry.",
+      "موقع إعلانات بعلامتك التجارية ومهيّأ لمحركات البحث لعرض مخزون البيع والتأجير، متصل مباشرة ببيانات أتار دون إعادة إدخال يدوية."
     ),
     sections: [
       {
-        kind: "bullets",
-        items: [
-          L("Listings sync automatically from Atar", "إعلانات تتزامن تلقائياً من أتار"),
-          L("Built-in lead capture and inquiry forms", "التقاط عملاء محتملين ونماذج استفسار مدمجة"),
-          L("SEO-ready pages for every listing", "صفحات مهيّأة لمحركات البحث لكل إعلان"),
-          L("Arabic and English out of the box", "عربي وإنجليزي جاهزان مباشرة"),
+        kind: "compare",
+        heading: L("Why not just post to the portals yourself?", "لماذا لا تنشر بنفسك على المنصات؟"),
+        subtitle: L(
+          "A quick look at what changes when your listings live on your own site instead of being re-entered everywhere by hand.",
+          "نظرة سريعة على ما يتغيّر عندما تكون إعلاناتك على موقعك الخاص بدلاً من إعادة إدخالها يدوياً في كل مكان."
+        ),
+        otherLabel: L("Posting Manually to Portals", "النشر يدوياً على المنصات"),
+        rows: [
+          {
+            aspect: L("Publishing a new listing", "نشر إعلان جديد"),
+            atar: L("Syncs automatically the moment it's added in Atar", "يتزامن تلقائياً فور إضافته في أتار"),
+            other: L("Re-entered by hand on every portal you use", "يُعاد إدخاله يدوياً على كل منصة تستخدمها"),
+          },
+          {
+            aspect: L("Price & fee transparency", "شفافية السعر والرسوم"),
+            atar: L("Full breakdown shown — price, RETT, fees, VAT", "تفصيل كامل — السعر وضريبة التصرفات والرسوم والقيمة المضافة"),
+            other: L("Usually just an asking price, nothing else", "غالباً سعر الطلب فقط دون تفاصيل"),
+          },
+          {
+            aspect: L("Leads", "العملاء المحتملون"),
+            atar: L("Captured straight into your Atar CRM", "تُلتقط مباشرة في نظام أتار لإدارة العملاء"),
+            other: L("Scattered across each portal's own inbox", "متفرقة بين صناديق وارد كل منصة"),
+          },
+          {
+            aspect: L("Branding", "العلامة التجارية"),
+            atar: L("Your own domain, fully hosted under your brand", "نطاقك الخاص، مُستضاف بالكامل تحت علامتك"),
+            other: L("Buried under the portal's own branding", "مدفون تحت علامة المنصة نفسها"),
+          },
         ],
       },
     ],
@@ -475,12 +619,82 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
         items: [
-          L("Booking, contracts and milestone billing in one flow", "الحجز والعقود والفوترة حسب المراحل في مسار واحد"),
-          L("Digital signature via Nafath", "توقيع إلكتروني عبر نفاذ"),
-          L("Handover checklists with full documentation", "قوائم تسليم مع توثيق كامل"),
-          L("Seamless handoff into post-sale operations", "تسليم سلس إلى عمليات ما بعد البيع"),
+          {
+            icon: "file",
+            title: L("Booking, contracts and milestone billing in one flow", "الحجز والعقود والفوترة حسب المراحل في مسار واحد"),
+            body: L(
+              "A unit moves from reservation to contract to milestone invoice without leaving the same screen.",
+              "تنتقل الوحدة من الحجز إلى العقد إلى فاتورة الدفعة دون مغادرة الشاشة نفسها."
+            ),
+          },
+          {
+            icon: "idCard",
+            title: L("Digital signature via Nafath", "توقيع إلكتروني عبر نفاذ"),
+            body: L(
+              "Buyers sign contracts remotely through Nafath, with a legally recognized signature and no printed paperwork.",
+              "يوقّع المشترون العقود عن بُعد عبر نفاذ، بتوقيع معترف به قانونياً دون أي أوراق مطبوعة."
+            ),
+          },
+          {
+            icon: "clipboard",
+            title: L("Handover checklists with full documentation", "قوائم تسليم مع توثيق كامل"),
+            body: L(
+              "Snags, sign-offs and attachments are logged against the unit, so nothing about the handover is verbal.",
+              "تُسجَّل الملاحظات والاعتمادات والمرفقات على الوحدة نفسها، فلا يبقى شيء من التسليم شفهياً."
+            ),
+          },
+          {
+            icon: "handover",
+            title: L("Seamless handoff into post-sale operations", "تسليم سلس إلى عمليات ما بعد البيع"),
+            body: L(
+              "Once a unit is handed over, its history moves with it into facilities and customer service — nothing re-typed.",
+              "بمجرد تسليم الوحدة، ينتقل سجلها إلى إدارة المرافق وخدمة العملاء دون إعادة كتابة أي شيء."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Sales & Handover", "لماذا أتار للمبيعات والتسليم"),
+        subtitle: L(
+          "What a connected sales and handover flow gives you that a spreadsheet and a shared inbox can't.",
+          "ما الذي يمنحك إياه مسار مبيعات وتسليم متصل ولا يمنحه جدول بيانات وصندوق بريد مشترك."
+        ),
+        cards: [
+          {
+            icon: "refresh",
+            title: L("Live, not batch", "مباشر لا دفعي"),
+            body: L(
+              "Every booking, payment and signature updates the unit's status immediately for sales, finance and operations alike.",
+              "يحدّث كل حجز ودفعة وتوقيع حالة الوحدة فوراً لفرق المبيعات والمالية والعمليات."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Built for Saudi compliance", "مصمم للامتثال السعودي"),
+            body: L(
+              "Nafath signatures and RETT-ready billing are built in, not a workaround stitched together after the fact.",
+              "توقيعات نفاذ وفوترة جاهزة لرسوم نقل الملكية مدمجة أصلاً، لا حل مؤقت يُركّب لاحقاً."
+            ),
+          },
+          {
+            icon: "layers",
+            title: L("One system, not five", "نظام واحد لا خمسة"),
+            body: L(
+              "Booking, contract, billing and handover live in one flow instead of four disconnected tools and a shared drive.",
+              "يعيش الحجز والعقد والفوترة والتسليم في مسار واحد بدل أربع أدوات منفصلة ومحرك تخزين مشترك."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Support in Arabic and English", "دعم بالعربية والإنجليزية"),
+            body: L(
+              "Your sales and handover teams get local support in both languages when a deal needs a fast answer.",
+              "تحصل فرق المبيعات والتسليم على دعم محلي باللغتين عندما تحتاج الصفقة إجابة سريعة."
+            ),
+          },
         ],
       },
     ],
@@ -495,12 +709,82 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
         items: [
-          L("Application review with full KYC detail", "مراجعة الطلبات مع تفاصيل التحقق الكامل من الهوية"),
-          L("Auto-generated lease agreements", "عقود إيجار تُنشأ تلقائياً"),
-          L("Renewal reminders before contracts expire", "تذكيرات تجديد قبل انتهاء العقود"),
-          L("Invoicing raised automatically on payment dates", "فواتير تُصدر تلقائياً في مواعيد الدفع"),
+          {
+            icon: "idCard",
+            title: L("Application review with full KYC detail", "مراجعة الطلبات مع تفاصيل التحقق الكامل من الهوية"),
+            body: L(
+              "Applicant identity, income and history are reviewed in one screen instead of a folder of email attachments.",
+              "تُراجَع هوية المتقدّم ودخله وسجله في شاشة واحدة بدل مجلد من مرفقات البريد الإلكتروني."
+            ),
+          },
+          {
+            icon: "file",
+            title: L("Auto-generated lease agreements", "عقود إيجار تُنشأ تلقائياً"),
+            body: L(
+              "Approved applications turn into a ready-to-sign lease automatically, with the right clauses every time.",
+              "تتحول الطلبات المعتمدة تلقائياً إلى عقد إيجار جاهز للتوقيع، بالبنود الصحيحة في كل مرة."
+            ),
+          },
+          {
+            icon: "bell",
+            title: L("Renewal reminders before contracts expire", "تذكيرات تجديد قبل انتهاء العقود"),
+            body: L(
+              "Upcoming expiries surface automatically, so a renewal conversation starts weeks early, not the day after.",
+              "تظهر العقود القريبة من الانتهاء تلقائياً، فتبدأ محادثة التجديد قبل أسابيع لا في اليوم التالي لانتهائها."
+            ),
+          },
+          {
+            icon: "riyal",
+            title: L("Invoicing raised automatically on payment dates", "فواتير تُصدر تلقائياً في مواعيد الدفع"),
+            body: L(
+              "Rent invoices go out on schedule without anyone needing to remember which tenant is due this week.",
+              "تصدر فواتير الإيجار في موعدها دون الحاجة لتذكّر أي مستأجر مستحق هذا الأسبوع."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Leasing & Contract Management", "لماذا أتار للتأجير وإدارة العقود"),
+        subtitle: L(
+          "Why leasing teams stop chasing renewals and start planning them.",
+          "لماذا تتوقف فرق التأجير عن ملاحقة التجديدات وتبدأ بالتخطيط لها."
+        ),
+        cards: [
+          {
+            icon: "refresh",
+            title: L("Live, not batch", "مباشر لا دفعي"),
+            body: L(
+              "Every application, signature and payment updates the lease record the moment it happens.",
+              "يحدّث كل طلب وتوقيع ودفعة سجل العقد فور حدوثه."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Built for Saudi compliance", "مصمم للامتثال السعودي"),
+            body: L(
+              "Lease agreements follow Ejar-aligned terms, so contracts hold up the same way a landlord already expects.",
+              "تتبع عقود الإيجار شروطاً متوافقة مع إيجار، فتبقى العقود صالحة بالشكل الذي يتوقعه المالك أصلاً."
+            ),
+          },
+          {
+            icon: "layers",
+            title: L("One system, not five", "نظام واحد لا خمسة"),
+            body: L(
+              "Applications, agreements, renewals and invoicing live in one record per lease, not four separate files.",
+              "تعيش الطلبات والاتفاقيات والتجديدات والفوترة في سجل واحد لكل عقد، لا في أربعة ملفات منفصلة."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Support in Arabic and English", "دعم بالعربية والإنجليزية"),
+            body: L(
+              "Your leasing team gets local support in both languages when a tenant's contract needs a quick fix.",
+              "يحصل فريق التأجير على دعم محلي باللغتين عندما يحتاج عقد المستأجر تعديلاً سريعاً."
+            ),
+          },
         ],
       },
     ],
@@ -515,12 +799,82 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
         items: [
-          L("Real-time revenue and collections dashboards", "لوحات تحكم فورية للإيرادات والتحصيل"),
-          L("Owner statements generated automatically", "كشوف حساب للملّاك تُنشأ تلقائياً"),
-          L("Occupancy and portfolio performance in one view", "الإشغال وأداء المحفظة في عرض واحد"),
-          L("Export-ready reporting for finance teams", "تقارير جاهزة للتصدير لفرق المالية"),
+          {
+            icon: "wallet",
+            title: L("Real-time revenue and collections dashboards", "لوحات تحكم فورية للإيرادات والتحصيل"),
+            body: L(
+              "See what's been collected, what's overdue and what's projected, updated the moment a payment lands.",
+              "اطّلع على ما تم تحصيله وما تأخر وما هو متوقع، محدّثاً فور وصول أي دفعة."
+            ),
+          },
+          {
+            icon: "file",
+            title: L("Owner statements generated automatically", "كشوف حساب للملّاك تُنشأ تلقائياً"),
+            body: L(
+              "Owners get a clear statement every period without your finance team building it by hand.",
+              "يحصل الملّاك على كشف حساب واضح كل فترة دون أن يُعدّه فريق المالية يدوياً."
+            ),
+          },
+          {
+            icon: "compound",
+            title: L("Occupancy and portfolio performance in one view", "الإشغال وأداء المحفظة في عرض واحد"),
+            body: L(
+              "Compare occupancy and revenue across every property in the portfolio from a single screen.",
+              "قارن الإشغال والإيرادات عبر كل عقار في المحفظة من شاشة واحدة."
+            ),
+          },
+          {
+            icon: "briefcase",
+            title: L("Export-ready reporting for finance teams", "تقارير جاهزة للتصدير لفرق المالية"),
+            body: L(
+              "Pull a clean export whenever finance needs one, instead of rebuilding a report from scratch each time.",
+              "استخرج تقريراً منظماً وقت الحاجة دون إعادة بنائه من الصفر في كل مرة."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Billing & Financials", "لماذا أتار للفوترة والماليات"),
+        subtitle: L(
+          "What owner-ready reporting looks like when it comes straight out of the same platform running your portfolio.",
+          "كيف تبدو التقارير الجاهزة للملّاك عندما تصدر مباشرة من المنصة نفسها التي تدير محفظتك."
+        ),
+        cards: [
+          {
+            icon: "refresh",
+            title: L("Live, not batch", "مباشر لا دفعي"),
+            body: L(
+              "Collections and occupancy figures update as payments and move-outs happen, not at month-end close.",
+              "تتحدّث أرقام التحصيل والإشغال فور حدوث الدفعات وإخلاء الوحدات، لا عند إقفال نهاية الشهر."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Built for Saudi compliance", "مصمم للامتثال السعودي"),
+            body: L(
+              "Invoices and statements carry ZATCA-ready formatting, so finance isn't reformatting them by hand.",
+              "تحمل الفواتير والكشوف تنسيقاً جاهزاً لهيئة الزكاة والضريبة والجمارك، فلا يعيد فريق المالية تنسيقها يدوياً."
+            ),
+          },
+          {
+            icon: "layers",
+            title: L("One system, not five", "نظام واحد لا خمسة"),
+            body: L(
+              "Revenue, collections and occupancy come from the same records as leasing and operations — not a separate export.",
+              "تأتي الإيرادات والتحصيل والإشغال من نفس سجلات التأجير والعمليات، لا من تصدير منفصل."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Support in Arabic and English", "دعم بالعربية والإنجليزية"),
+            body: L(
+              "Your finance team gets local support in both languages when an owner statement needs a closer look.",
+              "يحصل فريق المالية على دعم محلي باللغتين عندما يحتاج كشف حساب المالك لمراجعة أدق."
+            ),
+          },
         ],
       },
     ],
@@ -535,12 +889,82 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
         items: [
-          L("Customer-initiated ticket workflows", "سير عمل تذاكر يبدأها العميل"),
-          L("Vendor and technician dispatch", "إرسال المقاولين والفنيين"),
-          L("SLA and KPI tracking on every ticket", "تتبّع اتفاقيات مستوى الخدمة ومؤشرات الأداء على كل تذكرة"),
-          L("Full audit trail from request to resolution", "سجل تدقيق كامل من الطلب إلى الحل"),
+          {
+            icon: "ticket",
+            title: L("Customer-initiated ticket workflows", "سير عمل تذاكر يبدأها العميل"),
+            body: L(
+              "Tenants and owners raise a request themselves, with photos and details attached from the start.",
+              "يرفع المستأجرون والملّاك الطلب بأنفسهم، مع الصور والتفاصيل المرفقة منذ البداية."
+            ),
+          },
+          {
+            icon: "briefcase",
+            title: L("Vendor and technician dispatch", "إرسال المقاولين والفنيين"),
+            body: L(
+              "The right vendor or technician gets assigned and notified automatically based on the ticket type.",
+              "يُكلَّف المقاول أو الفني المناسب ويُبلَّغ تلقائياً حسب نوع التذكرة."
+            ),
+          },
+          {
+            icon: "chart",
+            title: L("SLA and KPI tracking on every ticket", "تتبّع اتفاقيات مستوى الخدمة ومؤشرات الأداء على كل تذكرة"),
+            body: L(
+              "Response and resolution times are tracked against SLA automatically, not reconstructed after the fact.",
+              "تُتابع أوقات الاستجابة والحل تلقائياً مقابل اتفاقية مستوى الخدمة، لا بإعادة بنائها لاحقاً."
+            ),
+          },
+          {
+            icon: "clipboard",
+            title: L("Full audit trail from request to resolution", "سجل تدقيق كامل من الطلب إلى الحل"),
+            body: L(
+              "Every update, photo and note stays attached to the ticket, so a dispute is settled by the record, not memory.",
+              "يبقى كل تحديث وصورة وملاحظة مرفقة بالتذكرة، فيُحسم أي خلاف بالسجل لا بالذاكرة."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Maintenance & Ticketing", "لماذا أتار للصيانة والتذاكر"),
+        subtitle: L(
+          "What changes when every ticket runs on the same platform as the lease, the unit and the owner behind it.",
+          "ما الذي يتغيّر عندما تعمل كل تذكرة على نفس منصة العقد والوحدة والمالك خلفها."
+        ),
+        cards: [
+          {
+            icon: "refresh",
+            title: L("Live, not batch", "مباشر لا دفعي"),
+            body: L(
+              "Ticket status updates the moment a technician acts on it — tenants aren't left guessing.",
+              "تتحدّث حالة التذكرة فور تصرّف الفني بشأنها، فلا يبقى المستأجر في حيرة."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Built for Saudi compliance", "مصمم للامتثال السعودي"),
+            body: L(
+              "Vendor records and service history are kept in a form your compliance team can actually audit.",
+              "تُحفظ سجلات المقاولين وتاريخ الخدمة بشكل يمكن لفريق الامتثال مراجعته فعلياً."
+            ),
+          },
+          {
+            icon: "layers",
+            title: L("One system, not five", "نظام واحد لا خمسة"),
+            body: L(
+              "A ticket is linked to its unit, lease and owner automatically — not a standalone helpdesk with no context.",
+              "تُربط التذكرة بوحدتها وعقدها ومالكها تلقائياً، لا كنظام دعم مستقل بلا سياق."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Support in Arabic and English", "دعم بالعربية والإنجليزية"),
+            body: L(
+              "Your operations team gets local support in both languages when an urgent ticket needs escalation.",
+              "يحصل فريق العمليات على دعم محلي باللغتين عندما تحتاج تذكرة عاجلة إلى تصعيد."
+            ),
+          },
         ],
       },
     ],
@@ -555,12 +979,82 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
         items: [
-          L("Manage common areas and shared facilities", "أدر المناطق المشتركة والمرافق المشتركة"),
-          L("Facility booking management for shared spaces", "إدارة حجز المرافق للمساحات المشتركة"),
-          L("Assign and monitor maintenance teams", "كلّف فرق الصيانة وتابعها"),
-          L("Preventive maintenance scheduling", "جدولة الصيانة الوقائية"),
+          {
+            icon: "facility",
+            title: L("Manage common areas and shared facilities", "أدر المناطق المشتركة والمرافق المشتركة"),
+            body: L(
+              "Lobbies, pools, gyms and parking are tracked as assets with their own maintenance history.",
+              "تُتابع الردهات والمسابح والصالات الرياضية ومواقف السيارات كأصول لها سجل صيانة خاص بها."
+            ),
+          },
+          {
+            icon: "calendar",
+            title: L("Facility booking management for shared spaces", "إدارة حجز المرافق للمساحات المشتركة"),
+            body: L(
+              "Residents reserve shared spaces themselves, with double-bookings and conflicts prevented automatically.",
+              "يحجز السكان المساحات المشتركة بأنفسهم، مع منع التعارض والحجز المزدوج تلقائياً."
+            ),
+          },
+          {
+            icon: "users",
+            title: L("Assign and monitor maintenance teams", "كلّف فرق الصيانة وتابعها"),
+            body: L(
+              "See which team is on which job right now, and whether it's on schedule, from one dashboard.",
+              "اطّلع على الفريق المكلّف بكل مهمة الآن ومدى التزامه بالجدول من لوحة تحكم واحدة."
+            ),
+          },
+          {
+            icon: "refresh",
+            title: L("Preventive maintenance scheduling", "جدولة الصيانة الوقائية"),
+            body: L(
+              "Recurring inspections and servicing are scheduled automatically instead of relying on someone to remember.",
+              "تُجدوَل الفحوصات والصيانة الدورية تلقائياً بدل الاعتماد على تذكّر أحد لها."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Facilities Management", "لماذا أتار لإدارة المرافق"),
+        subtitle: L(
+          "Why shared assets stop being everyone's job and no one's responsibility.",
+          "لماذا تتوقف الأصول المشتركة عن أن تكون مسؤولية الجميع ولا أحد في آن واحد."
+        ),
+        cards: [
+          {
+            icon: "refresh",
+            title: L("Live, not batch", "مباشر لا دفعي"),
+            body: L(
+              "Booking conflicts and maintenance status update in real time across every building in the portfolio.",
+              "تتحدّث حالة الصيانة وتعارضات الحجز فورياً عبر كل مبنى في المحفظة."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Built for Saudi compliance", "مصمم للامتثال السعودي"),
+            body: L(
+              "Facility safety and inspection records are kept in a form ready for a regulator or an insurer to review.",
+              "تُحفظ سجلات سلامة المرافق وفحصها بشكل جاهز لمراجعة جهة تنظيمية أو شركة تأمين."
+            ),
+          },
+          {
+            icon: "layers",
+            title: L("One system, not five", "نظام واحد لا خمسة"),
+            body: L(
+              "Facility bookings and maintenance sit on the same platform as the community's own portal — not a separate app.",
+              "تعيش حجوزات المرافق وصيانتها على نفس منصة بوابة المجتمع، لا في تطبيق منفصل."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Support in Arabic and English", "دعم بالعربية والإنجليزية"),
+            body: L(
+              "Your facilities team gets local support in both languages when a shared asset needs urgent attention.",
+              "يحصل فريق المرافق على دعم محلي باللغتين عندما يحتاج أصل مشترك لعناية عاجلة."
+            ),
+          },
         ],
       },
     ],
@@ -575,12 +1069,82 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
         items: [
-          L("News, events, surveys and suggestions", "أخبار وفعاليات واستبيانات واقتراحات"),
-          L("Visitor management and access control", "إدارة الزوار والتحكم في الدخول"),
-          L("Resident directory and announcements", "دليل السكان والإعلانات"),
-          L("Community-wide notifications", "إشعارات على مستوى المجتمع"),
+          {
+            icon: "bell",
+            title: L("News, events, surveys and suggestions", "أخبار وفعاليات واستبيانات واقتراحات"),
+            body: L(
+              "Post an announcement or a survey once and it reaches every resident on the app, not just a WhatsApp group.",
+              "انشر إعلاناً أو استبياناً مرة واحدة ليصل إلى كل ساكن عبر التطبيق، لا مجرد مجموعة واتساب."
+            ),
+          },
+          {
+            icon: "idCard",
+            title: L("Visitor management and access control", "إدارة الزوار والتحكم في الدخول"),
+            body: L(
+              "Residents pre-register guests and deliveries, so security knows who's expected before they arrive.",
+              "يسجّل السكان زوارهم وطلبات التوصيل مسبقاً، فيعرف الأمن الوافدين قبل وصولهم."
+            ),
+          },
+          {
+            icon: "users",
+            title: L("Resident directory and announcements", "دليل السكان والإعلانات"),
+            body: L(
+              "A shared directory keeps residents reachable for the community without swapping personal numbers around.",
+              "يبقي الدليل المشترك السكان قابلين للتواصل ضمن المجتمع دون تبادل أرقام شخصية."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Community-wide notifications", "إشعارات على مستوى المجتمع"),
+            body: L(
+              "Urgent notices — a water outage, a maintenance window — reach every unit at once, in Arabic and English.",
+              "تصل الإشعارات العاجلة — انقطاع مياه أو نافذة صيانة — إلى كل وحدة فوراً، بالعربية والإنجليزية."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Community Engagement", "لماذا أتار لتفاعل المجتمع"),
+        subtitle: L(
+          "What a connected community app gives residents that a notice board and a guard logbook never could.",
+          "ما الذي يمنحه تطبيق مجتمع متصل للسكان ولا يستطيع لوح إعلانات أو سجل حارس تقديمه."
+        ),
+        cards: [
+          {
+            icon: "refresh",
+            title: L("Live, not batch", "مباشر لا دفعي"),
+            body: L(
+              "Announcements and visitor approvals reach residents the moment they're sent, not on the next printed notice.",
+              "تصل الإعلانات وموافقات الزوار للسكان فور إرسالها، لا في الإشعار المطبوع التالي."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Built for Saudi compliance", "مصمم للامتثال السعودي"),
+            body: L(
+              "Visitor and access logs are kept in a form your security team can hand to a regulator without reformatting.",
+              "تُحفظ سجلات الزوار والدخول بشكل يستطيع فريق الأمن تسليمه لجهة تنظيمية دون إعادة تنسيق."
+            ),
+          },
+          {
+            icon: "layers",
+            title: L("One system, not five", "نظام واحد لا خمسة"),
+            body: L(
+              "Announcements, visitor access and the resident directory live in the same app as service requests and billing.",
+              "تعيش الإعلانات ودخول الزوار ودليل السكان في التطبيق نفسه الذي يحتوي طلبات الخدمة والفوترة."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Support in Arabic and English", "دعم بالعربية والإنجليزية"),
+            body: L(
+              "Residents and your community team both get support in the language they're already communicating in.",
+              "يحصل السكان وفريق إدارة المجتمع على الدعم باللغة التي يتواصلون بها أصلاً."
+            ),
+          },
         ],
       },
     ],
@@ -595,12 +1159,82 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
         items: [
-          L("Self-service statements and payment history", "كشوف حساب وسجل مدفوعات ذاتية الخدمة"),
-          L("Submit and track service requests", "إرسال وتتبّع طلبات الخدمة"),
-          L("Document access: contracts, invoices, notices", "الوصول للمستندات: العقود والفواتير والإشعارات"),
-          L("Available on web and the branded mobile app", "متاحة على الويب وتطبيق الجوال بعلامتك التجارية"),
+          {
+            icon: "riyal",
+            title: L("Self-service statements and payment history", "كشوف حساب وسجل مدفوعات ذاتية الخدمة"),
+            body: L(
+              "Owners and tenants check what they've paid and what's due without emailing your finance team for a copy.",
+              "يطّلع الملّاك والمستأجرون على ما دفعوه وما هو مستحق دون مراسلة فريق المالية لطلب نسخة."
+            ),
+          },
+          {
+            icon: "ticket",
+            title: L("Submit and track service requests", "إرسال وتتبّع طلبات الخدمة"),
+            body: L(
+              "A maintenance request can be raised and followed up on from the same portal, with no follow-up call needed.",
+              "يمكن رفع طلب الصيانة ومتابعته من البوابة نفسها، دون الحاجة لأي مكالمة متابعة."
+            ),
+          },
+          {
+            icon: "file",
+            title: L("Document access: contracts, invoices, notices", "الوصول للمستندات: العقود والفواتير والإشعارات"),
+            body: L(
+              "Every contract, invoice and notice is available on demand, instead of being requested one email at a time.",
+              "يتوفر كل عقد وفاتورة وإشعار عند الطلب، بدل طلبه عبر بريد إلكتروني منفصل في كل مرة."
+            ),
+          },
+          {
+            icon: "smartphone",
+            title: L("Available on web and the branded mobile app", "متاحة على الويب وتطبيق الجوال بعلامتك التجارية"),
+            body: L(
+              "The same self-service experience works on desktop and on your own branded app, not just one or the other.",
+              "تعمل نفس تجربة الخدمة الذاتية على سطح المكتب وعلى تطبيقك بعلامتك التجارية، لا على أحدهما فقط."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for your Customer Portal", "لماذا أتار لبوابة العملاء"),
+        subtitle: L(
+          "Why a self-service portal only works when it's reading from the same data as the rest of your operation.",
+          "لماذا لا تنجح بوابة الخدمة الذاتية إلا عندما تقرأ من نفس بيانات بقية عملياتك."
+        ),
+        cards: [
+          {
+            icon: "refresh",
+            title: L("Live, not batch", "مباشر لا دفعي"),
+            body: L(
+              "A payment or a status change shows up in the portal immediately — not after tomorrow's data sync.",
+              "تظهر أي دفعة أو تغيير حالة في البوابة فوراً، لا بعد مزامنة بيانات الغد."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Built for Saudi compliance", "مصمم للامتثال السعودي"),
+            body: L(
+              "Statements and documents match the same ZATCA-ready format your finance team already issues.",
+              "تتطابق الكشوف والمستندات مع نفس التنسيق الجاهز لهيئة الزكاة والضريبة والجمارك الذي يصدره فريق المالية أصلاً."
+            ),
+          },
+          {
+            icon: "layers",
+            title: L("One system, not five", "نظام واحد لا خمسة"),
+            body: L(
+              "The portal reads directly from your leasing, billing and ticketing records — nothing re-entered for customers to see.",
+              "تقرأ البوابة مباشرة من سجلات التأجير والفوترة والتذاكر، دون إعادة إدخال أي شيء ليراه العملاء."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Support in Arabic and English", "دعم بالعربية والإنجليزية"),
+            body: L(
+              "Owners, tenants and buyers get the portal — and support if they need it — in the language they prefer.",
+              "يحصل الملّاك والمستأجرون والمشترون على البوابة، وعلى الدعم عند الحاجة، باللغة التي يفضّلونها."
+            ),
+          },
         ],
       },
     ],
@@ -615,12 +1249,82 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
         items: [
-          L("Real-time dashboards across every module", "لوحات تحكم فورية عبر كل وحدة"),
-          L("Custom KPI tracking for your team", "تتبّع مؤشرات أداء مخصصة لفريقك"),
-          L("Export-ready reports for stakeholders", "تقارير جاهزة للتصدير لأصحاب المصلحة"),
-          L("Connects to PowerBI for deeper analysis", "تتصل بـ PowerBI لتحليل أعمق"),
+          {
+            icon: "chart",
+            title: L("Real-time dashboards across every module", "لوحات تحكم فورية عبر كل وحدة"),
+            body: L(
+              "Sales, leasing, operations and finance data sit on one dashboard instead of four separate exports.",
+              "تجتمع بيانات المبيعات والتأجير والعمليات والمالية في لوحة تحكم واحدة بدل أربعة تصديرات منفصلة."
+            ),
+          },
+          {
+            icon: "trending",
+            title: L("Custom KPI tracking for your team", "تتبّع مؤشرات أداء مخصصة لفريقك"),
+            body: L(
+              "Track the specific metrics your team is measured on, not a generic template built for someone else.",
+              "تابع المؤشرات المحددة التي يُقاس عليها فريقك، لا قالباً عاماً مبنياً لجهة أخرى."
+            ),
+          },
+          {
+            icon: "briefcase",
+            title: L("Export-ready reports for stakeholders", "تقارير جاهزة للتصدير لأصحاب المصلحة"),
+            body: L(
+              "Board and investor updates export in minutes, pulled from the same live numbers your team already sees.",
+              "تُصدَّر تحديثات المجلس والمستثمرين خلال دقائق، من نفس الأرقام الحية التي يراها فريقك أصلاً."
+            ),
+          },
+          {
+            icon: "link",
+            title: L("Connects to PowerBI for deeper analysis", "تتصل بـ PowerBI لتحليل أعمق"),
+            body: L(
+              "Feed the same live data into PowerBI when your analysts need to go beyond the built-in dashboards.",
+              "غذِّ نفس البيانات الحية إلى PowerBI عندما يحتاج محللوك تحليلاً أعمق من اللوحات المدمجة."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Reporting & Analytics", "لماذا أتار للتقارير والتحليلات"),
+        subtitle: L(
+          "Why the numbers in your reports match the numbers your teams are actually working from.",
+          "لماذا تتطابق الأرقام في تقاريرك مع الأرقام التي تعمل عليها فرقك فعلياً."
+        ),
+        cards: [
+          {
+            icon: "refresh",
+            title: L("Live, not batch", "مباشر لا دفعي"),
+            body: L(
+              "Dashboards reflect what happened this hour, not what was true at last night's export.",
+              "تعكس لوحات التحكم ما حدث هذه الساعة، لا ما كان صحيحاً عند تصدير الليلة الماضية."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Built for Saudi compliance", "مصمم للامتثال السعودي"),
+            body: L(
+              "Financial figures trace back to ZATCA-ready records, so a report can be defended, not just presented.",
+              "تعود الأرقام المالية إلى سجلات جاهزة لهيئة الزكاة والضريبة والجمارك، فيمكن الدفاع عن التقرير لا مجرد عرضه."
+            ),
+          },
+          {
+            icon: "layers",
+            title: L("One system, not five", "نظام واحد لا خمسة"),
+            body: L(
+              "Every dashboard reads from the same sales, leasing and operations data — no reconciling three exports first.",
+              "تقرأ كل لوحة تحكم من نفس بيانات المبيعات والتأجير والعمليات، دون تسوية ثلاثة تصديرات أولاً."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Support in Arabic and English", "دعم بالعربية والإنجليزية"),
+            body: L(
+              "Your leadership team gets local support in both languages when a KPI needs explaining before a board meeting.",
+              "يحصل فريق القيادة على دعم محلي باللغتين عندما يحتاج مؤشر أداء لشرح قبل اجتماع المجلس."
+            ),
+          },
         ],
       },
     ],

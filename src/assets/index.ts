@@ -24,8 +24,39 @@ import brandedApp3Phone from "./illustrations/branded-app-3phone.webp";
 // Listing Website add-on page's hero visual in place of the earlier
 // hand-drawn placeholder mockup.
 import listingWebsiteMockup from "./illustrations/listing-website-mockup.webp";
+// Client-provided screenshot of the actual Sales module (Booking Details
+// timeline + customer/booking info) — used as the Sales & Handover
+// Solutions page's hero visual in place of the generic dummy placeholder.
+import salesHandoverMockup from "./illustrations/sales-handover-mockup.webp";
+// Client-provided screenshot of the actual Leasing module (lease KPIs,
+// collection gauges, leases table) — used as the Leasing & Contract
+// Management Solutions page's hero visual.
+import leasingContractMockup from "./illustrations/leasing-contract-mockup.webp";
+// Client-provided screenshot of the actual Service Request module (Request
+// Details timeline, rating & review, request info) — used as the
+// Maintenance & Ticketing Solutions page's hero visual.
+import maintenanceTicketingMockup from "./illustrations/maintenance-ticketing-mockup.webp";
+// Client-provided screenshot of the actual Facility Booking Details screen —
+// used as the Facilities Management Solutions page's hero visual.
+import facilitiesManagementMockup from "./illustrations/facilities-management-mockup.webp";
+// Client-provided screenshot of the actual CRM Customer Overview screen —
+// used as the Real Estate CRM Solutions page's hero visual.
+import realEstateCrmMockup from "./illustrations/real-estate-crm-mockup.webp";
 
-export { atarLogo, atarLogoLight, dashboard, dashboardV2, brandedAppMockup, brandedApp3Phone, listingWebsiteMockup };
+export {
+  atarLogo,
+  atarLogoLight,
+  dashboard,
+  dashboardV2,
+  brandedAppMockup,
+  brandedApp3Phone,
+  listingWebsiteMockup,
+  salesHandoverMockup,
+  leasingContractMockup,
+  maintenanceTicketingMockup,
+  facilitiesManagementMockup,
+  realEstateCrmMockup,
+};
 
 const clientGlob = import.meta.glob("./clients/*.svg", {
   eager: true,

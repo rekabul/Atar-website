@@ -42,6 +42,15 @@ import facilitiesManagementMockup from "./illustrations/facilities-management-mo
 // Client-provided screenshot of the actual CRM Customer Overview screen —
 // used as the Real Estate CRM Solutions page's hero visual.
 import realEstateCrmMockup from "./illustrations/real-estate-crm-mockup.webp";
+// Client-provided screenshot of the actual Revenues module (invoice table,
+// payer names/phones) — used as the Billing & Financials Solutions page's
+// hero visual. Payer name/phone columns are pixelated (see the processing
+// note on the other Solutions mockups) since they show real-looking PII.
+import propertyPortfolioFinancialsMockup from "./illustrations/property-portfolio-financials-mockup.webp";
+// Client-provided screenshot of the actual Announcement Details screen — used
+// as the Community Engagement & Access Solutions page's hero visual. No
+// name/email/phone/national ID appears in this one, so no pixelation needed.
+import communityEngagementMockup from "./illustrations/community-engagement-mockup.webp";
 
 export {
   atarLogo,
@@ -56,6 +65,8 @@ export {
   maintenanceTicketingMockup,
   facilitiesManagementMockup,
   realEstateCrmMockup,
+  propertyPortfolioFinancialsMockup,
+  communityEngagementMockup,
 };
 
 const clientGlob = import.meta.glob("./clients/*.svg", {

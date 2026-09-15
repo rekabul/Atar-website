@@ -21,6 +21,8 @@ import {
   maintenanceTicketingMockup,
   facilitiesManagementMockup,
   realEstateCrmMockup,
+  propertyPortfolioFinancialsMockup,
+  communityEngagementMockup,
 } from "../assets";
 import Reveal from "../components/ui/Reveal";
 import Button from "../components/ui/Button";
@@ -150,7 +152,14 @@ export default function PlaceholderPage() {
   const isSalesSuite = pathname === "/products/sales-suite";
   const isLeasingSuite = pathname === "/products/leasing-suite";
   const isOperationsSuite = pathname === "/products/operations-suite";
-  const isBrandedMobileApp = pathname === "/products/addons/branded-mobile-app";
+  // /solutions/customer-portal is a deliberate exception (same pattern as
+  // /solutions/listing-website below): it reuses the Branded Mobile App
+  // add-on page's content and components verbatim — both hero layouts, the
+  // layout switcher, the feature showcase — instead of the generic Solutions
+  // template. See data/placeholderPages.ts, whose entry for this route is
+  // kept an exact copy of the add-on page's.
+  const isBrandedMobileApp =
+    pathname === "/products/addons/branded-mobile-app" || pathname === "/solutions/customer-portal";
   // /solutions/listing-website is a deliberate exception to every other
   // Solutions page below: instead of the generic dummy-hero + iconFeatures +
   // whyAtar treatment, it reuses the Products add-on page's content and
@@ -164,10 +173,12 @@ export default function PlaceholderPage() {
   // hero image below — so the layout is consistent without touching that
   // add-on page's own real screenshot or copy.
   const isSolutionsPage = pathname.startsWith("/solutions/");
-  // Sales & Handover and Leasing & Contract Management have real client
-  // screenshots now — every other Solutions page still falls back to the
-  // generic dummy placeholder (SolutionHeroPlaceholder) until its own image
-  // is provided, at which point it's added to this lookup.
+  // Real client screenshots, one per Solutions page as they're provided —
+  // every other Solutions page still falls back to the generic dummy
+  // placeholder (SolutionHeroPlaceholder) until its own image is added here.
+  // Any name/email/phone/national-ID visible in the source screenshots is
+  // pixelated before being saved into src/assets/illustrations, so no real
+  // customer PII ships in the built site.
   const solutionHeroImages: Partial<Record<string, { src: string; alt: LStr }>> = {
     "/solutions/sales-handover": {
       src: salesHandoverMockup,
@@ -204,10 +215,24 @@ export default function PlaceholderPage() {
         ar: "لقطة شاشة لوحدة إدارة علاقات العملاء الفعلية — نظرة عامة على العميل وتفاصيل العميل المحتمل",
       },
     },
+    "/solutions/property-portfolio-financials": {
+      src: propertyPortfolioFinancialsMockup,
+      alt: {
+        en: "Screenshot of the actual Revenues module — invoice status and payer information",
+        ar: "لقطة شاشة لوحدة الإيرادات الفعلية — حالة الفواتير وبيانات الدافعين",
+      },
+    },
+    "/solutions/community-engagement-access": {
+      src: communityEngagementMockup,
+      alt: {
+        en: "Screenshot of the actual Announcement Details screen",
+        ar: "لقطة شاشة لتفاصيل الإعلان الفعلية",
+      },
+    },
   };
   const solutionHeroImage = solutionHeroImages[pathname]?.src;
   const solutionHeroImageAlt = solutionHeroImages[pathname]?.alt;
-  const hasCloudyHero = isListingWebsite || isSolutionsPage;
+  const hasCloudyHero = isListingWebsite || (isSolutionsPage && !isBrandedMobileApp);
   // Two selectable visual treatments for the Branded Mobile App page, so the
   // team can compare them side by side before picking one. Toggle only
   // renders on this one route; every other placeholder page is unaffected.
@@ -315,7 +340,7 @@ export default function PlaceholderPage() {
           />
         )}
         {isListingWebsite && <ListingWebsiteShowcase locale={locale} />}
-        {isSolutionsPage && !isListingWebsite && (
+        {isSolutionsPage && !isListingWebsite && !isBrandedMobileApp && (
           <SolutionHeroPlaceholder locale={locale} image={solutionHeroImage} imageAlt={solutionHeroImageAlt} />
         )}
       </section>

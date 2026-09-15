@@ -1130,94 +1130,21 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ],
   },
 
+  // Deliberate exception (same pattern as "/solutions/listing-website"
+  // above): an exact copy of "/products/addons/branded-mobile-app", and
+  // pages/PlaceholderPage.tsx's isBrandedMobileApp flag treats this path the
+  // same as that add-on page — both hero layouts, the layout switcher, the
+  // feature showcase, the Download CTA — per an explicit request to reuse
+  // that page wholesale here rather than the generic Solutions template.
   "/solutions/customer-portal": {
-    eyebrow: SOLUTIONS,
-    title: L("Customer Portal", "بوابة العملاء"),
+    eyebrow: L("Add-ons", "الإضافات"),
+    title: L("Branded Mobile App", "تطبيق جوال بعلامتك التجارية"),
     body: L(
-      "Give owners, tenants and buyers self-service access to statements, service requests and documents, anytime.",
-      "امنح الملّاك والمستأجرين والمشترين وصولاً ذاتياً إلى كشوف الحساب وطلبات الخدمة والمستندات في أي وقت."
+      "A white-labeled mobile app for your tenants, owners and buyers — service requests, payments and announcements, under your own brand.",
+      "تطبيق جوال بعلامتك الخاصة لمستأجريك وملّاكك ومشتريك — طلبات الخدمة والمدفوعات والإعلانات، تحت علامتك التجارية."
     ),
-    sections: [
-      {
-        kind: "iconFeatures",
-        items: [
-          {
-            icon: "riyal",
-            title: L("Self-service statements and payment history", "كشوف حساب وسجل مدفوعات ذاتية الخدمة"),
-            body: L(
-              "Owners and tenants check what they've paid and what's due without emailing your finance team for a copy.",
-              "يطّلع الملّاك والمستأجرون على ما دفعوه وما هو مستحق دون مراسلة فريق المالية لطلب نسخة."
-            ),
-          },
-          {
-            icon: "ticket",
-            title: L("Submit and track service requests", "إرسال وتتبّع طلبات الخدمة"),
-            body: L(
-              "A maintenance request can be raised and followed up on from the same portal, with no follow-up call needed.",
-              "يمكن رفع طلب الصيانة ومتابعته من البوابة نفسها، دون الحاجة لأي مكالمة متابعة."
-            ),
-          },
-          {
-            icon: "file",
-            title: L("Document access: contracts, invoices, notices", "الوصول للمستندات: العقود والفواتير والإشعارات"),
-            body: L(
-              "Every contract, invoice and notice is available on demand, instead of being requested one email at a time.",
-              "يتوفر كل عقد وفاتورة وإشعار عند الطلب، بدل طلبه عبر بريد إلكتروني منفصل في كل مرة."
-            ),
-          },
-          {
-            icon: "smartphone",
-            title: L("Available on web and the branded mobile app", "متاحة على الويب وتطبيق الجوال بعلامتك التجارية"),
-            body: L(
-              "The same self-service experience works on desktop and on your own branded app, not just one or the other.",
-              "تعمل نفس تجربة الخدمة الذاتية على سطح المكتب وعلى تطبيقك بعلامتك التجارية، لا على أحدهما فقط."
-            ),
-          },
-        ],
-      },
-      {
-        kind: "whyAtar",
-        heading: L("Why Atar for your Customer Portal", "لماذا أتار لبوابة العملاء"),
-        subtitle: L(
-          "Why a self-service portal only works when it's reading from the same data as the rest of your operation.",
-          "لماذا لا تنجح بوابة الخدمة الذاتية إلا عندما تقرأ من نفس بيانات بقية عملياتك."
-        ),
-        cards: [
-          {
-            icon: "refresh",
-            title: L("Live, not batch", "مباشر لا دفعي"),
-            body: L(
-              "A payment or a status change shows up in the portal immediately — not after tomorrow's data sync.",
-              "تظهر أي دفعة أو تغيير حالة في البوابة فوراً، لا بعد مزامنة بيانات الغد."
-            ),
-          },
-          {
-            icon: "shield",
-            title: L("Built for Saudi compliance", "مصمم للامتثال السعودي"),
-            body: L(
-              "Statements and documents match the same ZATCA-ready format your finance team already issues.",
-              "تتطابق الكشوف والمستندات مع نفس التنسيق الجاهز لهيئة الزكاة والضريبة والجمارك الذي يصدره فريق المالية أصلاً."
-            ),
-          },
-          {
-            icon: "layers",
-            title: L("One system, not five", "نظام واحد لا خمسة"),
-            body: L(
-              "The portal reads directly from your leasing, billing and ticketing records — nothing re-entered for customers to see.",
-              "تقرأ البوابة مباشرة من سجلات التأجير والفوترة والتذاكر، دون إعادة إدخال أي شيء ليراه العملاء."
-            ),
-          },
-          {
-            icon: "message",
-            title: L("Support in Arabic and English", "دعم بالعربية والإنجليزية"),
-            body: L(
-              "Owners, tenants and buyers get the portal — and support if they need it — in the language they prefer.",
-              "يحصل الملّاك والمستأجرون والمشترون على البوابة، وعلى الدعم عند الحاجة، باللغة التي يفضّلونها."
-            ),
-          },
-        ],
-      },
-    ],
+    // No generic "bullets" section here — same as the add-on page, the
+    // content is covered by the bespoke components in PlaceholderPage.tsx.
   },
 
   "/solutions/reporting-analytics": {

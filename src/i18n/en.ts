@@ -160,13 +160,23 @@ export const en = {
     eyebrow: "About us",
     whoTitle: "Who We Are",
     whoBody:
-      "Atar is Saudi Arabia's leading enterprise real estate management software solution that aims to increase operational efficiency in pre-sale and post-sale processes and provide an inclusive user experience and higher quality of life to landlords and tenants. Atar was established in 2021 and today is one of the largest national platforms for residential and commercial real estate management.",
+      "Atar is the operating system for real estate in Saudi Arabia. Founded in 2021 and built inside the problem it solves, Atar digitizes every stage of the property lifecycle — sales, leasing and operations — into one connected platform, replacing the disconnected systems, spreadsheets and manual processes that slow real estate teams down. Built for enterprise scale, Atar integrates natively with Saudi national infrastructure, including Nafath, SADAD and ZATCA.",
+    // Numeric figures are in data/aboutStats.ts (StatConfig); labels here.
+    stats: {
+      items: [
+        { label: "Enterprise accounts" },
+        { label: "SAR property sales enabled" },
+        { label: "SAR rental value managed" },
+        { label: "End users" },
+        { label: "Units under management" },
+        { label: "Tickets processed" },
+      ],
+    },
     visionTitle: "Vision",
-    visionBody:
-      "Become a world leader in digitalization and automation of real estate management and improve the standard of living for landlords and tenants.",
+    visionBody: "To become the digital infrastructure powering the global real estate industry.",
     missionTitle: "Mission",
     missionBody:
-      "To create digital communities that cater to the needs of real estate developers, homeowners, tenants and service professionals.",
+      "To connect the real estate lifecycle through technology, and transform how real estate is managed and experienced.",
     storyEyebrow: "Our Story",
     storyTitle: "Built inside the problem",
     storySubtitle:
@@ -179,6 +189,8 @@ export const en = {
       { year: "2024", label: "Scalable operations" },
       { year: "2025", label: "From product to platform" },
     ],
+    teamTitle: "Leadership",
+    teamSubtitle: "The board and executive team behind Atar.",
     valuesTitle: "Values",
     valuesSubtitle: "The principles behind everything we build.",
     values: [

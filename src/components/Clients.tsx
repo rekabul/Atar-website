@@ -11,11 +11,18 @@ export default function Clients() {
     <ul className="flex shrink-0 items-center gap-5" aria-hidden={ariaHidden || undefined}>
       {clientLogos.map((c) => (
         <li key={c.file + (ariaHidden ? "-d" : "")} className="shrink-0">
+          {/* Dark mode gets a real dark card (matching every other card on
+              the site) instead of a light island. That only works now
+              because the logos carry real per-pixel alpha (fixed above) —
+              dark:brightness-0/invert recolors just the opaque ink to white,
+              leaving the transparent background untouched, instead of the
+              earlier flattened-opaque-rectangle bug turning into a blank
+              white block. */}
           <div className="flex h-28 w-52 items-center justify-center rounded-2xl bg-[#F6F7F8] px-8 dark:bg-white/5">
             <img
               src={c.url}
               alt={ariaHidden ? "" : c.name}
-              className="max-h-14 w-auto object-contain dark:brightness-0 dark:invert dark:opacity-80"
+              className="max-h-14 w-auto object-contain dark:brightness-0 dark:invert dark:opacity-90"
               loading="lazy"
             />
           </div>

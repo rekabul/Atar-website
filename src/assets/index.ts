@@ -81,6 +81,14 @@ const integrationGlob = import.meta.glob("./integrations/*.{svg,png}", {
   import: "default",
 }) as Record<string, string>;
 
+// Real leadership headshots, cropped straight from the Company Profile PDF's
+// "Leadership & Governance" page (p.24).
+const teamGlob = import.meta.glob("./team/*.{jpg,png}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+}) as Record<string, string>;
+
 /** Look a bundled asset URL up by its original file name. */
 function byName(map: Record<string, string>, dir: string, file: string): string {
   const key = `./${dir}/${file}`;
@@ -98,3 +106,4 @@ const illustrationWebpGlob = import.meta.glob("./illustrations/*.webp", {
 export const clientAsset = (f: string) => byName(clientGlob, "clients", f);
 export const integrationAsset = (f: string) => byName(integrationGlob, "integrations", f);
 export const illustrationWebp = (f: string) => byName(illustrationWebpGlob, "illustrations", f);
+export const teamAsset = (f: string) => byName(teamGlob, "team", f);

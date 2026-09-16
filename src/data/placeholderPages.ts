@@ -1609,14 +1609,14 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
         items: [
           { name: "Bassam AlBassam", title: L("Chairman of the Board", "رئيس مجلس الإدارة") },
           { name: "Ahmed Mirghani", title: L("Board Member", "عضو مجلس الإدارة") },
-          { name: "Haseeb Mohammed", title: L("Founder, Managing Director", "المؤسس والمدير الإداري") },
+          { name: "Haseeb Shaikh", title: L("Founder, Managing Director", "المؤسس والمدير الإداري") },
         ],
       },
       {
         kind: "team",
         heading: L("Executive Team", "الفريق التنفيذي"),
         items: [
-          { name: "Haseeb Mohammed", title: L("Founder, Managing Director", "المؤسس والمدير الإداري") },
+          { name: "Haseeb Shaikh", title: L("Founder, Managing Director", "المؤسس والمدير الإداري") },
           { name: "Ghassan Dardas", title: L("Chief Commercial Officer", "الرئيس التجاري") },
           { name: "Ahmed Sharaf", title: L("Chief Technology Officer", "الرئيس التقني") },
         ],

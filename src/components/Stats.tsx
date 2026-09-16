@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocale } from "../i18n/LocaleContext";
-import { statsConfig } from "../data/stats";
+import { statsConfig, type StatConfig } from "../data/stats";
 import { Riyal } from "./ui/Icon";
 import Reveal from "./ui/Reveal";
 
@@ -9,8 +9,10 @@ const prefersReducedMotion = () =>
   window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 /** True while the element is in view; flips back to false on exit so the
- *  count-up re-runs every time the section scrolls into view again. */
-function useRepeatInView<T extends Element>(threshold = 0.35) {
+ *  count-up re-runs every time the section scrolls into view again.
+ *  Exported so other count-up strips (e.g. the About page) reuse the same
+ *  animation instead of re-implementing it. */
+export function useRepeatInView<T extends Element>(threshold = 0.35) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
@@ -51,13 +53,16 @@ function useCountUp(target: number, active: boolean, duration = 1500) {
   return value;
 }
 
-function Counter({
+/** Count-up number with optional Riyal prefix — exported so other stats
+ *  strips (e.g. the About page's "Who We Are" strip) reuse the same
+ *  animated counter instead of duplicating it. */
+export function Counter({
   target,
   comma,
   suffix,
   currency,
   active,
-}: (typeof statsConfig)[number] & { active: boolean }) {
+}: StatConfig & { active: boolean }) {
   const value = useCountUp(target, active);
   const display = comma ? value.toLocaleString("en-US") : String(value);
   return (

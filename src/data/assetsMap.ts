@@ -26,27 +26,44 @@ export const caseStudyPhotos: Record<string, string> = {
 type ClientLogo = { file: string; name: string; url: string };
 type Integration = { file: string; name: string; bg: string; url: string };
 
+// Real client/partner logos exported (with transparency + alpha-trimmed)
+// straight from the "Already trusted at national scale" slide of the Atar
+// Company Profile PDF, in the same order as that slide (Giga Projects & PIF
+// Companies first, then Developers/Owners/Operators) — replaces the earlier
+// ad hoc Figma-export list.
 export const clientLogos: ClientLogo[] = [
-  { file: "Artwork.svg", name: "NAWA Real Estate Development" },
-  { file: "Clip path group.svg", name: "Khawalid" },
-  { file: "Group 45.svg", name: "Alramz" },
-  { file: "Group 48095597.svg", name: "Masheed" },
-  { file: "Group 48095603.svg", name: "Client logo" },
-  { file: "Group 48095604.svg", name: "Mawreth" },
-  { file: "Group 48095606.svg", name: "Rafea Development" },
-  { file: "Group 48095633.svg", name: "Garden Residence" },
-  { file: "Group 48095636.svg", name: "Client logo" },
-  { file: "Group 48095642.svg", name: "Makeen" },
-  { file: "Group 48095643.svg", name: "Client logo" },
-  { file: "Group.svg", name: "Safa" },
-  { file: "Isolation_Mode-1.svg", name: "Kathib Property & Facilities Management" },
-  { file: "Isolation_Mode-2.svg", name: "Client logo" },
-  { file: "Isolation_Mode.svg", name: "Soun" },
-  { file: "Layer_1.svg", name: "Rasf" },
-  { file: "Logo.svg", name: "Client logo" },
-  { file: "Mask group.svg", name: "Asakin Real Estate Development" },
-  { file: "image 6.svg", name: "Solana Living" },
-  { file: "logo 3.svg", name: "Mohammed Bin Salman City (Nonprofit)" },
+  { file: "roshn-group.png", name: "ROSHN Group" },
+  { file: "diriyah-company.png", name: "Diriyah Company" },
+  { file: "red-sea-global.png", name: "Red Sea Global" },
+  { file: "mbs-city.png", name: "Mohammed Bin Salman Nonprofit City" },
+  { file: "alramz.png", name: "Alramz" },
+  { file: "aqalat.png", name: "Aqalat" },
+  { file: "khawalid.png", name: "Khawalid" },
+  { file: "wathba.png", name: "Wathba" },
+  { file: "osus.png", name: "OSUS" },
+  { file: "makeen.png", name: "Makeen" },
+  { file: "ezdihar.png", name: "Ezdihar" },
+  { file: "arabian-dyar.png", name: "Arabian Dyar" },
+  { file: "rasf.png", name: "Rasf" },
+  { file: "inmar.png", name: "Inmar" },
+  { file: "masheed.png", name: "Masheed" },
+  { file: "jadah.png", name: "Jadah" },
+  { file: "kian-almasiah.png", name: "Kian Almasiah" },
+  { file: "naya.png", name: "Naya" },
+  { file: "soun.png", name: "Soun" },
+  { file: "dp.png", name: "DP" },
+  { file: "retal.png", name: "Retal" },
+  { file: "rosow-holding.png", name: "Rosow Holding" },
+  { file: "nawat.png", name: "Nawat" },
+  { file: "alawaly.png", name: "Alawaly" },
+  { file: "nawa.png", name: "Nawa" },
+  { file: "suleiman-real-estate.png", name: "Suleiman Real Estate Company" },
+  { file: "shaheqa.png", name: "Shaheqa" },
+  { file: "mawreth.png", name: "Mawreth" },
+  { file: "safa.png", name: "Safa" },
+  { file: "mh.png", name: "MH" },
+  { file: "super-office.png", name: "Super Office" },
+  { file: "al-dahiya.png", name: "Al Dahiya" },
 ].map((c) => ({ ...c, url: clientAsset(c.file) }));
 
 // Integration order + pastel circle backgrounds match the Figma row.

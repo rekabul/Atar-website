@@ -17,7 +17,7 @@ export const ar: Strings = {
     getDemo: "احجز عرضاً توضيحياً",
     dashboardAlt: "لوحة تحكم أتار تعرض الوحدات والطلبات ونشاط المستخدمين",
   },
-  clients: { title: "عملاؤنا" },
+  clients: { title: "يثقون بنا" },
   stats: {
     title: "نجاحنا بالأرقام",
     items: [

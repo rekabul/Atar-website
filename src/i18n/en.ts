@@ -18,7 +18,7 @@ export const en = {
     getDemo: "Book a Demo",
     dashboardAlt: "Atar dashboard showing units, requests and user activity",
   },
-  clients: { title: "Our Clients" },
+  clients: { title: "Trusted By" },
   stats: {
     title: "Our Success in Numbers",
     items: [

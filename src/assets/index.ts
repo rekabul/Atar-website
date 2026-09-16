@@ -69,7 +69,7 @@ export {
   communityEngagementMockup,
 };
 
-const clientGlob = import.meta.glob("./clients/*.svg", {
+const clientGlob = import.meta.glob("./clients/*.{svg,png}", {
   eager: true,
   query: "?url",
   import: "default",

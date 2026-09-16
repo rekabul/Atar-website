@@ -29,7 +29,10 @@ export default function Features() {
                 className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16"
                 aria-labelledby={titleId}
               >
-              <div className={reversed ? "lg:order-2" : ""}>
+              {/* Mobile always shows the image first, then heading/subheading/
+                  button (order-1/order-2 below) — the lg:order-* pair then
+                  layers the desktop alternating left/right split on top. */}
+              <div className={`order-2 ${reversed ? "lg:order-2" : "lg:order-1"}`}>
                 <p className="text-sm font-medium uppercase tracking-wider text-primary">
                   {f.eyebrow}
                 </p>
@@ -41,7 +44,7 @@ export default function Features() {
                   {t.featureCta}
                 </Button>
               </div>
-              <div className={reversed ? "lg:order-1" : ""}>
+              <div className={`order-1 ${reversed ? "lg:order-1" : "lg:order-2"}`}>
                 <div className="rounded-2xl border border-grey-100 bg-grey-100/40 p-4 shadow-card dark:border-white/10 dark:bg-white/5 sm:p-6">
                   <img
                     src={art.url}

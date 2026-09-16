@@ -33,7 +33,23 @@ export default function Clients() {
         >
           {t.clients.title}
         </h2>
-        <div className="marquee-mask relative mt-8 overflow-hidden" role="group" aria-label={t.clients.title}>
+        {/* Forced to dir="ltr": in RTL, the browser auto-right-aligns this
+            block's start edge, which (since the track is a double-width
+            "w-max" strip meant for a seamless loop) shoves ~90% of it off
+            the left edge of the viewport before the animation even starts —
+            the marqueeRtl keyframes assume a flush-left base position (they
+            just replay the LTR motion in reverse), so under real RTL
+            alignment the strip sits almost entirely outside the visible
+            mask and the logos never appear. Pinning this subtree to ltr
+            restores that flush-left base regardless of page direction; only
+            the animation class below still switches with `dir` to pick the
+            correct scroll direction. */}
+        <div
+          dir="ltr"
+          className="marquee-mask relative mt-8 overflow-hidden"
+          role="group"
+          aria-label={t.clients.title}
+        >
           <div className={`flex w-max items-center gap-5 ${anim}`}>
             <Row />
             <Row ariaHidden />

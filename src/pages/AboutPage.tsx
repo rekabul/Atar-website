@@ -62,14 +62,23 @@ export default function AboutPage() {
           </Reveal>
         </div>
 
-        <div className="relative mx-auto mt-14 max-w-4xl px-5 lg:mt-16 lg:px-8">
-          {/* connecting line */}
-          <div
-            className="absolute bottom-2 left-[27px] top-2 w-px bg-white/15 lg:left-1/2 lg:-translate-x-1/2"
-            aria-hidden="true"
-          />
-          <ol className="space-y-10 lg:space-y-6">
-            {a.timeline.map((item, i) => {
+        <div className="mx-auto mt-14 max-w-4xl px-5 lg:mt-16 lg:px-8">
+          {/* Positioning context for the line + dots lives on this inner div
+              (not the padded div above) so both "left-[27px]" values below
+              share the same origin — the <li> dots sit one DOM level deeper
+              than the line, and if the padded div were the positioned
+              ancestor, its own px-5/lg:px-8 would shift the line but not the
+              dots (which are anchored to the unpadded <li>), throwing them
+              out of alignment on mobile (where the offset is a fixed pixel
+              value rather than the 50% used at lg, which cancels out). */}
+          <div className="relative">
+            {/* connecting line */}
+            <div
+              className="absolute bottom-2 left-[27px] top-2 w-px bg-white/15 lg:left-1/2 lg:-translate-x-1/2"
+              aria-hidden="true"
+            />
+            <ol className="space-y-10 lg:space-y-6">
+              {a.timeline.map((item, i) => {
               const isLast = i === a.timeline.length - 1;
               const flip = i % 2 === 1;
               return (
@@ -108,7 +117,8 @@ export default function AboutPage() {
                 </li>
               );
             })}
-          </ol>
+            </ol>
+          </div>
         </div>
       </section>
 

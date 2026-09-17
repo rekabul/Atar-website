@@ -145,8 +145,10 @@ export const signUpLink: NavLink = { label: L("Sign Up", "إنشاء حساب"),
 /** Header dropdown groups, in nav order. */
 export const headerGroups: NavGroup[] = [productsGroup, solutionsGroup, marketsGroup];
 
-/** Header flat links that sit between the Markets dropdown and Login/Sign Up. */
-export const headerFlatLinks: NavLink[] = [integrationsLink, caseStudiesLink, pricingLink];
+/** Header flat links that sit between the Markets dropdown and Login/Sign Up.
+ *  Pricing is temporarily hidden from nav (page/route still exist) — add
+ *  `pricingLink` back here to restore it. */
+export const headerFlatLinks: NavLink[] = [integrationsLink, caseStudiesLink];
 
 // ---- Footer-only groups -------------------------------------------------
 
@@ -191,7 +193,8 @@ export const legalGroup: NavGroup = {
  */
 export const additionalLinksGroup: NavGroup = {
   label: L("Additional Links", "روابط إضافية"),
-  items: [apiDocsLink, integrationsLink, caseStudiesLink, pricingLink],
+  // Pricing temporarily hidden — add `pricingLink` back here to restore it.
+  items: [apiDocsLink, integrationsLink, caseStudiesLink],
 };
 
 // Legal's 4 links now live in the footer's bottom bar (see Footer.tsx)

@@ -598,7 +598,8 @@ export function MilestoneBar() {
     { label: "Handover", pct: 40, done: false },
   ];
   return (
-    <Card className="p-6 sm:p-7">
+    <Card className="relative overflow-visible p-6 sm:p-7">
+      <LogoBadge src={sadadLogo} alt="SADAD" />
       <p className="text-xs font-medium uppercase tracking-wide text-ink-muted dark:text-white/50">Milestone billing</p>
       <p className="mt-1 text-2xl font-semibold text-ink dark:text-white">60% collected</p>
       <div className="mt-5 flex h-3 w-full overflow-hidden rounded-full bg-grey-100 dark:bg-white/10">
@@ -680,7 +681,7 @@ export function HandoverChecklistCard() {
 export function CommunicationFeedCard() {
   const posts: { title: string; tone: "success" | "default" | "secondary"; time: string }[] = [
     { title: "Pool maintenance this weekend", tone: "default", time: "1h ago" },
-    { title: "Community survey — share feedback", tone: "secondary", time: "Today" },
+    { title: "Community survey: share feedback", tone: "secondary", time: "Today" },
     { title: "Seasonal events schedule", tone: "success", time: "2d ago" },
   ];
   return (
@@ -710,7 +711,7 @@ export function FacilityStatusCard() {
   const rows: { title: string; team: string; status: string; tone: "success" | "default" | "secondary" }[] = [
     { title: "Gym equipment servicing", team: "Facilities team", status: "Assigned", tone: "default" },
     { title: "Fire safety inspection", team: "Compliance team", status: "Completed", tone: "success" },
-    { title: "Landscaping — common garden", team: "Vendor: GreenScape", status: "Scheduled", tone: "secondary" },
+    { title: "Landscaping (common garden)", team: "Vendor: GreenScape", status: "Scheduled", tone: "secondary" },
   ];
   return (
     <Card className="space-y-3 p-6 sm:p-7">

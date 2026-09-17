@@ -164,7 +164,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
         kind: "stepsDetailed",
         heading: L("How it works", "كيف تعمل"),
         subtitle: L(
-          "From first listing to final handover — five connected steps, one platform.",
+          "From first listing to final handover: five connected steps, one platform.",
           "من أول إعلان إلى التسليم النهائي، خمس خطوات متصلة على منصة واحدة."
         ),
         items: [
@@ -234,7 +234,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
         kind: "stepsDetailed",
         heading: L("How it works", "كيف تعمل"),
         subtitle: L(
-          "From first listing to a fully managed lease — five connected steps, one platform.",
+          "From first listing to a fully managed lease: five connected steps, one platform.",
           "من أول إعلان إلى عقد إيجار مُدار بالكامل، خمس خطوات متصلة على منصة واحدة."
         ),
         items: [
@@ -304,7 +304,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
         kind: "stepsDetailed",
         heading: L("How it works", "كيف تعمل"),
         subtitle: L(
-          "From digital handover to everyday operations — five connected steps, one platform.",
+          "From digital handover to everyday operations: five connected steps, one platform.",
           "من التسليم الرقمي إلى التشغيل اليومي، خمس خطوات متصلة على منصة واحدة."
         ),
         items: [
@@ -369,7 +369,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     eyebrow: L("Add-ons", "الإضافات"),
     title: L("Listing Website", "موقع الإعلانات"),
     body: L(
-      "A branded, SEO-ready listing website for your sale and rental inventory, connected directly to your Atar data — no manual re-entry.",
+      "A branded, SEO-ready listing website for your sale and rental inventory, connected directly to your Atar data: no manual re-entry.",
       "موقع إعلانات بعلامتك التجارية ومهيّأ لمحركات البحث لعرض مخزون البيع والتأجير، متصل مباشرة ببيانات أتار دون إعادة إدخال يدوية."
     ),
     // The generic "bullets" checklist is replaced by a bespoke feature grid
@@ -394,7 +394,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
           },
           {
             aspect: L("Price & fee transparency", "شفافية السعر والرسوم"),
-            atar: L("Full breakdown shown — price, RETT, fees, VAT", "تفصيل كامل — السعر وضريبة التصرفات والرسوم والقيمة المضافة"),
+            atar: L("Full breakdown shown: price, RETT, fees, VAT", "تفصيل كامل: السعر وضريبة التصرفات والرسوم والقيمة المضافة"),
             other: L("Usually just an asking price, nothing else", "غالباً سعر الطلب فقط دون تفاصيل"),
           },
           {
@@ -416,8 +416,8 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     eyebrow: L("Add-ons", "الإضافات"),
     title: L("Branded Mobile App", "تطبيق جوال بعلامتك التجارية"),
     body: L(
-      "A white-labeled mobile app for your tenants, owners and buyers — service requests, payments and announcements, under your own brand.",
-      "تطبيق جوال بعلامتك الخاصة لمستأجريك وملّاكك ومشتريك — طلبات الخدمة والمدفوعات والإعلانات، تحت علامتك التجارية."
+      "A white-labeled mobile app for your tenants, owners and buyers: service requests, payments and announcements, under your own brand.",
+      "تطبيق جوال بعلامتك الخاصة لمستأجريك وملّاكك ومشتريك: طلبات الخدمة والمدفوعات والإعلانات، تحت علامتك التجارية."
     ),
     // No generic "bullets" section here — the same 4 points are covered by
     // the bespoke MobileFeatureShowcase (heading + subheading + phone image
@@ -474,7 +474,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
             icon: "refresh",
             title: L("Automatic lead capture from your listings", "التقاط تلقائي للعملاء المحتملين من إعلاناتك"),
             body: L(
-              "Enquiries from your listing site and marketplace drop straight into the CRM — no forwarding, no copy-paste.",
+              "Enquiries from your listing site and marketplace drop straight into the CRM: no forwarding, no copy-paste.",
               "تصل الاستفسارات من موقع الإعلانات والسوق مباشرة إلى نظام إدارة العملاء دون تحويل أو نسخ يدوي."
             ),
           },
@@ -508,7 +508,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
             icon: "refresh",
             title: L("Live, not batch", "مباشر لا دفعي"),
             body: L(
-              "Every lead status updates in real time across your team — no waiting on an end-of-day import.",
+              "Every lead status updates in real time across your team, with no waiting on an end-of-day import.",
               "تتحدّث حالة كل عميل محتمل فورياً لدى فريقك بأكمله، دون انتظار استيراد نهاية اليوم."
             ),
           },
@@ -524,7 +524,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
             icon: "layers",
             title: L("One system, not five", "نظام واحد لا خمسة"),
             body: L(
-              "Your CRM sits inside the same platform as sales, leasing and operations — not a bolt-on tool with its own login.",
+              "Your CRM sits inside the same platform as sales, leasing and operations, not a bolt-on tool with its own login.",
               "يعمل نظام إدارة العملاء ضمن نفس منصة المبيعات والتأجير والعمليات، لا كأداة منفصلة بتسجيل دخول خاص بها."
             ),
           },
@@ -552,7 +552,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     eyebrow: L("Add-ons", "الإضافات"),
     title: L("Listing Website", "موقع الإعلانات"),
     body: L(
-      "A branded, SEO-ready listing website for your sale and rental inventory, connected directly to your Atar data — no manual re-entry.",
+      "A branded, SEO-ready listing website for your sale and rental inventory, connected directly to your Atar data: no manual re-entry.",
       "موقع إعلانات بعلامتك التجارية ومهيّأ لمحركات البحث لعرض مخزون البيع والتأجير، متصل مباشرة ببيانات أتار دون إعادة إدخال يدوية."
     ),
     sections: [
@@ -572,7 +572,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
           },
           {
             aspect: L("Price & fee transparency", "شفافية السعر والرسوم"),
-            atar: L("Full breakdown shown — price, RETT, fees, VAT", "تفصيل كامل — السعر وضريبة التصرفات والرسوم والقيمة المضافة"),
+            atar: L("Full breakdown shown: price, RETT, fees, VAT", "تفصيل كامل: السعر وضريبة التصرفات والرسوم والقيمة المضافة"),
             other: L("Usually just an asking price, nothing else", "غالباً سعر الطلب فقط دون تفاصيل"),
           },
           {
@@ -629,7 +629,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
             icon: "handover",
             title: L("Seamless handoff into post-sale operations", "تسليم سلس إلى عمليات ما بعد البيع"),
             body: L(
-              "Once a unit is handed over, its history moves with it into facilities and customer service — nothing re-typed.",
+              "Once a unit is handed over, its history moves with it into facilities and customer service, with nothing re-typed.",
               "بمجرد تسليم الوحدة، ينتقل سجلها إلى إدارة المرافق وخدمة العملاء دون إعادة كتابة أي شيء."
             ),
           },
@@ -684,8 +684,8 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     eyebrow: SOLUTIONS,
     title: L("Leasing & Contract Management", "التأجير وإدارة العقود"),
     body: L(
-      "Manage leases end to end — applications, agreements, renewals and invoicing — with every contract and payment in one place.",
-      "أدر عقود التأجير من البداية للنهاية — الطلبات والاتفاقيات والتجديدات والفوترة — مع كل عقد ومدفوعة في مكان واحد."
+      "Manage leases end to end (applications, agreements, renewals and invoicing) with every contract and payment in one place.",
+      "أدر عقود التأجير من البداية للنهاية (الطلبات والاتفاقيات والتجديدات والفوترة) مع كل عقد ومدفوعة في مكان واحد."
     ),
     sections: [
       {
@@ -774,8 +774,8 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     eyebrow: SOLUTIONS,
     title: L("Billing & Financials", "الفوترة والماليات"),
     body: L(
-      "Owner-ready financial reporting across your entire portfolio — revenue, collections, and occupancy in one connected view.",
-      "تقارير مالية جاهزة للملّاك عبر كامل محفظتك — الإيرادات والتحصيل والإشغال في عرض واحد متصل."
+      "Owner-ready financial reporting across your entire portfolio: revenue, collections, and occupancy in one connected view.",
+      "تقارير مالية جاهزة للملّاك عبر كامل محفظتك: الإيرادات والتحصيل والإشغال في عرض واحد متصل."
     ),
     sections: [
       {
@@ -843,7 +843,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
             icon: "layers",
             title: L("One system, not five", "نظام واحد لا خمسة"),
             body: L(
-              "Revenue, collections and occupancy come from the same records as leasing and operations — not a separate export.",
+              "Revenue, collections and occupancy come from the same records as leasing and operations, not a separate export.",
               "تأتي الإيرادات والتحصيل والإشغال من نفس سجلات التأجير والعمليات، لا من تصدير منفصل."
             ),
           },
@@ -917,7 +917,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
             icon: "refresh",
             title: L("Live, not batch", "مباشر لا دفعي"),
             body: L(
-              "Ticket status updates the moment a technician acts on it — tenants aren't left guessing.",
+              "Ticket status updates the moment a technician acts on it, so tenants aren't left guessing.",
               "تتحدّث حالة التذكرة فور تصرّف الفني بشأنها، فلا يبقى المستأجر في حيرة."
             ),
           },
@@ -933,7 +933,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
             icon: "layers",
             title: L("One system, not five", "نظام واحد لا خمسة"),
             body: L(
-              "A ticket is linked to its unit, lease and owner automatically — not a standalone helpdesk with no context.",
+              "A ticket is linked to its unit, lease and owner automatically, not a standalone helpdesk with no context.",
               "تُربط التذكرة بوحدتها وعقدها ومالكها تلقائياً، لا كنظام دعم مستقل بلا سياق."
             ),
           },
@@ -1023,7 +1023,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
             icon: "layers",
             title: L("One system, not five", "نظام واحد لا خمسة"),
             body: L(
-              "Facility bookings and maintenance sit on the same platform as the community's own portal — not a separate app.",
+              "Facility bookings and maintenance sit on the same platform as the community's own portal, not a separate app.",
               "تعيش حجوزات المرافق وصيانتها على نفس منصة بوابة المجتمع، لا في تطبيق منفصل."
             ),
           },
@@ -1079,8 +1079,8 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
             icon: "message",
             title: L("Community-wide notifications", "إشعارات على مستوى المجتمع"),
             body: L(
-              "Urgent notices — a water outage, a maintenance window — reach every unit at once, in Arabic and English.",
-              "تصل الإشعارات العاجلة — انقطاع مياه أو نافذة صيانة — إلى كل وحدة فوراً، بالعربية والإنجليزية."
+              "Urgent notices (a water outage, a maintenance window) reach every unit at once, in Arabic and English.",
+              "تصل الإشعارات العاجلة (انقطاع مياه أو نافذة صيانة) إلى كل وحدة فوراً، بالعربية والإنجليزية."
             ),
           },
         ],
@@ -1140,8 +1140,8 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     eyebrow: L("Add-ons", "الإضافات"),
     title: L("Branded Mobile App", "تطبيق جوال بعلامتك التجارية"),
     body: L(
-      "A white-labeled mobile app for your tenants, owners and buyers — service requests, payments and announcements, under your own brand.",
-      "تطبيق جوال بعلامتك الخاصة لمستأجريك وملّاكك ومشتريك — طلبات الخدمة والمدفوعات والإعلانات، تحت علامتك التجارية."
+      "A white-labeled mobile app for your tenants, owners and buyers: service requests, payments and announcements, under your own brand.",
+      "تطبيق جوال بعلامتك الخاصة لمستأجريك وملّاكك ومشتريك: طلبات الخدمة والمدفوعات والإعلانات، تحت علامتك التجارية."
     ),
     // No generic "bullets" section here — same as the add-on page, the
     // content is covered by the bespoke components in PlaceholderPage.tsx.
@@ -1220,7 +1220,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
             icon: "layers",
             title: L("One system, not five", "نظام واحد لا خمسة"),
             body: L(
-              "Every dashboard reads from the same sales, leasing and operations data — no reconciling three exports first.",
+              "Every dashboard reads from the same sales, leasing and operations data, with no reconciling three exports first.",
               "تقرأ كل لوحة تحكم من نفس بيانات المبيعات والتأجير والعمليات، دون تسوية ثلاثة تصديرات أولاً."
             ),
           },
@@ -1627,8 +1627,8 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
         items: [
           {
             quote: L(
-              "Add a real customer quote here — this is placeholder text.",
-              "أضف اقتباساً حقيقياً من عميل هنا — هذا نص مؤقت."
+              "Add a real customer quote here: this is placeholder text.",
+              "أضف اقتباساً حقيقياً من عميل هنا: هذا نص مؤقت."
             ),
             name: "Haseeb Mohammed",
             title: L("Title, Company", "المسمى الوظيفي، الشركة"),
@@ -1829,7 +1829,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
           },
           {
             heading: "18. DISPUTE RESOLUTION",
-            body: "The parties agree to first attempt to negotiate any dispute informally for at least 30 days before initiating arbitration. Disputes not resolved informally shall be referred to and finally resolved by the International Commercial Arbitration Court under the European Arbitration Chamber (Brussels, Belgium), with three arbitrators, seated in Riyadh, Saudi Arabia, proceedings in Arabic, governed by the substantive law of Saudi Arabia. Arbitration is limited to disputes between the parties individually — no class actions or representative claims. Disputes concerning intellectual property rights, allegations of theft, piracy, invasion of privacy, unauthorized use, or claims for injunctive relief are not subject to informal negotiation or arbitration and may be brought before a court of competent jurisdiction.",
+            body: "The parties agree to first attempt to negotiate any dispute informally for at least 30 days before initiating arbitration. Disputes not resolved informally shall be referred to and finally resolved by the International Commercial Arbitration Court under the European Arbitration Chamber (Brussels, Belgium), with three arbitrators, seated in Riyadh, Saudi Arabia, proceedings in Arabic, governed by the substantive law of Saudi Arabia. Arbitration is limited to disputes between the parties individually, with no class actions or representative claims. Disputes concerning intellectual property rights, allegations of theft, piracy, invasion of privacy, unauthorized use, or claims for injunctive relief are not subject to informal negotiation or arbitration and may be brought before a court of competent jurisdiction.",
           },
           {
             heading: "19. CORRECTIONS",
@@ -1895,7 +1895,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
           },
           {
             heading: "1. WHAT INFORMATION DO WE COLLECT?",
-            body: "Personal information you disclose to us: names, phone numbers, email addresses, billing addresses, mailing addresses, and contact or authentication data, collected when you register, express interest in our products, participate in activities on the Services, or contact us.\n\nPayment Data: if you make purchases, we collect data necessary to process payment, such as your payment instrument number and security code. All payment data is handled and stored by HyperPay and Edaat — see their privacy notices at hyperpay.com/privacy-policy and edaat.sa/Home/PrivacyPolicy.\n\nApplication Data: if you use our mobile app, we may request access to your device's calendar, camera, and other features, and may send push notifications; you can change these permissions in your device settings.\n\nInformation automatically collected: IP address, browser and device characteristics, operating system, language preferences, referring URLs, and usage information, collected via cookies and similar technologies, primarily for security, operation, and internal analytics.",
+            body: "Personal information you disclose to us: names, phone numbers, email addresses, billing addresses, mailing addresses, and contact or authentication data, collected when you register, express interest in our products, participate in activities on the Services, or contact us.\n\nPayment Data: if you make purchases, we collect data necessary to process payment, such as your payment instrument number and security code. All payment data is handled and stored by HyperPay and Edaat; see their privacy notices at hyperpay.com/privacy-policy and edaat.sa/Home/PrivacyPolicy.\n\nApplication Data: if you use our mobile app, we may request access to your device's calendar, camera, and other features, and may send push notifications; you can change these permissions in your device settings.\n\nInformation automatically collected: IP address, browser and device characteristics, operating system, language preferences, referring URLs, and usage information, collected via cookies and similar technologies, primarily for security, operation, and internal analytics.",
           },
           {
             heading: "2. HOW DO WE PROCESS YOUR INFORMATION?",
@@ -2003,7 +2003,7 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
           },
           {
             heading: "TESTIMONIALS DISCLAIMER",
-            body: "The Site may contain testimonials by users of our products and/or services, reflecting their real-life experiences and opinions, which are personal to those users and may not be representative of all users — individual results may vary. Testimonials are reviewed by us before posting and appear verbatim except for correction of grammar or typing errors, and may be shortened for brevity. The views in testimonials belong solely to the individual user; we are not affiliated with, and do not pay or otherwise compensate, users who provide testimonials.",
+            body: "The Site may contain testimonials by users of our products and/or services, reflecting their real-life experiences and opinions, which are personal to those users and may not be representative of all users; individual results may vary. Testimonials are reviewed by us before posting and appear verbatim except for correction of grammar or typing errors, and may be shortened for brevity. The views in testimonials belong solely to the individual user; we are not affiliated with, and do not pay or otherwise compensate, users who provide testimonials.",
           },
         ],
       },

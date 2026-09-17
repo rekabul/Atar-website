@@ -160,7 +160,7 @@ export const en = {
     eyebrow: "About us",
     whoTitle: "Who We Are",
     whoBody:
-      "Atar is the operating system for real estate in Saudi Arabia. Founded in 2021 and built inside the problem it solves, Atar digitizes every stage of the property lifecycle — sales, leasing and operations — into one connected platform, replacing the disconnected systems, spreadsheets and manual processes that slow real estate teams down. Built for enterprise scale, Atar integrates natively with Saudi national infrastructure, including Nafath, SADAD and ZATCA.",
+      "Atar is the operating system for real estate in Saudi Arabia. Founded in 2021 and built inside the problem it solves, Atar digitizes every stage of the property lifecycle, from sales and leasing to operations, into one connected platform, replacing the disconnected systems, spreadsheets and manual processes that slow real estate teams down. Built for enterprise scale, Atar integrates natively with Saudi national infrastructure, including Nafath, SADAD and ZATCA.",
     // Numeric figures are in data/aboutStats.ts (StatConfig); labels here.
     stats: {
       items: [

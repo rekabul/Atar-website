@@ -26,11 +26,15 @@ export const caseStudyPhotos: Record<string, string> = {
 type ClientLogo = { file: string; name: string; url: string };
 type Integration = { file: string; name: string; bg: string; url: string };
 
-// Real client/partner logos exported (with transparency + alpha-trimmed)
-// straight from the "Already trusted at national scale" slide of the Atar
-// Company Profile PDF, in the same order as that slide (Giga Projects & PIF
-// Companies first, then Developers/Owners/Operators) — replaces the earlier
-// ad hoc Figma-export list.
+// Real client/partner logos — refreshed from the client's own Figma exports
+// ("Client logo" frame, White-label file) rather than the earlier PDF-cropped
+// set, so these are the real brand files (proper alpha, no PDF-page artifacts).
+// Two clients are new versus the old PDF-sourced list: Garden Residence and
+// Thimarya Real Estate. A few names were corrected against the export
+// filenames / the logo's own visible wordmark where they disagreed with the
+// old PDF-derived guesses (e.g. "Kafa.png" actually reads "Kian Almasiah" in
+// the logo itself; "Union.png" reads "Al Sulaiman"; "Masharef.png" is the
+// same "M H" mark previously guessed as "MH" — confirmed with the client).
 export const clientLogos: ClientLogo[] = [
   { file: "roshn-group.png", name: "ROSHN Group" },
   { file: "diriyah-company.png", name: "Diriyah Company" },
@@ -61,9 +65,11 @@ export const clientLogos: ClientLogo[] = [
   { file: "shaheqa.png", name: "Shaheqa" },
   { file: "mawreth.png", name: "Mawreth" },
   { file: "safa.png", name: "Safa" },
-  { file: "mh.png", name: "MH" },
+  { file: "masharef.png", name: "Masharef" },
   { file: "super-office.png", name: "Super Office" },
   { file: "al-dahiya.png", name: "Al Dahiya" },
+  { file: "garden-residence.png", name: "Garden Residence" },
+  { file: "thimarya-real-estate.png", name: "Thimarya Real Estate" },
 ].map((c) => ({ ...c, url: clientAsset(c.file) }));
 
 // Integration order + pastel circle backgrounds match the Figma row.

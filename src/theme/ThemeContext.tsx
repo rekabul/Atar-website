@@ -11,13 +11,19 @@ type Theme = "light" | "dark";
 type Ctx = { theme: Theme; toggle: () => void };
 
 const ThemeContext = createContext<Ctx | null>(null);
+// Presence of this key means the visitor picked a theme manually via the
+// toggle — until then, the site follows the device's OS-level setting.
+const STORAGE_KEY = "atar-theme";
+
+function prefersDark(): boolean {
+  return typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches;
+}
 
 function initialTheme(): Theme {
   if (typeof window === "undefined") return "light";
-  const saved = window.localStorage.getItem("atar-theme");
+  const saved = window.localStorage.getItem(STORAGE_KEY);
   if (saved === "dark" || saved === "light") return saved;
-  // No manual preference saved yet — default to light (matches current brand look).
-  return "light";
+  return prefersDark() ? "dark" : "light";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
@@ -25,19 +31,34 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
-    try {
-      window.localStorage.setItem("atar-theme", theme);
-    } catch {
-      /* storage may be unavailable — non-fatal */
-    }
   }, [theme]);
+
+  // Live-follow the device's dark/light setting (e.g. switching at sunset,
+  // or a system-wide toggle) as long as the visitor hasn't manually chosen a
+  // theme themselves.
+  useEffect(() => {
+    if (typeof window === "undefined" || window.localStorage.getItem(STORAGE_KEY)) return;
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = (e: MediaQueryListEvent) => setTheme(e.matches ? "dark" : "light");
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   const value = useMemo<Ctx>(
     () => ({
       theme,
-      toggle: () => setTheme((th) => (th === "light" ? "dark" : "light")),
+      toggle: () =>
+        setTheme((th) => {
+          const next = th === "light" ? "dark" : "light";
+          try {
+            window.localStorage.setItem(STORAGE_KEY, next);
+          } catch {
+            /* storage may be unavailable — non-fatal */
+          }
+          return next;
+        }),
     }),
-    [theme]
+    []
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

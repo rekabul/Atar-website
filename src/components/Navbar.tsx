@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useLocale } from "../i18n/LocaleContext";
 import { useTheme } from "../theme/ThemeContext";
 import Logo from "./ui/Logo";
-import Button from "./ui/Button";
+// Button (used for Sign Up) is unused while Sign Up is hidden — re-import when restoring it.
 import NavDropdown from "./ui/NavDropdown";
 import { Menu, Close, Phone, Globe, Sun, Moon, ChevronDown } from "./ui/Icon";
 import { pick } from "../data/pricing";
@@ -11,7 +11,7 @@ import {
   headerGroups,
   headerFlatLinks,
   loginLink,
-  signUpLink,
+  // signUpLink is unused while Sign Up is hidden — re-import when restoring it.
   type NavLink,
 } from "../data/navigation";
 
@@ -174,7 +174,9 @@ export default function Navbar() {
             >
               {pick(loginLink.label, locale)}
             </Link>
-            <Button href={signUpLink.to}>{pick(signUpLink.label, locale)}</Button>
+            {/* Sign Up temporarily hidden — re-add
+                <Button href={signUpLink.to}>{pick(signUpLink.label, locale)}</Button>
+                to restore it. */}
           </div>
 
           <button
@@ -248,9 +250,7 @@ export default function Navbar() {
               >
                 {pick(loginLink.label, locale)}
               </Link>
-              <Button href={signUpLink.to} fullWidth>
-                {pick(signUpLink.label, locale)}
-              </Button>
+              {/* Sign Up temporarily hidden — see desktop nav above. */}
             </div>
           </div>
         )}

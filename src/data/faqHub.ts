@@ -28,8 +28,8 @@ export const faqHubCategories: FaqHubCategory[] = [
     id: "getting-started",
     label: L("Getting Started", "البدء"),
     subtitle: L(
-      "The basics — what Atar is, who it's for, and how to move your data over.",
-      "الأساسيات — ما هو أتار، ولمن هو موجّه، وكيفية نقل بياناتك إليه."
+      "The basics: what Atar is, who it's for, and how to move your data over.",
+      "الأساسيات: ما هو أتار، ولمن هو موجّه، وكيفية نقل بياناتك إليه."
     ),
     items: [
       {

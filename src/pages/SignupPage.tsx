@@ -54,7 +54,7 @@ const copy = {
   signIn: { en: "Sign In To Your Account", ar: "سجّل الدخول إلى حسابك" },
   doneTitle: { en: "You're all set", ar: "كل شيء جاهز" },
   doneBody: {
-    en: "Your details look good. (Demo only — connect this screen to your auth backend to create real accounts.)",
+    en: "Your details look good. (Demo only: connect this screen to your auth backend to create real accounts.)",
     ar: "بياناتك جاهزة. (نسخة تجريبية، اربط هذه الشاشة ببوابة الدخول الفعلية لإنشاء حسابات حقيقية.)",
   },
   privacy: { en: "Privacy & Terms", ar: "الخصوصية والشروط" },

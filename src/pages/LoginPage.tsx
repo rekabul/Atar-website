@@ -390,14 +390,8 @@ export default function LoginPage() {
               )}
             </div>
 
-            {step !== "done" && (
-              <p className="mt-6 text-center text-sm text-ink-soft dark:text-white/60">
-                {pick(copy.noAccount, locale)}{" "}
-                <Link to="/signup" className="font-medium text-primary hover:underline">
-                  {pick(copy.signUpCta, locale)}
-                </Link>
-              </p>
-            )}
+            {/* "Don't have an account? Sign Up" temporarily hidden along with
+                the Sign Up page — restore this block when it's back. */}
           </Reveal>
         </main>
 

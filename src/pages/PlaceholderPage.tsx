@@ -183,22 +183,22 @@ export default function PlaceholderPage() {
     "/solutions/sales-handover": {
       src: salesHandoverMockup,
       alt: {
-        en: "Screenshot of the actual Sales module — Booking Details timeline and customer information",
-        ar: "لقطة شاشة لوحدة المبيعات الفعلية — الجدول الزمني لتفاصيل الحجز وبيانات العميل",
+        en: "Screenshot of the actual Sales module: Booking Details timeline and customer information",
+        ar: "لقطة شاشة لوحدة المبيعات الفعلية: الجدول الزمني لتفاصيل الحجز وبيانات العميل",
       },
     },
     "/solutions/leasing-contract-management": {
       src: leasingContractMockup,
       alt: {
-        en: "Screenshot of the actual Leasing module — lease KPIs, collection gauges and the leases table",
-        ar: "لقطة شاشة لوحدة التأجير الفعلية — مؤشرات العقود ومقاييس التحصيل وجدول العقود",
+        en: "Screenshot of the actual Leasing module: lease KPIs, collection gauges and the leases table",
+        ar: "لقطة شاشة لوحدة التأجير الفعلية: مؤشرات العقود ومقاييس التحصيل وجدول العقود",
       },
     },
     "/solutions/maintenance-ticketing": {
       src: maintenanceTicketingMockup,
       alt: {
-        en: "Screenshot of the actual Service Request module — request timeline, rating and review",
-        ar: "لقطة شاشة لوحدة طلبات الخدمة الفعلية — الجدول الزمني للطلب والتقييم والمراجعة",
+        en: "Screenshot of the actual Service Request module: request timeline, rating and review",
+        ar: "لقطة شاشة لوحدة طلبات الخدمة الفعلية: الجدول الزمني للطلب والتقييم والمراجعة",
       },
     },
     "/solutions/facilities-management": {
@@ -211,15 +211,15 @@ export default function PlaceholderPage() {
     "/solutions/real-estate-crm": {
       src: realEstateCrmMockup,
       alt: {
-        en: "Screenshot of the actual CRM module — Customer Overview and lead details",
-        ar: "لقطة شاشة لوحدة إدارة علاقات العملاء الفعلية — نظرة عامة على العميل وتفاصيل العميل المحتمل",
+        en: "Screenshot of the actual CRM module: Customer Overview and lead details",
+        ar: "لقطة شاشة لوحدة إدارة علاقات العملاء الفعلية: نظرة عامة على العميل وتفاصيل العميل المحتمل",
       },
     },
     "/solutions/property-portfolio-financials": {
       src: propertyPortfolioFinancialsMockup,
       alt: {
-        en: "Screenshot of the actual Revenues module — invoice status and payer information",
-        ar: "لقطة شاشة لوحدة الإيرادات الفعلية — حالة الفواتير وبيانات الدافعين",
+        en: "Screenshot of the actual Revenues module: invoice status and payer information",
+        ar: "لقطة شاشة لوحدة الإيرادات الفعلية: حالة الفواتير وبيانات الدافعين",
       },
     },
     "/solutions/community-engagement-access": {
@@ -872,7 +872,7 @@ function BrandedAppShowcase({
         <Reveal delay={200} className="mx-auto mt-16 flex max-w-4xl justify-center lg:mt-20">
           <img
             src={brandedApp3Phone}
-            alt="Atar branded mobile app shown on three phones — dues, home, and service request screens"
+            alt="Atar branded mobile app shown on three phones: dues, home, and service request screens"
             className="w-full max-w-3xl motion-safe:animate-float"
           />
         </Reveal>
@@ -885,15 +885,15 @@ function BrandedAppShowcase({
       <Reveal delay={80}>
         <img
           src={brandedAppMockup}
-          alt="Atar branded mobile app — resident home screen"
+          alt="Atar branded mobile app: resident home screen"
           className="w-64 motion-safe:animate-float sm:w-72"
         />
       </Reveal>
       <Reveal delay={160}>
         <p className="mt-6 text-sm text-ink-soft dark:text-white/60">
           {locale === "ar"
-            ? "متوفر على iOS وAndroid — استخدم أتار في أي مكان وأي وقت"
-            : "Available on iOS and Android — use Atar anywhere, anytime"}
+            ? "متوفر على iOS وAndroid. استخدم أتار في أي مكان وأي وقت"
+            : "Available on iOS and Android. Use Atar anywhere, anytime"}
         </p>
       </Reveal>
     </div>
@@ -924,7 +924,7 @@ function getMobileFeatures(locale: "en" | "ar"): MobileFeature[] {
         {
           Icon: TagIcon,
           title: "علامتك التجارية، في كل مكان",
-          body: "شعارك وألوانك وقائمتك الخاصة في متجر التطبيقات — يرى المقيمون علامتك التجارية.",
+          body: "شعارك وألوانك وقائمتك الخاصة في متجر التطبيقات: يرى المقيمون علامتك التجارية.",
         },
         {
           Icon: TicketIcon,
@@ -934,7 +934,7 @@ function getMobileFeatures(locale: "en" | "ar"): MobileFeature[] {
         {
           Icon: PaymentIcon,
           title: "المدفوعات، في متناول اليد",
-          body: "مدفوعات وكشوف حساب داخل التطبيق — دون الحاجة لبوابة منفصلة.",
+          body: "مدفوعات وكشوف حساب داخل التطبيق، دون الحاجة لبوابة منفصلة.",
         },
         {
           Icon: BellIcon,
@@ -946,7 +946,7 @@ function getMobileFeatures(locale: "en" | "ar"): MobileFeature[] {
         {
           Icon: TagIcon,
           title: "Your brand, everywhere",
-          body: "Custom logo, colors and app store listing — residents see your name, not ours.",
+          body: "Custom logo, colors and app store listing: residents see your name, not ours.",
         },
         {
           Icon: TicketIcon,
@@ -956,7 +956,7 @@ function getMobileFeatures(locale: "en" | "ar"): MobileFeature[] {
         {
           Icon: PaymentIcon,
           title: "Payments, in their pocket",
-          body: "In-app payments and statements — no separate portal to log into.",
+          body: "In-app payments and statements, with no separate portal to log into.",
         },
         {
           Icon: BellIcon,
@@ -1114,7 +1114,7 @@ function BrandedAppSpotlight({ locale }: { locale: "en" | "ar" }) {
           {
             Visual: OnlinePaymentCard,
             title: "الدفع، من هاتفهم مباشرة",
-            body: "رسوم الخدمة والمدفوعات وكشوف الحساب — كل ذلك داخل التطبيق، دون بوابة منفصلة.",
+            body: "رسوم الخدمة والمدفوعات وكشوف الحساب، كل ذلك داخل التطبيق، دون بوابة منفصلة.",
           },
         ]
       : [
@@ -1126,7 +1126,7 @@ function BrandedAppSpotlight({ locale }: { locale: "en" | "ar" }) {
           {
             Visual: OnlinePaymentCard,
             title: "Payments, straight from their phone",
-            body: "Service charges, fees and statements — all in the app, no separate portal to log into.",
+            body: "Service charges, fees and statements, all in the app, with no separate portal to log into.",
           },
         ];
 
@@ -1200,7 +1200,7 @@ function BrandedAppFAQ({ locale }: { locale: "en" | "ar" }) {
       ? [
           {
             q: "هل يحتاج المقيمون إلى حساب جديد؟",
-            a: "لا — يسجّلون الدخول بنفس بياناتهم الحالية، والتطبيق فقط يحمل علامتك التجارية.",
+            a: "لا، يسجّلون الدخول بنفس بياناتهم الحالية، والتطبيق فقط يحمل علامتك التجارية.",
           },
           {
             q: "هل يعمل التطبيق على iOS وAndroid؟",
@@ -1208,7 +1208,7 @@ function BrandedAppFAQ({ locale }: { locale: "en" | "ar" }) {
           },
           {
             q: "هل يمكن الدفع وتقديم طلبات الخدمة من داخل التطبيق؟",
-            a: "نعم — المدفوعات وكشوف الحساب وطلبات الخدمة متوفرة داخل التطبيق منذ اليوم الأول.",
+            a: "نعم، المدفوعات وكشوف الحساب وطلبات الخدمة متوفرة داخل التطبيق منذ اليوم الأول.",
           },
           {
             q: "كم يستغرق إعداد العلامة التجارية الخاصة بنا؟",
@@ -1218,7 +1218,7 @@ function BrandedAppFAQ({ locale }: { locale: "en" | "ar" }) {
       : [
           {
             q: "Do residents need to create a new account?",
-            a: "No — they sign in with the same details you already give them; the app just carries your brand.",
+            a: "No, they sign in with the same details you already give them; the app just carries your brand.",
           },
           {
             q: "Does it work on both iPhone and Android?",
@@ -1226,11 +1226,11 @@ function BrandedAppFAQ({ locale }: { locale: "en" | "ar" }) {
           },
           {
             q: "Can residents pay and submit requests from the app?",
-            a: "Yes — in-app payments, statements and service requests are all built in from day one.",
+            a: "Yes, in-app payments, statements and service requests are all built in from day one.",
           },
           {
             q: "How long does branding take to set up?",
-            a: "Send your logo and colors — we handle the rest, including your app store listing.",
+            a: "Send your logo and colors: we handle the rest, including your app store listing.",
           },
         ];
 
@@ -1321,8 +1321,8 @@ function ListingWebsiteShowcase({ locale }: { locale: "en" | "ar" }) {
           src={listingWebsiteMockup}
           alt={
             locale === "ar"
-              ? "لقطة شاشة لموقع الإعلانات الفعلي — الصفحة الرئيسية وقسم استكشاف المجتمعات"
-              : "Screenshot of the actual listing website — homepage and Explore Communities section"
+              ? "لقطة شاشة لموقع الإعلانات الفعلي: الصفحة الرئيسية وقسم استكشاف المجتمعات"
+              : "Screenshot of the actual listing website: homepage and Explore Communities section"
           }
           className="block w-full"
         />
@@ -1346,7 +1346,7 @@ function ListingWebsiteFeatureGrid({ locale }: { locale: "en" | "ar" }) {
       body:
         locale === "ar"
           ? "يتواصل المهتم معك مباشرة من بطاقة الإعلان، دون نموذج تواصل بطيء."
-          : "A buyer can reach you straight from the listing card — no slow contact form in between.",
+          : "A buyer can reach you straight from the listing card, with no slow contact form in between.",
     },
     {
       Icon: (p) => <Riyal size={p.size ?? 20} />,
@@ -1370,7 +1370,7 @@ function ListingWebsiteFeatureGrid({ locale }: { locale: "en" | "ar" }) {
       body:
         locale === "ar"
           ? "بيانات منظمة (schema.org) على كل صفحة إعلان، لا مجرد وعد تسويقي."
-          : "Real schema.org structured data on every listing page — not just a marketing claim.",
+          : "Real schema.org structured data on every listing page, not just a marketing claim.",
     },
     {
       Icon: (p) => <LinkIcon size={p.size ?? 20} />,
@@ -1378,7 +1378,7 @@ function ListingWebsiteFeatureGrid({ locale }: { locale: "en" | "ar" }) {
       body:
         locale === "ar"
           ? "الموقع يحمل علامتك ونطاقك، وليس علامة أتار."
-          : "The site carries your brand and your domain — not Atar's.",
+          : "The site carries your brand and your domain, not Atar's.",
     },
     {
       Icon: (p) => <Globe size={p.size ?? 20} />,
@@ -1429,7 +1429,7 @@ function ListingWebsiteFAQ({ locale }: { locale: "en" | "ar" }) {
       ? [
           {
             q: "كم يستغرق ظهور إعلان جديد على الموقع؟",
-            a: "يتزامن تلقائياً من أتار خلال دقائق من حفظه — لا حاجة لإعادة إدخاله يدوياً.",
+            a: "يتزامن تلقائياً من أتار خلال دقائق من حفظه، لا حاجة لإعادة إدخاله يدوياً.",
           },
           {
             q: "هل يمكنني استخدام نطاقي الخاص؟",
@@ -1437,7 +1437,7 @@ function ListingWebsiteFAQ({ locale }: { locale: "en" | "ar" }) {
           },
           {
             q: "هل يغني هذا عن النشر على منصات أخرى مثل عقار أو وصلت؟",
-            a: "لا يحل محلها بالضرورة — إنه موقعك الخاص المتحكم فيه بالكامل، إلى جانب أي منصة أخرى تنشر عليها.",
+            a: "لا يحل محلها بالضرورة، إنه موقعك الخاص المتحكم فيه بالكامل، إلى جانب أي منصة أخرى تنشر عليها.",
           },
           {
             q: "هل الموقع متوافق مع الجوال؟",
@@ -1451,7 +1451,7 @@ function ListingWebsiteFAQ({ locale }: { locale: "en" | "ar" }) {
       : [
           {
             q: "How fast does a new listing appear on the site?",
-            a: "It syncs automatically from Atar within minutes of being saved — no manual re-entry.",
+            a: "It syncs automatically from Atar within minutes of being saved, with no manual re-entry.",
           },
           {
             q: "Can I use my own domain?",
@@ -1459,7 +1459,7 @@ function ListingWebsiteFAQ({ locale }: { locale: "en" | "ar" }) {
           },
           {
             q: "Does this replace posting to other portals like Aqar or Wasalt?",
-            a: "Not necessarily — it's your own fully-controlled site, alongside whatever other portals you already use.",
+            a: "Not necessarily: it's your own fully-controlled site, alongside whatever other portals you already use.",
           },
           {
             q: "Is the site mobile-friendly?",
@@ -1842,8 +1842,8 @@ function SolutionHeroPlaceholder({
         </div>
         <div className="border-t border-grey-100 px-4 py-2.5 text-center text-xs font-medium tracking-wide text-ink-soft/70 dark:border-white/10 dark:text-white/40">
           {locale === "ar"
-            ? "معاينة — سيتم استبدالها بصورة المنتج الفعلية"
-            : "Preview — will be replaced with the real product image"}
+            ? "معاينة: سيتم استبدالها بصورة المنتج الفعلية"
+            : "Preview: will be replaced with the real product image"}
         </div>
       </Reveal>
     </div>

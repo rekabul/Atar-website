@@ -502,7 +502,7 @@ export default function FeaturesPage() {
             <p className="mx-auto mt-3 max-w-2xl text-lg text-ink-soft dark:text-white/70">
               {locale === "ar"
                 ? "من الإدراج والتسويق إلى التجديد وإعادة التسويق - أكثر من 20 وحدة، ونموذج بيانات واحد متصل."
-                : "From list & market to renew & re-market — 20+ modules, one connected data model."}
+                : "From list & market to renew & re-market: 20+ modules, one connected data model."}
             </p>
           </Reveal>
 

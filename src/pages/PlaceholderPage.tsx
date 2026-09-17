@@ -233,10 +233,14 @@ export default function PlaceholderPage() {
   const solutionHeroImage = solutionHeroImages[pathname]?.src;
   const solutionHeroImageAlt = solutionHeroImages[pathname]?.alt;
   const hasCloudyHero = isListingWebsite || (isSolutionsPage && !isBrandedMobileApp);
-  // Two selectable visual treatments for the Branded Mobile App page, so the
-  // team can compare them side by side before picking one. Toggle only
-  // renders on this one route; every other placeholder page is unaffected.
-  const [demoVariant, setDemoVariant] = useState<"a" | "b">("a");
+  // Two selectable visual treatments for the Branded Mobile App page. Layout 2
+  // ("b") is the one in use for now — Layout 1 ("a") and the switcher UI below
+  // are kept in code but hidden, so this can be revisited later without
+  // rebuilding Layout 1 from scratch.
+  // setDemoVariant is unused while the switcher is hidden — restore it
+  // (`const [demoVariant, setDemoVariant] = ...`) along with the commented
+  // switcher UI below when Layout 1 comes back.
+  const [demoVariant] = useState<"a" | "b">("b");
 
   useEffect(() => {
     const prev = document.title;
@@ -248,6 +252,9 @@ export default function PlaceholderPage() {
 
   return (
     <>
+      {/* Layout switcher hidden for now — Layout 2 is the only one in use.
+          Re-enable this block (and flip demoVariant's default back to "a")
+          to bring Layout 1 and the switcher back.
       {isBrandedMobileApp && (
         <div className="fixed inset-x-0 bottom-6 z-50 flex justify-center px-4">
           <div
@@ -278,6 +285,7 @@ export default function PlaceholderPage() {
           </div>
         </div>
       )}
+      */}
 
       <section
         className={`hero-bg ${hasCloudyHero ? "relative overflow-hidden" : ""}`}

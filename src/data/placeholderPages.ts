@@ -422,6 +422,9 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     // No generic "bullets" section here — the same 4 points are covered by
     // the bespoke MobileFeatureShowcase (heading + subheading + phone image
     // per feature) rendered in PlaceholderPage.tsx for this route.
+    // App Store/Google Play download CTA removed for now (per request) —
+    // minimalFooter skips PlaceholderPage.tsx's CTA block entirely.
+    minimalFooter: true,
   },
 
   "/products/addons/powerbi-reports": {
@@ -1133,9 +1136,11 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
   // Deliberate exception (same pattern as "/solutions/listing-website"
   // above): an exact copy of "/products/addons/branded-mobile-app", and
   // pages/PlaceholderPage.tsx's isBrandedMobileApp flag treats this path the
-  // same as that add-on page — both hero layouts, the layout switcher, the
-  // feature showcase, the Download CTA — per an explicit request to reuse
-  // that page wholesale here rather than the generic Solutions template.
+  // same as that add-on page — the feature showcase and (currently) the
+  // Layout 2 hero — per an explicit request to reuse that page wholesale
+  // here rather than the generic Solutions template. The layout switcher is
+  // temporarily hidden (Layout 2 only) and the Download CTA is removed, both
+  // per request — see PlaceholderPage.tsx's demoVariant state.
   "/solutions/customer-portal": {
     eyebrow: L("Add-ons", "الإضافات"),
     title: L("Branded Mobile App", "تطبيق جوال بعلامتك التجارية"),
@@ -1145,6 +1150,9 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     ),
     // No generic "bullets" section here — same as the add-on page, the
     // content is covered by the bespoke components in PlaceholderPage.tsx.
+    // Download CTA removed for now (per request) — see the add-on page's
+    // matching comment.
+    minimalFooter: true,
   },
 
   "/solutions/reporting-analytics": {

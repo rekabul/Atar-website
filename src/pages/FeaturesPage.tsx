@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactElement, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ElementType, type ReactElement, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -36,13 +36,16 @@ import {
   LinkIcon,
 } from "../components/ui/Icon";
 import { prefersReducedMotion } from "../hooks/useInView";
-import { type LStr, pick } from "../data/lifecycle";
-import InteractiveLifecycleStrip from "../components/features/InteractiveLifecycleStrip";
-// OrbitalLifecycleTimeline and CardStackLifecycle were two alternative takes on
-// this same diagram, compared side by side via a variant switcher during
-// review — Linear (InteractiveLifecycleStrip) is the one that shipped, so the
-// switcher and the other two are gone. Their component files are still in
-// ../components/features/ if either is needed again.
+import { type LStr, pick, buildStageDetails } from "../data/lifecycle";
+import LifecycleCardRail, { type LifecycleCardItem } from "../components/ui/LifecycleCardRail";
+// InteractiveLifecycleStrip (the zigzag "Linear" diagram) and its two
+// alternative takes, OrbitalLifecycleTimeline and CardStackLifecycle, were
+// compared side by side via a variant switcher during review. The Continuous
+// Cycle now uses the same lifecycle-card design as the Sales/Leasing/
+// Operations Suite strips instead (see LifecycleCardRail — the same card as
+// Home's Benefits section), made horizontally scrollable and scroll-linked
+// since 8 stages don't fit one screen. All three old diagram components are
+// still in ../components/features/ if needed again.
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
@@ -359,6 +362,27 @@ const categoryClasses: Record<ModuleColor, { heading: string; iconText: string }
   },
 };
 
+/** Card wrapper with a cursor-following radial glow (apple-design "materials" cue). */
+function SpotlightCard({ children, className = "" }: { children: ReactNode; className?: string }) {
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty("--my", `${e.clientY - rect.top}px`);
+  };
+  return (
+    <div onMouseMove={onMove} className={`group relative overflow-hidden ${className}`}>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: "radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), rgba(0,142,165,0.08), transparent 45%)",
+        }}
+      />
+      {children}
+    </div>
+  );
+}
+
 /** CTA button that pulls gently toward the cursor, then springs back on leave. */
 function MagneticCta({ to, children }: { to: string; children: ReactNode }) {
   const ref = useRef<HTMLAnchorElement>(null);
@@ -454,7 +478,7 @@ export default function FeaturesPage() {
       <h1
         ref={heroTitleRef}
         id="features-title"
-        className="mt-3 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl"
+        className="mt-3 text-[2.75rem] font-medium leading-[1.05] tracking-tight text-ink dark:text-white sm:text-6xl"
         style={{ perspective: 600 }}
       >
         Everything to Scale Your Real Estate Business
@@ -467,25 +491,42 @@ export default function FeaturesPage() {
 
   return (
     <>
-      <section className="hero-bg" aria-labelledby="features-title">
+      <section className="hero-bg relative" aria-labelledby="features-title">
+        <div
+          className="pointer-events-none absolute inset-0 -z-10 opacity-[0.4] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black,transparent)] dark:opacity-[0.15]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(0,66,86,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,66,86,0.06) 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+          aria-hidden="true"
+        />
         <div className="mx-auto max-w-6xl px-5 py-16 lg:px-8 lg:py-20">
           <div className="mx-auto max-w-3xl text-center">{heroText}</div>
         </div>
       </section>
 
-      {/* Continuous Cycle — page 6's 8-stage lifecycle, shown as a single
-          static diagram (no variant switcher — see the file-header comment
-          above for why, and no click-to-expand, since it's meant to
-          illustrate a continuous loop rather than invite interaction). */}
-      <section className="py-12 lg:py-16" aria-label="Continuous cycle">
-        <div className="mx-auto max-w-6xl px-5 lg:px-8">
-          <div className="mt-10">
-            <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
-              {locale === "ar" ? "الدورة المستمرة" : "Continuous Cycle"}
-            </p>
-            <InteractiveLifecycleStrip locale={locale} />
-          </div>
-        </div>
+      {/* Continuous Cycle — page 6's 8-stage lifecycle, using the same
+          lifecycle-card design as the Suite pages. No "View Details" link —
+          it's illustrating a continuous loop rather than inviting a click
+          to somewhere. A static 4-column grid (two rows of 4) rather than a
+          scroller — a GSAP scroll-jacked horizontal rail was tried first but
+          repeatedly failed to actually move the cards and couldn't be
+          debugged visually in this environment, so a plain grid replaced it. */}
+      <section aria-label="Continuous cycle">
+        <LifecycleCardRail
+          locale={locale as "en" | "ar"}
+          columns={4}
+          caption={locale === "ar" ? "الدورة المستمرة" : "Continuous Cycle"}
+          items={buildStageDetails(locale).map(
+            (stage): LifecycleCardItem => ({
+              key: String(stage.id),
+              Icon: stage.icon as ElementType<{ size?: number }>,
+              title: stage.title,
+              body: stage.content,
+            })
+          )}
+        />
       </section>
 
       {/* Platform lifecycle + module map — see the data block above this
@@ -540,18 +581,18 @@ export default function FeaturesPage() {
                     {cat.items.map((item) => {
                       const ItemIcon = item.icon;
                       return (
-                        <div
+                        <SpotlightCard
                           key={item.en}
-                          className="flex items-start gap-4 rounded-2xl border border-grey-100 bg-white p-5 shadow-card transition-shadow hover:shadow-lift dark:border-white/10 dark:bg-white/5"
+                          className="flex items-start gap-4 rounded-2xl border border-grey-100 bg-white p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lift dark:border-white/10 dark:bg-white/5"
                         >
-                          <ItemIcon size={28} className={`mt-0.5 shrink-0 ${c.iconText}`} />
-                          <div>
+                          <ItemIcon size={28} className={`relative mt-0.5 shrink-0 ${c.iconText}`} />
+                          <div className="relative">
                             <p className="text-lg font-medium text-ink dark:text-white">{pick(item, locale)}</p>
                             <p className="mt-1 text-sm leading-relaxed text-ink-soft dark:text-white/60">
                               {pick({ en: item.descEn, ar: item.descAr }, locale)}
                             </p>
                           </div>
-                        </div>
+                        </SpotlightCard>
                       );
                     })}
                   </StaggerReveal>

@@ -3,7 +3,15 @@ import { clientLogos } from "../data/assetsMap";
 
 /** Continuous logo marquee; each real client logo sits in a light-grey card.
  *  Animation pauses under prefers-reduced-motion. */
-export default function Clients() {
+export default function Clients({
+  maxWidthClassName = "max-w-content",
+}: {
+  /** Home/About keep the section's own default (1200px). Placeholder pages'
+   *  other generic sections (iconFeatures, whyAtar, etc.) share a narrower
+   *  1024px ("max-w-5xl") container — passed in here so this section's
+   *  edges line up with theirs instead of sitting visibly wider. */
+  maxWidthClassName?: string;
+} = {}) {
   const { t, dir } = useLocale();
   const anim = dir === "rtl" ? "animate-marquee-rtl" : "animate-marquee";
 
@@ -33,7 +41,7 @@ export default function Clients() {
 
   return (
     <section className="bg-white py-14 dark:bg-secondary-darker" aria-labelledby="clients-title">
-      <div className="mx-auto max-w-content px-5 lg:px-8">
+      <div className={`mx-auto ${maxWidthClassName} px-5 lg:px-8`}>
         <h2
           id="clients-title"
           className="text-center text-sm font-medium uppercase tracking-wider text-ink-soft dark:text-white/60"

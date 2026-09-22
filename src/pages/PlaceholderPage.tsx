@@ -25,6 +25,7 @@ import {
   communityEngagementMockup,
 } from "../assets";
 import Reveal from "../components/ui/Reveal";
+import LifecycleCardRail, { type LifecycleCardItem } from "../components/ui/LifecycleCardRail";
 import Button from "../components/ui/Button";
 import Clients from "../components/Clients";
 import Logo, { LogoMark } from "../components/ui/Logo";
@@ -173,6 +174,38 @@ export default function PlaceholderPage() {
   // hero image below — so the layout is consistent without touching that
   // add-on page's own real screenshot or copy.
   const isSolutionsPage = pathname.startsWith("/solutions/");
+  // Markets pages (Residential, Retail, Office, Compounds & Communities,
+  // Mixed-use Developments) shared the same bare eyebrow/title/body +
+  // plain-bullets template with no hero visual and no dedicated CTA button —
+  // easily the thinnest pages on the site next to competitor "market" pages
+  // like yardi.com/market/multifamily. Residential is being rebuilt first as
+  // a pilot (richer iconFeatures/whyAtar sections in data/placeholderPages.ts,
+  // same components the Solutions pages already use) before the same
+  // treatment rolls out to the other four Markets pages.
+  const isResidentialMarket = pathname === "/markets/residential";
+  // Residential's content lives in the same copy.sections array as every
+  // other placeholder page (unchanged), but this page renders each section
+  // with its own bespoke, more crafted component instead of the generic
+  // SectionBlock — same data, different presentation, scoped to this route.
+  const residentialIconFeatureSections = isResidentialMarket
+    ? ((copy.sections ?? []).filter((s) => s.kind === "iconFeatures") as Extract<
+        PageSection,
+        { kind: "iconFeatures" }
+      >[])
+    : [];
+  const residentialStatsSection = isResidentialMarket
+    ? ((copy.sections ?? []).find((s) => s.kind === "stats") as
+        | Extract<PageSection, { kind: "stats" }>
+        | undefined)
+    : undefined;
+  const residentialWhyAtarSection = isResidentialMarket
+    ? ((copy.sections ?? []).find((s) => s.kind === "whyAtar") as
+        | Extract<PageSection, { kind: "whyAtar" }>
+        | undefined)
+    : undefined;
+  const residentialFaqSection = isResidentialMarket
+    ? ((copy.sections ?? []).find((s) => s.kind === "faq") as Extract<PageSection, { kind: "faq" }> | undefined)
+    : undefined;
   // Real client screenshots, one per Solutions page as they're provided —
   // every other Solutions page still falls back to the generic dummy
   // placeholder (SolutionHeroPlaceholder) until its own image is added here.
@@ -232,7 +265,8 @@ export default function PlaceholderPage() {
   };
   const solutionHeroImage = solutionHeroImages[pathname]?.src;
   const solutionHeroImageAlt = solutionHeroImages[pathname]?.alt;
-  const hasCloudyHero = isListingWebsite || (isSolutionsPage && !isBrandedMobileApp);
+  const hasCloudyHero =
+    isListingWebsite || ((isSolutionsPage || isResidentialMarket) && !isBrandedMobileApp);
   // Two selectable visual treatments for the Branded Mobile App page. Layout 2
   // ("b") is the one in use for now — Layout 1 ("a") and the switcher UI below
   // are kept in code but hidden, so this can be revisited later without
@@ -307,57 +341,128 @@ export default function PlaceholderPage() {
             eyebrow/title/body block with its own pill + headline + store
             badges (built inside BrandedAppShowcase) instead of stacking two
             heroes on top of each other. */}
-        {!(isBrandedMobileApp && demoVariant === "b") && (
-          <div
-            className={`mx-auto max-w-3xl px-5 text-center lg:px-8 ${
-              hasCloudyHero ? "pt-16 pb-4 lg:pt-20 lg:pb-6" : "py-16 lg:py-20"
-            }`}
-          >
-            <Reveal>
-              <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary dark:border-primary/30 dark:bg-white/5">
-                {pick(copy.eyebrow, locale)}
-              </span>
-              <h1
-                id="placeholder-title"
-                className="mt-4 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl"
-              >
-                {pick(copy.title, locale)}
-              </h1>
-              <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-white/70">
-                {pick(copy.body, locale)}
-              </p>
-              {hasCloudyHero && (
-                <div className="mt-8">
-                  <Button href="https://meetings.hubspot.com/atar/demo-meeting" icon={<ArrowRight />}>
+        {/* Residential gets a side-by-side hero (text start-aligned on one
+            side, the product visual on the other) instead of the generic
+            centered-text-then-image-below stack every other placeholder page
+            uses — matching the reference (yardi.com/market/multifamily)
+            rather than stacking two centered blocks vertically. Scoped to
+            this one page for now, same as the rest of the Markets pilot. */}
+        {isResidentialMarket ? (
+          <div className="relative">
+            {/* Faint Linear-style grid texture behind the hero only — a
+                quiet signature detail rather than decoration, gone under
+                prefers-reduced-transparency-style flatness concerns since
+                it's just two 1px gradients, not translucency. */}
+            <div
+              className="pointer-events-none absolute inset-0 -z-10 opacity-[0.4] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black,transparent)] dark:opacity-[0.15]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(0,66,86,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,66,86,0.06) 1px, transparent 1px)",
+                backgroundSize: "40px 40px",
+              }}
+              aria-hidden="true"
+            />
+            <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 pb-12 pt-16 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:pt-20">
+              <Reveal className="text-center lg:text-start">
+                <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-primary dark:border-primary/30 dark:bg-white/5">
+                  {pick(copy.eyebrow, locale)}
+                </span>
+                <h1
+                  id="placeholder-title"
+                  className="mt-5 text-[2.75rem] font-medium leading-[1.05] tracking-tight text-ink dark:text-white sm:text-6xl"
+                >
+                  {pick(copy.title, locale)}
+                </h1>
+                <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ink-soft dark:text-white/70 lg:mx-0">
+                  {pick(copy.body, locale)}
+                </p>
+                <div className="mt-8 flex justify-center lg:justify-start">
+                  <MagneticCta href="https://meetings.hubspot.com/atar/demo-meeting">
                     {locale === "ar" ? "احجز عرضاً توضيحياً" : "Book a Demo"}
-                  </Button>
+                  </MagneticCta>
                 </div>
-              )}
-            </Reveal>
+                {residentialStatsSection && (
+                  <div className="mt-10 flex justify-center gap-8 lg:justify-start">
+                    {residentialStatsSection.items.map((stat, i) => (
+                      <div key={i} className="text-center lg:text-start">
+                        <p className="text-2xl font-semibold tracking-tight text-ink dark:text-white">{stat.value}</p>
+                        <p className="mt-0.5 text-xs text-ink-soft dark:text-white/60">{pick(stat.label, locale)}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Reveal>
+              <SolutionHeroPlaceholder locale={locale} image={solutionHeroImage} imageAlt={solutionHeroImageAlt} compact />
+            </div>
           </div>
-        )}
-        {isSalesSuite && <SalesFlowStepper locale={locale} />}
-        {isLeasingSuite && <LeasingFlowStepper locale={locale} />}
-        {isOperationsSuite && <OperationsFlowStepper locale={locale} />}
-        {isBrandedMobileApp && (
-          <BrandedAppShowcase
-            locale={locale}
-            variant={demoVariant}
-            title={copy.title}
-            body={copy.body}
-          />
-        )}
-        {isListingWebsite && <ListingWebsiteShowcase locale={locale} />}
-        {isSolutionsPage && !isListingWebsite && !isBrandedMobileApp && (
-          <SolutionHeroPlaceholder locale={locale} image={solutionHeroImage} imageAlt={solutionHeroImageAlt} />
+        ) : (
+          <>
+            {!(isBrandedMobileApp && demoVariant === "b") && (
+              <div
+                className={`mx-auto max-w-3xl px-5 text-center lg:px-8 ${
+                  hasCloudyHero ? "pt-16 pb-4 lg:pt-20 lg:pb-6" : "py-16 lg:py-20"
+                }`}
+              >
+                <Reveal>
+                  <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary dark:border-primary/30 dark:bg-white/5">
+                    {pick(copy.eyebrow, locale)}
+                  </span>
+                  <h1
+                    id="placeholder-title"
+                    className="mt-4 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl"
+                  >
+                    {pick(copy.title, locale)}
+                  </h1>
+                  <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-white/70">
+                    {pick(copy.body, locale)}
+                  </p>
+                  {hasCloudyHero && (
+                    <div className="mt-8">
+                      <Button href="https://meetings.hubspot.com/atar/demo-meeting" icon={<ArrowRight />}>
+                        {locale === "ar" ? "احجز عرضاً توضيحياً" : "Book a Demo"}
+                      </Button>
+                    </div>
+                  )}
+                </Reveal>
+              </div>
+            )}
+            {isSalesSuite && <SalesFlowStepper locale={locale} />}
+            {isLeasingSuite && <LeasingFlowStepper locale={locale} />}
+            {isOperationsSuite && <OperationsFlowStepper locale={locale} />}
+            {isBrandedMobileApp && (
+              <BrandedAppShowcase
+                locale={locale}
+                variant={demoVariant}
+                title={copy.title}
+                body={copy.body}
+              />
+            )}
+            {isListingWebsite && <ListingWebsiteShowcase locale={locale} />}
+            {isSolutionsPage && !isListingWebsite && !isBrandedMobileApp && (
+              <SolutionHeroPlaceholder locale={locale} image={solutionHeroImage} imageAlt={solutionHeroImageAlt} />
+            )}
+          </>
         )}
       </section>
 
       {isListingWebsite && <ListingWebsiteFeatureGrid locale={locale} />}
 
-      {copy.sections?.map((section, i) => (
-        <SectionBlock key={i} section={section} locale={locale} />
-      ))}
+      {isResidentialMarket ? (
+        <>
+          <Clients maxWidthClassName="max-w-5xl" />
+          {residentialIconFeatureSections[0] && (
+            <ResidentialFeatureGrid section={residentialIconFeatureSections[0]} locale={locale} />
+          )}
+          {residentialIconFeatureSections[1] && (
+            <ResidentialCompliance section={residentialIconFeatureSections[1]} locale={locale} />
+          )}
+          {residentialStatsSection && <ResidentialStats section={residentialStatsSection} locale={locale} />}
+          {residentialWhyAtarSection && <ResidentialWhyAtar section={residentialWhyAtarSection} locale={locale} />}
+          {residentialFaqSection && <ResidentialFaq section={residentialFaqSection} locale={locale} />}
+        </>
+      ) : (
+        copy.sections?.map((section, i) => <SectionBlock key={i} section={section} locale={locale} />)
+      )}
 
       {isListingWebsite && <ListingWebsiteFAQ locale={locale} />}
 
@@ -445,8 +550,13 @@ function SectionBlock({ section, locale }: { section: PageSection; locale: "en" 
       return <CompareSection section={section} locale={locale} />;
     case "caseStudies":
       return <CaseStudiesSection section={section} locale={locale} />;
+    case "faq":
+      return <FaqSection section={section} locale={locale} />;
     case "logos":
-      return <Clients />;
+      // Narrower than Home/About's default (max-w-content, 1200px) to match
+      // `wrap` (max-w-5xl, 1024px) below — otherwise this section's edges
+      // sit visibly wider than every other generic section on the page.
+      return <Clients maxWidthClassName="max-w-5xl" />;
     case "team":
       return <TeamSection section={section} locale={locale} />;
     case "timeline":
@@ -549,228 +659,207 @@ function StepsVisualSection({
 }
 
 /**
- * Sales Suite "alt" variant only — a compact 5-stop overview of the whole
- * sales flow, sitting right under the hero copy: number, short label, a
- * connecting line with a dot per stop, and a one-word sub-label. Purely a
- * visual summary — the detailed step-by-step section below still carries the
- * real copy.
+ * Sales Suite "alt" variant — a compact 5-stop overview of the whole sales
+ * flow, sitting right under the hero copy, using the shared lifecycle card
+ * design. Each card's "View Details" scrolls down to its matching step in the
+ * detailed "How it works" section below (same page, same numbering), rather
+ * than linking away.
  */
 function SalesFlowStepper({ locale }: { locale: "en" | "ar" }) {
-  const steps: { n: string; label: string; sub: string }[] = [
-    { n: "01", label: locale === "ar" ? "الإدراج" : "List", sub: locale === "ar" ? "العقار" : "Property" },
-    { n: "02", label: locale === "ar" ? "العملاء" : "Leads", sub: locale === "ar" ? "العميل" : "Customer" },
-    { n: "03", label: locale === "ar" ? "العرض" : "Quote", sub: locale === "ar" ? "عرض السعر" : "Quotation" },
-    { n: "04", label: locale === "ar" ? "الإغلاق" : "Close", sub: locale === "ar" ? "الاتفاقية" : "Agreement" },
-    { n: "05", label: locale === "ar" ? "التسليم" : "Handover", sub: locale === "ar" ? "الإنجاز" : "Completion" },
-  ];
-
-  return (
-    <div className="mx-auto mt-4 max-w-4xl overflow-x-auto px-5 pb-14 lg:px-8">
-      <Reveal delay={80}>
-        <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
-          {locale === "ar" ? "من الإدراج إلى التسليم النهائي" : "From listing to final handover"}
-        </p>
-        <div className="mx-auto min-w-[520px]">
-          <div className="grid grid-cols-5 gap-2 text-center">
-            {steps.map((s) => (
-              <div key={s.n}>
-                <p className="text-xs font-medium text-ink-muted dark:text-white/40">{s.n}</p>
-                <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-ink dark:text-white sm:text-base">
-                  {s.label}
-                </p>
-              </div>
-            ))}
-          </div>
-          <div className="relative mt-4 h-px w-full bg-grey-200 dark:bg-white/15">
-            <div className="absolute inset-0 grid grid-cols-5">
-              {steps.map((s) => (
-                <div key={s.n} className="flex items-center justify-center">
-                  <span className="h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-white dark:ring-secondary-darker" />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="mt-4 grid grid-cols-5 gap-2 text-center">
-            {steps.map((s) => (
-              <p key={s.n} className="text-xs text-ink-muted dark:text-white/40">
-                {s.sub}
-              </p>
-            ))}
-          </div>
-        </div>
-      </Reveal>
-    </div>
-  );
-}
-
-/**
- * Leasing Suite "alt" hero strip — a compact 5-stop overview of the whole
- * leasing flow, sitting right under the hero copy. Same flat-line timeline
- * mechanic as the Sales Suite stepper, but each stop gets a small icon in a
- * muted circle instead of a number, matching the icon-circle style requested.
- */
-function LeasingFlowStepper({ locale }: { locale: "en" | "ar" }) {
-  const steps: {
-    key: string;
-    label: string;
-    sub: string;
-    Icon: (p: { size?: number }) => JSX.Element;
-  }[] = [
+  const items: LifecycleCardItem[] = [
     {
       key: "list",
-      label: locale === "ar" ? "الإدراج" : "List",
-      sub: locale === "ar" ? "الوحدة" : "Listing",
       Icon: RentListIcon,
+      title: locale === "ar" ? "الإدراج" : "List",
+      body:
+        locale === "ar"
+          ? "انشر الوحدات الجاهزة والمُباعة على الخريطة عبر جميع القنوات من مكان واحد."
+          : "Publish ready and off-plan units across every channel from one place.",
+      href: "#step-1",
     },
     {
-      key: "attract",
-      label: locale === "ar" ? "الاستقطاب" : "Attract",
-      sub: locale === "ar" ? "المستأجرون" : "Renters",
-      Icon: RentersIcon,
-    },
-    {
-      key: "applications",
-      label: locale === "ar" ? "الطلبات" : "Applications",
-      sub: locale === "ar" ? "المراجعة" : "Review",
-      Icon: ApplicationIcon,
+      key: "leads",
+      Icon: UsersIcon,
+      title: locale === "ar" ? "العملاء" : "Leads",
+      body:
+        locale === "ar"
+          ? "استقطب وأهّل اهتمام المشترين، وتوجيهه تلقائياً إلى الوكيل المناسب."
+          : "Capture and qualify buyer interest, routed to the right agent automatically.",
+      href: "#step-2",
     },
     {
       key: "quote",
-      label: locale === "ar" ? "العرض" : "Quote",
-      sub: locale === "ar" ? "التسعير" : "Pricing",
       Icon: QuotePriceIcon,
+      title: locale === "ar" ? "العرض" : "Quote",
+      body:
+        locale === "ar"
+          ? "أرسل عروض أسعار دقيقة وبعلامتك التجارية مع خطط الدفع المدمجة."
+          : "Send accurate, branded quotations with pricing and payment plans built in.",
+      href: "#step-3",
     },
     {
-      key: "lease",
-      label: locale === "ar" ? "العقد" : "Lease",
-      sub: locale === "ar" ? "الاتفاقية" : "Agreement",
-      Icon: LeaseIcon,
+      key: "close",
+      Icon: Check,
+      title: locale === "ar" ? "الإغلاق" : "Close",
+      body:
+        locale === "ar"
+          ? "وقّع العقود إلكترونياً عبر نفاذ، بامتثال كامل لكلا الطرفين."
+          : "Sign contracts digitally via Nafath, fully compliant for both parties.",
+      href: "#step-4",
+    },
+    {
+      key: "handover",
+      Icon: HandoverIcon,
+      title: locale === "ar" ? "التسليم" : "Handover",
+      body:
+        locale === "ar"
+          ? "حصّل المدفوعات عبر سداد وأكمل تسليماً رقمياً بالكامل."
+          : "Collect payments through SADAD and complete a fully digital handover.",
+      href: "#step-5",
     },
   ];
 
   return (
-    <div className="mx-auto mt-4 max-w-5xl overflow-x-auto px-5 pb-14 lg:px-8">
-      <Reveal delay={80}>
-        <div className="mx-auto min-w-[600px] rounded-[28px] bg-[#F6F7F8] px-6 py-10 dark:bg-white/5 sm:px-10">
-          <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
-            {locale === "ar" ? "من أول إعلان إلى عقد مُدار بالكامل" : "From listing to a fully managed lease"}
-          </p>
-          <div className="grid grid-cols-5 gap-2 text-center">
-            {steps.map(({ key, label, Icon }) => (
-              <div key={key} className="flex flex-col items-center">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-primary shadow-card dark:bg-secondary-darker">
-                  <Icon size={18} />
-                </span>
-                <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-ink dark:text-white sm:text-base">
-                  {label}
-                </p>
-              </div>
-            ))}
-          </div>
-          <div className="relative mt-4 h-px w-full bg-grey-200 dark:bg-white/15">
-            <div className="absolute inset-0 grid grid-cols-5">
-              {steps.map(({ key }) => (
-                <div key={key} className="flex items-center justify-center">
-                  <span className="h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-[#F6F7F8] dark:ring-white/5" />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="mt-4 grid grid-cols-5 gap-2 text-center">
-            {steps.map(({ key, sub }) => (
-              <p key={key} className="text-xs text-ink-muted dark:text-white/40">
-                {sub}
-              </p>
-            ))}
-          </div>
-        </div>
-      </Reveal>
-    </div>
+    <LifecycleCardRail
+      locale={locale}
+      caption={locale === "ar" ? "من الإدراج إلى التسليم النهائي" : "From listing to final handover"}
+      items={items}
+    />
   );
 }
 
 /**
- * Operations Suite "alt" hero strip — same small-point timeline idea as
- * Sales/Leasing, but each stop is its own bordered card; a line-and-dot rail
- * above the row visually connects card one through to card five.
+ * Leasing Suite "alt" hero strip — same shared card design and same
+ * scroll-to-detail behaviour as Sales Suite, above.
  */
-function OperationsFlowStepper({ locale }: { locale: "en" | "ar" }) {
-  const steps: {
-    key: string;
-    label: string;
-    sub: string;
-    Icon: (p: { size?: number }) => JSX.Element;
-  }[] = [
+function LeasingFlowStepper({ locale }: { locale: "en" | "ar" }) {
+  const items: LifecycleCardItem[] = [
     {
-      key: "handover",
-      label: locale === "ar" ? "التسليم" : "Handover",
-      sub: locale === "ar" ? "الإدراج" : "Onboarding",
-      Icon: HandoverIcon,
+      key: "list",
+      Icon: RentListIcon,
+      title: locale === "ar" ? "الإدراج" : "List",
+      body:
+        locale === "ar"
+          ? "أدرج الوحدات الشاغرة وانشرها عبر جميع قنوات الإعلان."
+          : "List vacant units and syndicate them to every listing channel.",
+      href: "#step-1",
     },
     {
-      key: "communicate",
-      label: locale === "ar" ? "التواصل" : "Communicate",
-      sub: locale === "ar" ? "العملاء" : "Customers",
-      Icon: MessageIcon,
+      key: "attract",
+      Icon: RentersIcon,
+      title: locale === "ar" ? "الاستقطاب" : "Attract",
+      body:
+        locale === "ar"
+          ? "تواصل مع المستأجرين واستقطب اهتمامهم تلقائياً فور وروده."
+          : "Reach renters and capture their interest automatically as it comes in.",
+      href: "#step-2",
     },
     {
-      key: "tickets",
-      label: locale === "ar" ? "التذاكر" : "Tickets",
-      sub: locale === "ar" ? "الطلبات" : "Requests",
-      Icon: TicketIcon,
+      key: "applications",
+      Icon: ApplicationIcon,
+      title: locale === "ar" ? "الطلبات" : "Applications",
+      body:
+        locale === "ar"
+          ? "راجع وافحص طلبات الإيجار من قائمة انتظار واحدة مشتركة."
+          : "Review and screen rental applications from one shared queue.",
+      href: "#step-3",
     },
     {
-      key: "facilities",
-      label: locale === "ar" ? "المرافق" : "Facilities",
-      sub: locale === "ar" ? "المناطق المشتركة" : "Common Areas",
-      Icon: FacilityIcon,
+      key: "quote",
+      Icon: QuotePriceIcon,
+      title: locale === "ar" ? "العرض" : "Quote",
+      body:
+        locale === "ar"
+          ? "أنشئ تسعيراً دقيقاً للإيجار وأرسله كعرض بعلامتك التجارية."
+          : "Generate accurate rental pricing and send it as a branded quote.",
+      href: "#step-4",
     },
     {
-      key: "payments",
-      label: locale === "ar" ? "المدفوعات" : "Payments",
-      sub: locale === "ar" ? "إلكترونياً" : "Online",
-      Icon: PaymentIcon,
+      key: "lease",
+      Icon: LeaseIcon,
+      title: locale === "ar" ? "العقد" : "Lease",
+      body:
+        locale === "ar"
+          ? "وقّع العقد إلكترونياً وانتقل مباشرة إلى الإدارة التشغيلية."
+          : "Sign the lease digitally and move straight into managed operations.",
+      href: "#step-5",
     },
   ];
 
   return (
-    <div className="mx-auto mt-4 max-w-5xl overflow-x-auto px-5 pb-16 lg:px-8">
-      <Reveal delay={80}>
-        <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-ink-muted dark:text-white/50">
-          {locale === "ar" ? "من التسليم الرقمي إلى التشغيل اليومي" : "From digital handover to everyday operations"}
-        </p>
+    <LifecycleCardRail
+      locale={locale}
+      caption={locale === "ar" ? "من أول إعلان إلى عقد مُدار بالكامل" : "From listing to a fully managed lease"}
+      items={items}
+    />
+  );
+}
 
-        <div className="mx-auto min-w-[880px]">
-          {/* Connecting rail — one dot per card, centered directly above it. */}
-          <div className="relative mb-6 h-px w-full bg-grey-200 dark:bg-white/15">
-            <div className="absolute inset-0 grid grid-cols-5">
-              {steps.map(({ key }) => (
-                <div key={key} className="flex items-center justify-center">
-                  <span className="h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-white dark:ring-secondary-darker" />
-                </div>
-              ))}
-            </div>
-          </div>
+/**
+ * Operations Suite "alt" hero strip — same shared card design; each card
+ * covers a genuinely distinct capability with its own Solutions page, so
+ * "View Details" routes there instead of scrolling within this page.
+ */
+function OperationsFlowStepper({ locale }: { locale: "en" | "ar" }) {
+  const items: LifecycleCardItem[] = [
+    {
+      key: "handover",
+      Icon: HandoverIcon,
+      title: locale === "ar" ? "التسليم" : "Handover",
+      body:
+        locale === "ar"
+          ? "أدر رحلة المبيعات كاملة، من الحجز إلى توقيع العقد إلى التسليم الرقمي."
+          : "Run the full sales journey, from booking to signed contract to digital handover.",
+      href: "/solutions/sales-handover",
+    },
+    {
+      key: "communicate",
+      Icon: MessageIcon,
+      title: locale === "ar" ? "التواصل" : "Communicate",
+      body:
+        locale === "ar"
+          ? "أبقِ السكان والمستأجرين على اطلاع وتفاعل، وتحكّم بمن يدخل ويخرج."
+          : "Keep residents and tenants informed and engaged, and control who comes and goes.",
+      href: "/solutions/community-engagement-access",
+    },
+    {
+      key: "tickets",
+      Icon: TicketIcon,
+      title: locale === "ar" ? "التذاكر" : "Tickets",
+      body:
+        locale === "ar"
+          ? "أدر كل طلب صيانة من البداية للنهاية، مع تتبّع مؤشرات الأداء."
+          : "Run every maintenance request end to end, with KPI tracking so nothing sits unresolved.",
+      href: "/solutions/maintenance-ticketing",
+    },
+    {
+      key: "facilities",
+      Icon: FacilityIcon,
+      title: locale === "ar" ? "المرافق" : "Facilities",
+      body:
+        locale === "ar"
+          ? "حافظ على صيانة الأصول المشتركة، مع تكليف الفرق ومتابعتها ومحاسبتها."
+          : "Keep shared assets and common areas maintained, with teams assigned and accountable.",
+      href: "/solutions/facilities-management",
+    },
+    {
+      key: "payments",
+      Icon: PaymentIcon,
+      title: locale === "ar" ? "المدفوعات" : "Payments",
+      body:
+        locale === "ar"
+          ? "تقارير مالية جاهزة للملّاك عبر كامل محفظتك: الإيرادات والتحصيل والإشغال."
+          : "Owner-ready financial reporting across your portfolio: revenue, collections, and occupancy.",
+      href: "/solutions/property-portfolio-financials",
+    },
+  ];
 
-          <div className="grid grid-cols-5 gap-4">
-            {steps.map(({ key, label, sub, Icon }) => (
-              <div
-                key={key}
-                className="flex flex-col items-center rounded-2xl border border-grey-100 bg-white p-5 text-center shadow-card dark:border-white/10 dark:bg-secondary-darker"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary dark:bg-primary/20">
-                  <Icon size={18} />
-                </span>
-                <p className="mt-3 text-sm font-semibold uppercase tracking-wide text-ink dark:text-white sm:text-base">
-                  {label}
-                </p>
-                <p className="mt-1 text-xs text-ink-muted dark:text-white/40">{sub}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Reveal>
-    </div>
+  return (
+    <LifecycleCardRail
+      locale={locale}
+      caption={locale === "ar" ? "من التسليم الرقمي إلى التشغيل اليومي" : "From digital handover to everyday operations"}
+      items={items}
+    />
   );
 }
 
@@ -1531,6 +1620,455 @@ function ListingWebsiteFAQ({ locale }: { locale: "en" | "ar" }) {
 }
 
 /**
+ * Data-driven FAQ accordion — same visual pattern as ListingWebsiteFAQ (that
+ * one page's questions are hardcoded since it's a one-off), generalized off
+ * `section.items` so any placeholder page can carry its own Q&A instead of
+ * duplicating the accordion markup per page.
+ */
+function FaqSection({
+  section,
+  locale,
+}: {
+  section: Extract<PageSection, { kind: "faq" }>;
+  locale: "en" | "ar";
+}) {
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <section className="bg-[#F6F7F8] py-14 dark:bg-white/5 lg:py-20">
+      <div className="mx-auto max-w-3xl px-5 lg:px-8">
+        {section.heading && (
+          <Reveal>
+            <h2 className="text-center text-2xl font-medium text-ink dark:text-white sm:text-3xl">
+              {pick(section.heading, locale)}
+            </h2>
+          </Reveal>
+        )}
+        {section.subtitle && (
+          <Reveal delay={60}>
+            <p className="mt-3 text-center leading-relaxed text-ink-soft dark:text-white/70">
+              {pick(section.subtitle, locale)}
+            </p>
+          </Reveal>
+        )}
+        <div className={`space-y-3 ${section.heading ? "mt-8" : ""}`}>
+          {section.items.map((item, i) => {
+            const isOpen = open === i;
+            const panelId = `faq-panel-${i}`;
+            const btnId = `faq-btn-${i}`;
+            return (
+              <div
+                key={i}
+                className="overflow-hidden rounded-2xl border border-grey-200 bg-white dark:border-white/10 dark:bg-secondary-darker"
+              >
+                <h3>
+                  <button
+                    id={btnId}
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start font-medium text-ink dark:text-white"
+                  >
+                    <span>{pick(item.q, locale)}</span>
+                    <span className="shrink-0 text-primary">{isOpen ? <Minus /> : <Plus />}</span>
+                  </button>
+                </h3>
+                {isOpen && (
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={btnId}
+                    className="px-5 pb-4 leading-relaxed text-ink-soft dark:text-white/70"
+                  >
+                    {pick(item.a, locale)}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Magnetic CTA — pulls gently toward the cursor, springs back on leave (same
+ * pattern as FeaturesPage.tsx's own MagneticCta). Residential's hero is the
+ * one bespoke page where a plain <Button> felt inert next to everything else
+ * being reworked, so this one CTA gets the same treatment used elsewhere on
+ * the site rather than inventing a new interaction.
+ */
+function MagneticCta({ href, children }: { href: string; children: React.ReactNode }) {
+  const ref = useRef<HTMLAnchorElement>(null);
+
+  useGSAP(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion()) return;
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      gsap.to(el, {
+        x: (e.clientX - rect.left - rect.width / 2) * 0.25,
+        y: (e.clientY - rect.top - rect.height / 2) * 0.35,
+        duration: 0.4,
+        ease: "power2.out",
+      });
+    };
+    const onLeave = () => gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.5)" });
+    el.addEventListener("mousemove", onMove);
+    el.addEventListener("mouseleave", onLeave);
+    return () => {
+      el.removeEventListener("mousemove", onMove);
+      el.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  return (
+    <a
+      ref={ref}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white shadow-card transition-colors hover:bg-secondary"
+    >
+      <span>{children}</span>
+      <ArrowRight />
+    </a>
+  );
+}
+
+/**
+ * Cursor-follow spotlight — a radial glow that tracks the pointer inside the
+ * card, visible only on hover. Plain CSS custom properties updated on
+ * pointer move, no animation library needed; harmless (just inert) on touch
+ * devices since nothing fires `mousemove` there.
+ */
+function SpotlightCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+        e.currentTarget.style.setProperty("--my", `${e.clientY - rect.top}px`);
+      }}
+      className={`group relative isolate overflow-hidden ${className}`}
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: "radial-gradient(500px circle at var(--mx, 50%) var(--my, 50%), rgba(0,142,165,0.10), transparent 45%)",
+        }}
+      />
+      {children}
+    </div>
+  );
+}
+
+type ResidentialFeatureItem = Extract<PageSection, { kind: "iconFeatures" }>["items"][number];
+
+function FeatureCard({ item, locale, big = false }: { item: ResidentialFeatureItem; locale: "en" | "ar"; big?: boolean }) {
+  const Icon = solutionIconMap[item.icon];
+  return (
+    <SpotlightCard
+      className={`h-full rounded-2xl border border-grey-100 bg-grey-100/40 dark:border-white/10 dark:bg-white/5 ${
+        big ? "p-8" : "p-6"
+      }`}
+    >
+      <span
+        className={`relative z-10 flex items-center justify-center rounded-full bg-primary/10 text-primary dark:bg-primary/20 ${
+          big ? "h-14 w-14" : "h-11 w-11"
+        }`}
+      >
+        <Icon size={big ? 26 : 20} />
+      </span>
+      <h3 className={`relative z-10 mt-4 font-medium text-ink dark:text-white ${big ? "text-xl" : ""}`}>
+        {pick(item.title, locale)}
+      </h3>
+      <p className="relative z-10 mt-1.5 text-sm leading-relaxed text-ink-soft dark:text-white/70">{pick(item.body, locale)}</p>
+    </SpotlightCard>
+  );
+}
+
+/**
+ * Residential's "Everything Residential Needs" grid — an asymmetric bento
+ * (one bigger highlight card beside a 2x2 of the rest) instead of a uniform
+ * 5-card row, the one deliberate "grid-breaking" moment on the page, plus
+ * cursor-spotlight hover on every card. Same 5 items as before.
+ */
+function ResidentialFeatureGrid({ section, locale }: { section: Extract<PageSection, { kind: "iconFeatures" }>; locale: "en" | "ar" }) {
+  const [first, ...rest] = section.items;
+  return (
+    <section className="bg-white py-16 dark:bg-secondary-darker lg:py-24">
+      <div className="mx-auto max-w-5xl px-5 lg:px-8">
+        {section.heading && (
+          <Reveal>
+            <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              {locale === "ar" ? "الميزات" : "Features"}
+            </p>
+            <h2 className="mx-auto mt-3 max-w-xl text-center text-3xl font-medium tracking-tight text-ink dark:text-white sm:text-4xl">
+              {pick(section.heading, locale)}
+            </h2>
+          </Reveal>
+        )}
+        {section.subtitle && (
+          <Reveal delay={60}>
+            <p className="mx-auto mt-4 max-w-xl text-center leading-relaxed text-ink-soft dark:text-white/70">
+              {pick(section.subtitle, locale)}
+            </p>
+          </Reveal>
+        )}
+        <div className={`grid gap-4 lg:grid-cols-5 ${section.heading ? "mt-12" : ""}`}>
+          {first && (
+            <Reveal className="lg:col-span-2">
+              <FeatureCard item={first} locale={locale} big />
+            </Reveal>
+          )}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-3">
+            {rest.map((item, i) => (
+              <Reveal key={i} delay={i * 70}>
+                <FeatureCard item={item} locale={locale} />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * "Built for Saudi Regulation" as a heavier, dark "material" band — Apple's
+ * materials guidance treats darker/heavier surfaces as the way to separate a
+ * structural region from the flow around it. This is the page's one
+ * deliberately different-colored section, reinforcing it as the actual
+ * differentiator (no competitor surfaces Ejar/ZATCA/SADAD/Nafath this
+ * plainly) rather than just another card grid in the same white band. Same
+ * 4 items as before.
+ */
+function ResidentialCompliance({ section, locale }: { section: Extract<PageSection, { kind: "iconFeatures" }>; locale: "en" | "ar" }) {
+  return (
+    <section className="relative overflow-hidden bg-secondary-darker py-16 lg:py-24">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" aria-hidden="true" />
+      <div className="mx-auto max-w-5xl px-5 lg:px-8">
+        {section.heading && (
+          <Reveal>
+            <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-primary-light">
+              {locale === "ar" ? "الامتثال" : "Compliance"}
+            </p>
+            <h2 className="mx-auto mt-3 max-w-xl text-center text-3xl font-medium tracking-tight text-white sm:text-4xl">
+              {pick(section.heading, locale)}
+            </h2>
+          </Reveal>
+        )}
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {section.items.map((item, i) => {
+            const Icon = solutionIconMap[item.icon];
+            return (
+              <Reveal key={i} delay={i * 70}>
+                <div className="h-full rounded-2xl border border-white/10 bg-white/5 p-6">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-white">
+                    <Icon size={20} />
+                  </span>
+                  <h3 className="mt-4 font-medium text-white">{pick(item.title, locale)}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-white/70">{pick(item.body, locale)}</p>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Big kinetic count-up numbers instead of plain stat cards — counts from 0
+ * to the real value once, the first time it scrolls into view. Falls back
+ * to the plain final value (no animation) under prefers-reduced-motion.
+ */
+function StatCounter({ value }: { value: string }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const match = value.match(/^([\d,]+)(.*)$/);
+  const target = match ? parseInt(match[1].replace(/,/g, ""), 10) : null;
+  const suffix = match ? match[2] : "";
+
+  useGSAP(() => {
+    const el = ref.current;
+    if (!el || target === null) return;
+    if (prefersReducedMotion()) {
+      el.textContent = value;
+      return;
+    }
+    const counter = { n: 0 };
+    const tween = gsap.to(counter, {
+      n: target,
+      duration: 1.6,
+      ease: "power2.out",
+      snap: { n: 1 },
+      scrollTrigger: { trigger: el, start: "top 85%", once: true },
+      onUpdate: () => {
+        el.textContent = counter.n.toLocaleString() + suffix;
+      },
+    });
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
+  }, [value]);
+
+  return (
+    <p ref={ref} className="text-5xl font-semibold tracking-tight text-primary sm:text-6xl">
+      {target === null ? value : `0${suffix}`}
+    </p>
+  );
+}
+
+function ResidentialStats({ section, locale }: { section: Extract<PageSection, { kind: "stats" }>; locale: "en" | "ar" }) {
+  return (
+    <section className="bg-white py-16 dark:bg-secondary-darker lg:py-20">
+      <div className="mx-auto max-w-4xl px-5 text-center lg:px-8">
+        {section.heading && (
+          <Reveal>
+            <h2 className="text-2xl font-medium text-ink dark:text-white sm:text-3xl">{pick(section.heading, locale)}</h2>
+          </Reveal>
+        )}
+        <div className="mt-10 grid gap-8 sm:grid-cols-2">
+          {section.items.map((stat, i) => (
+            <Reveal key={i} delay={i * 100}>
+              <StatCounter value={stat.value} />
+              <p className="mt-2 text-ink-soft dark:text-white/70">{pick(stat.label, locale)}</p>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Same "Why Atar" cards as WhyAtarSection, with spotlight hover + a hover
+ *  lift, so this closing section has a bit more life than the generic
+ *  version used on Solutions pages. */
+function ResidentialWhyAtar({ section, locale }: { section: Extract<PageSection, { kind: "whyAtar" }>; locale: "en" | "ar" }) {
+  return (
+    <section className="bg-primary/5 py-16 dark:bg-white/[0.03] lg:py-24">
+      <div className="mx-auto max-w-5xl px-5 lg:px-8">
+        <Reveal>
+          <h2 className="mx-auto max-w-xl text-center text-3xl font-medium tracking-tight text-ink dark:text-white sm:text-4xl">
+            {pick(section.heading, locale)}
+          </h2>
+        </Reveal>
+        {section.subtitle && (
+          <Reveal delay={60}>
+            <p className="mx-auto mt-3 max-w-xl text-center leading-relaxed text-ink-soft dark:text-white/70">
+              {pick(section.subtitle, locale)}
+            </p>
+          </Reveal>
+        )}
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {section.cards.map((card, i) => {
+            const Icon = solutionIconMap[card.icon];
+            return (
+              <Reveal key={i} delay={i * 70}>
+                <SpotlightCard className="h-full rounded-2xl bg-white p-6 shadow-[0_2px_20px_-6px_rgba(8,15,26,0.12)] transition-transform duration-300 hover:-translate-y-1 dark:bg-secondary-darker dark:shadow-none dark:ring-1 dark:ring-white/10">
+                  <span className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
+                    <Icon size={18} />
+                  </span>
+                  <h3 className="relative z-10 mt-4 font-medium text-ink dark:text-white">{pick(card.title, locale)}</h3>
+                  <p className="relative z-10 mt-1.5 text-sm leading-relaxed text-ink-soft dark:text-white/70">
+                    {pick(card.body, locale)}
+                  </p>
+                </SpotlightCard>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Same FAQ content as FaqSection, but the open/close is a real height tween
+ * (GSAP, from the panel's live scrollHeight) instead of an instant
+ * conditional render — a small continuous-feedback touch per the apple-design
+ * skill rather than a hard cut between states. Falls back to an instant
+ * toggle under prefers-reduced-motion.
+ */
+function ResidentialFaq({ section, locale }: { section: Extract<PageSection, { kind: "faq" }>; locale: "en" | "ar" }) {
+  const [open, setOpen] = useState<number | null>(0);
+  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useGSAP(() => {
+    panelRefs.current.forEach((panel, i) => {
+      if (!panel) return;
+      const isOpen = open === i;
+      if (prefersReducedMotion()) {
+        panel.style.height = isOpen ? "auto" : "0px";
+        panel.style.opacity = isOpen ? "1" : "0";
+        return;
+      }
+      gsap.to(panel, {
+        height: isOpen ? panel.scrollHeight : 0,
+        opacity: isOpen ? 1 : 0,
+        duration: 0.35,
+        ease: "power2.out",
+      });
+    });
+  }, [open]);
+
+  return (
+    <section className="bg-[#F6F7F8] py-16 dark:bg-white/5 lg:py-24">
+      <div className="mx-auto max-w-3xl px-5 lg:px-8">
+        {section.heading && (
+          <Reveal>
+            <h2 className="text-center text-2xl font-medium text-ink dark:text-white sm:text-3xl">
+              {pick(section.heading, locale)}
+            </h2>
+          </Reveal>
+        )}
+        <div className="mt-8 space-y-3">
+          {section.items.map((item, i) => {
+            const isOpen = open === i;
+            const panelId = `residential-faq-panel-${i}`;
+            const btnId = `residential-faq-btn-${i}`;
+            return (
+              <div key={i} className="overflow-hidden rounded-2xl border border-grey-200 bg-white dark:border-white/10 dark:bg-secondary-darker">
+                <h3>
+                  <button
+                    id={btnId}
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start font-medium text-ink dark:text-white"
+                  >
+                    <span>{pick(item.q, locale)}</span>
+                    <span className="shrink-0 text-primary">{isOpen ? <Minus /> : <Plus />}</span>
+                  </button>
+                </h3>
+                <div
+                  id={panelId}
+                  ref={(el) => {
+                    panelRefs.current[i] = el;
+                  }}
+                  role="region"
+                  aria-labelledby={btnId}
+                  style={{ height: i === open ? "auto" : 0, opacity: i === open ? 1 : 0 }}
+                  className="overflow-hidden px-5"
+                >
+                  <p className="pb-4 leading-relaxed text-ink-soft dark:text-white/70">{pick(item.a, locale)}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
  * A more detailed "How it works" — each step is its own full-width card with
  * its own product-screen mockup (not one shared visual for the whole flow),
  * alternating sides like the site's other "remaining feature" rows. A slim
@@ -1602,7 +2140,7 @@ function StepsDetailedSection({
               const Visual = detailedVisualComponents[step.visual];
               const flip = i % 2 === 1;
               return (
-                <li key={i}>
+                <li key={i} id={`step-${i + 1}`} className="scroll-mt-28">
                   <Reveal delay={i * 60}>
                     <article className="overflow-hidden rounded-3xl border border-grey-100 bg-grey-100/40 dark:border-white/10 dark:bg-white/5 lg:grid lg:grid-cols-5 lg:items-center">
                       <div className={`p-8 lg:col-span-2 lg:p-10 ${flip ? "lg:order-2" : ""}`}>
@@ -1811,51 +2349,55 @@ function SolutionHeroPlaceholder({
   locale,
   image,
   imageAlt,
+  compact = false,
 }: {
   locale: "en" | "ar";
   image?: string;
   imageAlt?: LStr;
+  /** Residential's side-by-side hero drops this straight into a grid column,
+   *  so it needs the bare card with no outer centering/max-width wrapper —
+   *  every other Solutions page still gets that wrapper for the
+   *  full-width-below-the-text layout. */
+  compact?: boolean;
 }) {
-  if (image) {
-    return (
-      <div className="mx-auto mt-4 max-w-5xl px-5 pb-10 lg:mt-6 lg:px-8 lg:pb-14">
-        <Reveal delay={150} className="overflow-hidden rounded-2xl bg-white shadow-[0_0_50px_-12px_rgba(8,15,26,0.25)]">
-          <img src={image} alt={imageAlt ? pick(imageAlt, locale) : ""} className="block w-full" />
-        </Reveal>
+  const card = image ? (
+    <Reveal delay={150} className="overflow-hidden rounded-2xl bg-white shadow-[0_0_50px_-12px_rgba(8,15,26,0.25)]">
+      <img src={image} alt={imageAlt ? pick(imageAlt, locale) : ""} className="block w-full" />
+    </Reveal>
+  ) : (
+    <Reveal
+      delay={150}
+      className="overflow-hidden rounded-2xl bg-white shadow-[0_0_50px_-12px_rgba(8,15,26,0.25)] dark:bg-white/5"
+    >
+      <div className="flex items-center gap-1.5 border-b border-grey-100 px-4 py-3 dark:border-white/10">
+        <span className="h-2.5 w-2.5 rounded-full bg-grey-200 dark:bg-white/15" />
+        <span className="h-2.5 w-2.5 rounded-full bg-grey-200 dark:bg-white/15" />
+        <span className="h-2.5 w-2.5 rounded-full bg-grey-200 dark:bg-white/15" />
       </div>
-    );
-  }
-
-  return (
-    <div className="mx-auto mt-4 max-w-5xl px-5 pb-10 lg:mt-6 lg:px-8 lg:pb-14">
-      <Reveal
-        delay={150}
-        className="overflow-hidden rounded-2xl bg-white shadow-[0_0_50px_-12px_rgba(8,15,26,0.25)] dark:bg-white/5"
-      >
-        <div className="flex items-center gap-1.5 border-b border-grey-100 px-4 py-3 dark:border-white/10">
-          <span className="h-2.5 w-2.5 rounded-full bg-grey-200 dark:bg-white/15" />
-          <span className="h-2.5 w-2.5 rounded-full bg-grey-200 dark:bg-white/15" />
-          <span className="h-2.5 w-2.5 rounded-full bg-grey-200 dark:bg-white/15" />
-        </div>
-        <div className="grid gap-4 bg-[#F6F7F8] p-6 dark:bg-white/[0.03] sm:grid-cols-3 sm:p-10">
-          <div className="space-y-3 sm:col-span-1">
-            <div className="h-3 w-2/3 rounded-full bg-grey-200 dark:bg-white/10" />
-            <div className="h-20 rounded-xl bg-white shadow-sm dark:bg-white/5" />
-            <div className="h-20 rounded-xl bg-white shadow-sm dark:bg-white/5" />
-          </div>
-          <div className="space-y-3 sm:col-span-2">
-            <div className="h-3 w-1/3 rounded-full bg-grey-200 dark:bg-white/10" />
-            <div className="h-48 rounded-xl bg-white shadow-sm dark:bg-white/5 sm:h-56" />
+      <div className="grid gap-4 bg-[#F6F7F8] p-6 dark:bg-white/[0.03] sm:grid-cols-3 sm:p-10">
+        <div className="space-y-3 sm:col-span-1">
+          <div className="h-3 w-2/3 rounded-full bg-grey-200 dark:bg-white/10" />
+          <div className="flex gap-3">
+            <div className="h-20 flex-1 rounded-xl bg-white shadow-sm dark:bg-white/5" />
+            <div className="h-20 flex-1 rounded-xl bg-white shadow-sm dark:bg-white/5" />
           </div>
         </div>
-        <div className="border-t border-grey-100 px-4 py-2.5 text-center text-xs font-medium tracking-wide text-ink-soft/70 dark:border-white/10 dark:text-white/40">
-          {locale === "ar"
-            ? "معاينة: سيتم استبدالها بصورة المنتج الفعلية"
-            : "Preview: will be replaced with the real product image"}
+        <div className="space-y-3 sm:col-span-2">
+          <div className="h-3 w-1/3 rounded-full bg-grey-200 dark:bg-white/10" />
+          <div className="h-48 rounded-xl bg-white shadow-sm dark:bg-white/5 sm:h-56" />
         </div>
-      </Reveal>
-    </div>
+      </div>
+      <div className="border-t border-grey-100 px-4 py-2.5 text-center text-xs font-medium tracking-wide text-ink-soft/70 dark:border-white/10 dark:text-white/40">
+        {locale === "ar"
+          ? "معاينة: سيتم استبدالها بصورة المنتج الفعلية"
+          : "Preview: will be replaced with the real product image"}
+      </div>
+    </Reveal>
   );
+
+  if (compact) return card;
+
+  return <div className="mx-auto mt-4 max-w-5xl px-5 pb-10 lg:mt-6 lg:px-8 lg:pb-14">{card}</div>;
 }
 
 /**
@@ -1878,6 +2420,13 @@ function IconFeaturesSection({
             <h2 className="mx-auto max-w-2xl text-center text-2xl font-medium text-ink dark:text-white sm:text-3xl">
               {pick(section.heading, locale)}
             </h2>
+          </Reveal>
+        )}
+        {section.subtitle && (
+          <Reveal delay={60}>
+            <p className="mx-auto mt-3 max-w-2xl text-center leading-relaxed text-ink-soft dark:text-white/70">
+              {pick(section.subtitle, locale)}
+            </p>
           </Reveal>
         )}
         <div className={`grid gap-4 sm:grid-cols-2 lg:grid-cols-3 ${section.heading ? "mt-10" : ""}`}>

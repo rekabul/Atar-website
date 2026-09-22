@@ -102,6 +102,7 @@ export type SolutionIcon =
   | "grid";
 export type IconFeatureItem = { icon: SolutionIcon; title: LStr; body: LStr };
 export type WhyAtarCard = { icon: SolutionIcon; title: LStr; body: LStr };
+export type FaqItem = { q: LStr; a: LStr };
 
 export type PageSection =
   | { kind: "steps"; heading?: LStr; items: Step[] }
@@ -111,7 +112,7 @@ export type PageSection =
   | { kind: "bullets"; heading?: LStr; items: LStr[] }
   | { kind: "chips"; heading?: LStr; items: LStr[] }
   | { kind: "compare"; heading?: LStr; subtitle?: LStr; otherLabel: LStr; rows: CompareRow[] }
-  | { kind: "iconFeatures"; heading?: LStr; items: IconFeatureItem[] }
+  | { kind: "iconFeatures"; heading?: LStr; subtitle?: LStr; items: IconFeatureItem[] }
   | { kind: "whyAtar"; heading: LStr; subtitle?: LStr; cards: WhyAtarCard[] }
   | { kind: "caseStudies"; items: CaseStudyItem[] }
   | { kind: "logos" }
@@ -119,6 +120,7 @@ export type PageSection =
   | { kind: "timeline"; items: TimelineItem[] }
   | { kind: "news"; heading?: LStr; items: NewsItem[] }
   | { kind: "quote"; items: QuoteItem[] }
+  | { kind: "faq"; heading?: LStr; subtitle?: LStr; items: FaqItem[] }
   | { kind: "legal"; updated: string; note: LStr; sections: LegalSection[] };
 
 export type PlaceholderCopy = {
@@ -1246,21 +1248,202 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
   },
 
   // ---- Markets by asset class --------------------------------------------
+  // Rebuilt as the pilot for the Markets section (see the research doc
+  // shared with the team): was the same bare eyebrow/title/body + 4 plain
+  // bullets as every other Markets page, with no hero visual, icons, stats
+  // or CTA. Now uses the same iconFeatures/whyAtar components the Solutions
+  // pages already use (see pages/PlaceholderPage.tsx), plus a dedicated
+  // Saudi-regulation block — the one thing no competitor (Yardi, RAY, Sakani
+  // Pro, Yarn Cloud) surfaces prominently on an asset-class page.
   "/markets/residential": {
     eyebrow: MARKETS,
     title: L("Residential", "سكني"),
     body: L(
-      "Every residential asset class you hold, from single-family homes to multifamily residential portfolios, on one platform.",
-      "كل فئة من الأصول السكنية التي تديرها، من المنازل الفردية إلى المحافظ السكنية متعددة الوحدات، على منصة واحدة."
+      "From a single villa to a 300-unit tower: run leasing, renewals, collections and tenant communication for every residential asset class on one connected platform, built for how residential works in Saudi Arabia.",
+      "من فيلا واحدة إلى برج من 300 وحدة: أدر التأجير والتجديدات والتحصيل والتواصل مع المستأجرين لكل فئة من الأصول السكنية على منصة واحدة متصلة، مصممة لطريقة عمل القطاع السكني في السعودية."
     ),
     sections: [
+      // Same client-logo marquee already used on Home and About (Clients
+      // component) — Yardi's reference page puts a trust bar right under the
+      // hero, before any feature content, which this page didn't have at all.
+      { kind: "logos" },
       {
-        kind: "bullets",
+        kind: "iconFeatures",
+        heading: L("Everything Residential Needs", "كل ما يحتاجه القطاع السكني"),
+        subtitle: L(
+          "From listing to renewal, the day-to-day of managing single-family homes and multifamily portfolios in one place.",
+          "من الإعلان إلى التجديد، تفاصيل إدارة المنازل الفردية والمحافظ متعددة الوحدات يومياً في مكان واحد."
+        ),
         items: [
-          L("Residential single family", "سكني للأسرة الواحدة"),
-          L("Residential multifamily", "سكني متعدد الوحدات"),
-          L("Lease management from listing to renewal", "إدارة التأجير من الإعلان إلى التجديد"),
-          L("Tenant and owner communication built in", "تواصل مدمج مع المستأجرين والملّاك"),
+          {
+            icon: "users",
+            title: L("Single-family and multifamily, one system", "سكني للأسرة الواحدة ومتعدد الوحدات في نظام واحد"),
+            body: L(
+              "Manage one villa or a multi-tower portfolio without switching between different tools for each.",
+              "أدر فيلا واحدة أو محفظة من عدة أبراج دون التنقل بين أدوات مختلفة لكل نوع."
+            ),
+          },
+          {
+            icon: "file",
+            title: L("Full lease lifecycle", "دورة حياة كاملة للعقد"),
+            body: L(
+              "From listing to signed renewal, every lease stage happens digitally, in the same place.",
+              "من الإعلان إلى توقيع التجديد، تتم كل مرحلة من مراحل عقد الإيجار إلكترونياً في مكان واحد."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Tenant and owner communication built in", "تواصل مدمج مع المستأجرين والملّاك"),
+            body: L(
+              "Announcements, requests and updates reach tenants and owners without juggling WhatsApp, email and spreadsheets.",
+              "تصل الإعلانات والطلبات والتحديثات إلى المستأجرين والملّاك دون التنقل بين واتساب والبريد وجداول البيانات."
+            ),
+          },
+          {
+            icon: "refresh",
+            title: L("Automated renewals", "تجديدات آلية"),
+            body: L(
+              "Reminders and renewal workflows start automatically, so a lease never lapses by accident.",
+              "تبدأ التذكيرات وسير عمل التجديد تلقائياً، فلا ينتهي عقد الإيجار عن طريق الخطأ."
+            ),
+          },
+          {
+            icon: "riyal",
+            title: L("Online rent collection", "تحصيل إيجار إلكتروني"),
+            body: L(
+              "Collect rent online and reconcile it automatically against every unit and lease.",
+              "حصّل الإيجار إلكترونياً وسوِّه تلقائياً مقابل كل وحدة وعقد."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "iconFeatures",
+        heading: L("Built for Saudi Regulation", "مصممة للأنظمة السعودية"),
+        items: [
+          {
+            icon: "file",
+            title: L("Ejar-ready contracts", "عقود جاهزة لإيجار"),
+            body: L(
+              "Leases are structured for Ejar registration from day one, not retrofitted after the fact.",
+              "تُبنى العقود بما يتوافق مع تسجيل إيجار منذ اليوم الأول، لا بتعديلها لاحقاً."
+            ),
+          },
+          {
+            icon: "riyal",
+            title: L("SADAD collections & ZATCA e-invoicing", "تحصيل عبر سداد وفوترة إلكترونية متوافقة مع هيئة الزكاة والضريبة"),
+            body: L(
+              "Rent collection and invoicing meet Saudi payment and e-invoicing requirements out of the box.",
+              "يتوافق تحصيل الإيجار والفوترة مع متطلبات الدفع والفوترة الإلكترونية السعودية دون إعدادات إضافية."
+            ),
+          },
+          {
+            icon: "idCard",
+            title: L("Nafath verification", "التحقق عبر نفاذ"),
+            body: L(
+              "Verify tenant identity digitally through Nafath wherever it's required.",
+              "تحقّق من هوية المستأجر إلكترونياً عبر نفاذ حيثما يتطلب الأمر ذلك."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Your data stays in the Kingdom", "بياناتك تبقى داخل المملكة"),
+            body: L(
+              "Residential data is hosted in line with Saudi data-residency expectations, not routed abroad.",
+              "تُستضاف بيانات القطاع السكني بما يتوافق مع متطلبات إقامة البيانات في السعودية، دون توجيهها للخارج."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "stats",
+        heading: L("Backed by Real Numbers", "مدعومة بأرقام حقيقية"),
+        items: [
+          { value: "400M+", label: L("SAR rental value managed", "ريال قيمة إيجار مُدارة") },
+          { value: "400+", label: L("Units sold on the platform", "وحدة مباعة عبر المنصة") },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Residential", "لماذا أتار للقطاع السكني"),
+        subtitle: L(
+          "The advantages that only show up once residential shares one platform with sales and operations.",
+          "المزايا التي تظهر فقط عندما يشارك القطاع السكني منصة واحدة مع المبيعات والعمليات."
+        ),
+        cards: [
+          {
+            icon: "layers",
+            title: L("One system, not five", "نظام واحد لا خمسة"),
+            body: L(
+              "Single-family, multifamily and every unit type run on the same platform, not a separate tool per building type.",
+              "يعمل السكني للأسرة الواحدة والمتعدد وكل نوع وحدة على المنصة نفسها، لا أداة منفصلة لكل نوع مبنى."
+            ),
+          },
+          {
+            icon: "chart",
+            title: L("Real-time reporting", "تقارير فورية"),
+            body: L(
+              "Occupancy, collections and renewals are visible live, not compiled into a monthly spreadsheet.",
+              "تظهر الإشغال والتحصيل والتجديدات فورياً، لا بعد تجميعها في جدول بيانات شهري."
+            ),
+          },
+          {
+            icon: "refresh",
+            title: L("Faster renewals", "تجديدات أسرع"),
+            body: L(
+              "Automated reminders and digital signing cut renewal turnaround from weeks to days.",
+              "تقلّص التذكيرات الآلية والتوقيع الإلكتروني مدة التجديد من أسابيع إلى أيام."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Support in Arabic and English", "دعم بالعربية والإنجليزية"),
+            body: L(
+              "Your team gets local support in both languages, not a ticket queue in another time zone.",
+              "يحصل فريقك على دعم محلي باللغتين، لا طابور تذاكر في منطقة زمنية أخرى."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "faq",
+        heading: L("Got Questions? We've Got Answers", "أسئلة شائعة"),
+        items: [
+          {
+            q: L("Does Atar work for a single villa, or only large portfolios?", "هل يعمل أتار مع فيلا واحدة أم للمحافظ الكبيرة فقط؟"),
+            a: L(
+              "Both. The same platform runs a single villa or a multi-tower portfolio, so you don't outgrow it as you add units.",
+              "كلاهما. تعمل نفس المنصة مع فيلا واحدة أو محفظة من عدة أبراج، فلا تحتاج لتغيير النظام مع زيادة الوحدات."
+            ),
+          },
+          {
+            q: L("Are leases Ejar-compliant?", "هل العقود متوافقة مع إيجار؟"),
+            a: L(
+              "Yes, leases are structured for Ejar registration from the start, not adapted after the fact.",
+              "نعم، تُبنى العقود بما يتوافق مع تسجيل إيجار منذ البداية، لا بتعديلها لاحقاً."
+            ),
+          },
+          {
+            q: L("How is rent collected?", "كيف يتم تحصيل الإيجار؟"),
+            a: L(
+              "Online via SADAD, reconciled automatically against every unit and lease, with ZATCA-compliant invoicing.",
+              "إلكترونياً عبر سداد، مع تسوية تلقائية مقابل كل وحدة وعقد، وفوترة متوافقة مع هيئة الزكاة والضريبة."
+            ),
+          },
+          {
+            q: L("Where is our data hosted?", "أين تُستضاف بياناتنا؟"),
+            a: L(
+              "In line with Saudi data-residency expectations: residential data isn't routed abroad.",
+              "بما يتوافق مع متطلبات إقامة البيانات في السعودية: لا تُوجَّه بيانات القطاع السكني للخارج."
+            ),
+          },
+          {
+            q: L("How long does onboarding take?", "كم تستغرق عملية الإعداد؟"),
+            a: L(
+              "Most residential portfolios are up and running within days, not months, since units and leases import directly.",
+              "تصبح معظم المحافظ السكنية جاهزة للعمل خلال أيام لا أشهر، حيث تُستورد الوحدات والعقود مباشرة."
+            ),
+          },
         ],
       },
     ],

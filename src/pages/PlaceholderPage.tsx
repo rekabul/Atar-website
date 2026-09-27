@@ -23,6 +23,7 @@ import {
   realEstateCrmMockup,
   propertyPortfolioFinancialsMockup,
   communityEngagementMockup,
+  marketsSkyline,
 } from "../assets";
 import Reveal from "../components/ui/Reveal";
 import LifecycleCardRail, { type LifecycleCardItem } from "../components/ui/LifecycleCardRail";
@@ -182,28 +183,37 @@ export default function PlaceholderPage() {
   // a pilot (richer iconFeatures/whyAtar sections in data/placeholderPages.ts,
   // same components the Solutions pages already use) before the same
   // treatment rolls out to the other four Markets pages.
-  const isResidentialMarket = pathname === "/markets/residential";
-  // Residential's content lives in the same copy.sections array as every
-  // other placeholder page (unchanged), but this page renders each section
-  // with its own bespoke, more crafted component instead of the generic
-  // SectionBlock — same data, different presentation, scoped to this route.
-  const residentialIconFeatureSections = isResidentialMarket
+  // Every Markets page now gets the same rebuilt treatment as Residential
+  // (see below) — same bespoke components, driven by the same section kinds,
+  // just different content in data/placeholderPages.ts.
+  const isBespokeMarket = [
+    "/markets/residential",
+    "/markets/retail",
+    "/markets/office",
+    "/markets/compounds-communities",
+    "/markets/mixed-use-developments",
+  ].includes(pathname);
+  // This content lives in the same copy.sections array as every other
+  // placeholder page (unchanged), but these pages render each section with
+  // their own bespoke, more crafted component instead of the generic
+  // SectionBlock — same data, different presentation, scoped to these routes.
+  const residentialIconFeatureSections = isBespokeMarket
     ? ((copy.sections ?? []).filter((s) => s.kind === "iconFeatures") as Extract<
         PageSection,
         { kind: "iconFeatures" }
       >[])
     : [];
-  const residentialStatsSection = isResidentialMarket
+  const residentialStatsSection = isBespokeMarket
     ? ((copy.sections ?? []).find((s) => s.kind === "stats") as
         | Extract<PageSection, { kind: "stats" }>
         | undefined)
     : undefined;
-  const residentialWhyAtarSection = isResidentialMarket
+  const residentialWhyAtarSection = isBespokeMarket
     ? ((copy.sections ?? []).find((s) => s.kind === "whyAtar") as
         | Extract<PageSection, { kind: "whyAtar" }>
         | undefined)
     : undefined;
-  const residentialFaqSection = isResidentialMarket
+  const residentialFaqSection = isBespokeMarket
     ? ((copy.sections ?? []).find((s) => s.kind === "faq") as Extract<PageSection, { kind: "faq" }> | undefined)
     : undefined;
   // Real client screenshots, one per Solutions page as they're provided —
@@ -262,11 +272,33 @@ export default function PlaceholderPage() {
         ar: "لقطة شاشة لتفاصيل الإعلان الفعلية",
       },
     },
+    // Shared real photo (Riyadh's KAFD skyline) across all five Markets
+    // pages' hero visual, in place of the generic dummy placeholder.
+    "/markets/residential": {
+      src: marketsSkyline,
+      alt: { en: "Skyline of Riyadh's King Abdullah Financial District", ar: "أفق مركز الملك عبدالله المالي في الرياض" },
+    },
+    "/markets/retail": {
+      src: marketsSkyline,
+      alt: { en: "Skyline of Riyadh's King Abdullah Financial District", ar: "أفق مركز الملك عبدالله المالي في الرياض" },
+    },
+    "/markets/office": {
+      src: marketsSkyline,
+      alt: { en: "Skyline of Riyadh's King Abdullah Financial District", ar: "أفق مركز الملك عبدالله المالي في الرياض" },
+    },
+    "/markets/compounds-communities": {
+      src: marketsSkyline,
+      alt: { en: "Skyline of Riyadh's King Abdullah Financial District", ar: "أفق مركز الملك عبدالله المالي في الرياض" },
+    },
+    "/markets/mixed-use-developments": {
+      src: marketsSkyline,
+      alt: { en: "Skyline of Riyadh's King Abdullah Financial District", ar: "أفق مركز الملك عبدالله المالي في الرياض" },
+    },
   };
   const solutionHeroImage = solutionHeroImages[pathname]?.src;
   const solutionHeroImageAlt = solutionHeroImages[pathname]?.alt;
   const hasCloudyHero =
-    isListingWebsite || ((isSolutionsPage || isResidentialMarket) && !isBrandedMobileApp);
+    isListingWebsite || ((isSolutionsPage || isBespokeMarket) && !isBrandedMobileApp);
   // Two selectable visual treatments for the Branded Mobile App page. Layout 2
   // ("b") is the one in use for now — Layout 1 ("a") and the switcher UI below
   // are kept in code but hidden, so this can be revisited later without
@@ -322,9 +354,22 @@ export default function PlaceholderPage() {
       */}
 
       <section
-        className={`hero-bg ${hasCloudyHero ? "relative overflow-hidden" : ""}`}
+        className={`hero-bg ${hasCloudyHero || isSalesSuite ? "relative overflow-hidden" : ""}`}
         aria-labelledby="placeholder-title"
       >
+        {/* Same quiet grid-texture signature as Features/Residential, scoped
+            to Sales Suite for now rather than every generic-hero page. */}
+        {isSalesSuite && (
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 opacity-[0.4] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,black,transparent)] dark:opacity-[0.15]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(0,66,86,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,66,86,0.06) 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
+            }}
+            aria-hidden="true"
+          />
+        )}
         {/* Soft blurred glow behind the headline, echoing the reference
             layout's cloudy hero background — fades to plain white well
             before the screenshot below so the image itself sits on a clean
@@ -347,7 +392,7 @@ export default function PlaceholderPage() {
             uses — matching the reference (yardi.com/market/multifamily)
             rather than stacking two centered blocks vertically. Scoped to
             this one page for now, same as the rest of the Markets pilot. */}
-        {isResidentialMarket ? (
+        {isBespokeMarket ? (
           <div className="relative">
             {/* Faint Linear-style grid texture behind the hero only — a
                 quiet signature detail rather than decoration, gone under
@@ -409,7 +454,9 @@ export default function PlaceholderPage() {
                   </span>
                   <h1
                     id="placeholder-title"
-                    className="mt-4 text-4xl font-medium tracking-tight text-ink dark:text-white sm:text-5xl"
+                    className={`mt-4 font-medium tracking-tight text-ink dark:text-white ${
+                      isSalesSuite ? "text-[2.75rem] leading-[1.05] sm:text-6xl" : "text-4xl sm:text-5xl"
+                    }`}
                   >
                     {pick(copy.title, locale)}
                   </h1>
@@ -447,7 +494,7 @@ export default function PlaceholderPage() {
 
       {isListingWebsite && <ListingWebsiteFeatureGrid locale={locale} />}
 
-      {isResidentialMarket ? (
+      {isBespokeMarket ? (
         <>
           <Clients maxWidthClassName="max-w-5xl" />
           {residentialIconFeatureSections[0] && (
@@ -461,7 +508,13 @@ export default function PlaceholderPage() {
           {residentialFaqSection && <ResidentialFaq section={residentialFaqSection} locale={locale} />}
         </>
       ) : (
-        copy.sections?.map((section, i) => <SectionBlock key={i} section={section} locale={locale} />)
+        copy.sections?.map((section, i) =>
+          isSalesSuite && section.kind === "stats" ? (
+            <ResidentialStats key={i} section={section} locale={locale} />
+          ) : (
+            <SectionBlock key={i} section={section} locale={locale} />
+          )
+        )
       )}
 
       {isListingWebsite && <ListingWebsiteFAQ locale={locale} />}
@@ -2362,7 +2415,15 @@ function SolutionHeroPlaceholder({
 }) {
   const card = image ? (
     <Reveal delay={150} className="overflow-hidden rounded-2xl bg-white shadow-[0_0_50px_-12px_rgba(8,15,26,0.25)]">
-      <img src={image} alt={imageAlt ? pick(imageAlt, locale) : ""} className="block w-full" />
+      <img
+        src={image}
+        alt={imageAlt ? pick(imageAlt, locale) : ""}
+        // Markets pages share one tall portrait photo (KAFD skyline) rather
+        // than a per-page product screenshot, so `compact` (Markets-only)
+        // caps its height with a crop — the other Solutions pages' real
+        // screenshots keep their natural aspect ratio, uncropped.
+        className={compact ? "block h-64 w-full object-cover sm:h-80 lg:h-96" : "block w-full"}
+      />
     </Reveal>
   ) : (
     <Reveal

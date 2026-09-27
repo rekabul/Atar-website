@@ -1453,17 +1453,190 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     eyebrow: MARKETS,
     title: L("Retail", "تجزئة"),
     body: L(
-      "Manage retail centers and storefronts, from complex commercial lease terms to multi-tenant portfolio reporting.",
-      "أدر مراكز ومحلات التجزئة، من شروط الإيجار التجاري المعقدة إلى تقارير المحفظة متعددة المستأجرين."
+      "Run retail centers and standalone storefronts from one platform — tenant mix, percentage rent, and common-area costs, without spreadsheets stitching it together.",
+      "أدر مراكز التجزئة والمحلات المستقلة من منصة واحدة، مزيج المستأجرين والإيجار كنسبة من المبيعات وتكاليف المناطق المشتركة، دون الحاجة لجداول بيانات متفرقة لربطها."
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
+        heading: L("Everything Retail Needs", "كل ما يحتاجه قطاع التجزئة"),
+        subtitle: L(
+          "From anchor tenants to pop-up kiosks, one system for every unit in the center.",
+          "من المستأجرين الرئيسيين إلى الأكشاك المؤقتة، نظام واحد لكل وحدة في المركز."
+        ),
         items: [
-          L("Complex commercial lease terms", "شروط إيجار تجاري معقدة"),
-          L("Multi-tenant portfolio reporting", "تقارير محفظة متعددة المستأجرين"),
-          L("Facility and common-area management", "إدارة المرافق والمناطق المشتركة"),
-          L("Online payments and collections", "مدفوعات وتحصيل إلكتروني"),
+          {
+            icon: "users",
+            title: L("Anchor to kiosk, one system", "من المستأجر الرئيسي إلى الكشك، نظام واحد"),
+            body: L(
+              "Manage anchor tenants, inline stores, F&B, and pop-up kiosks side by side.",
+              "أدر المستأجرين الرئيسيين والمحلات الداخلية والمطاعم والأكشاك المؤقتة جنباً إلى جنب."
+            ),
+          },
+          {
+            icon: "file",
+            title: L("Percentage & turnover rent", "الإيجار كنسبة من المبيعات"),
+            body: L(
+              "Bill base rent plus a percentage of reported sales automatically, no manual reconciliation.",
+              "احتسب الإيجار الأساسي بالإضافة إلى نسبة من المبيعات المُبلغ عنها تلقائياً، دون تسوية يدوية."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Tenant & landlord communication", "تواصل مع المستأجرين والملاك"),
+            body: L(
+              "Centralize maintenance requests, notices, and renewal conversations in one thread.",
+              "مركز طلبات الصيانة والإشعارات ومحادثات التجديد في محادثة واحدة."
+            ),
+          },
+          {
+            icon: "refresh",
+            title: L("Lease renewals & options", "تجديد العقود وخيارات التمديد"),
+            body: L(
+              "Track option periods and renewal windows across every tenant before they lapse.",
+              "تتبع فترات الخيار ومواعيد التجديد لكل مستأجر قبل انتهائها."
+            ),
+          },
+          {
+            icon: "riyal",
+            title: L("CAM & service charge billing", "فوترة المناطق المشتركة والخدمات"),
+            body: L(
+              "Allocate common-area maintenance and service charges across tenants automatically.",
+              "وزّع تكاليف صيانة المناطق المشتركة ورسوم الخدمات على المستأجرين تلقائياً."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "iconFeatures",
+        heading: L("Built for Saudi Regulation", "مصممة للأنظمة السعودية"),
+        items: [
+          {
+            icon: "file",
+            title: L("Ejar-ready commercial contracts", "عقود تجارية جاهزة لإيجار"),
+            body: L(
+              "Generate and register commercial lease contracts compliant with Ejar.",
+              "أنشئ وسجّل عقود الإيجار التجارية المتوافقة مع منصة إيجار."
+            ),
+          },
+          {
+            icon: "riyal",
+            title: L("SADAD & ZATCA invoicing", "الفوترة عبر سداد وهيئة الزكاة والضريبة"),
+            body: L(
+              "Collect rent and service charges via SADAD with ZATCA-compliant e-invoices.",
+              "حصّل الإيجار ورسوم الخدمات عبر سداد مع فواتير إلكترونية متوافقة مع هيئة الزكاة والضريبة والجمارك."
+            ),
+          },
+          {
+            icon: "idCard",
+            title: L("Nafath verification", "التحقق عبر نفاذ"),
+            body: L(
+              "Verify tenant identity digitally for contract signing and onboarding.",
+              "تحقق من هوية المستأجر إلكترونياً لتوقيع العقود والانضمام."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Data residency", "إقامة البيانات"),
+            body: L(
+              "Tenant and portfolio data hosted within Saudi Arabia.",
+              "بيانات المستأجرين والمحفظة مستضافة داخل المملكة العربية السعودية."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "stats",
+        heading: L("Backed by Real Numbers", "مدعومة بأرقام حقيقية"),
+        items: [
+          { value: "400M+", label: L("SAR rental value managed", "ريال قيمة إيجارية مُدارة") },
+          { value: "400+", label: L("Units sold on the platform", "وحدة مباعة عبر المنصة") },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Retail", "لماذا أتار لقطاع التجزئة"),
+        subtitle: L(
+          "Built for centers with dozens of tenants and lease terms that aren't one-size-fits-all.",
+          "مصممة للمراكز ذات العشرات من المستأجرين وشروط الإيجار غير الموحدة."
+        ),
+        cards: [
+          {
+            icon: "layers",
+            title: L("One system for every unit type", "نظام واحد لكل نوع وحدة"),
+            body: L(
+              "Anchor, inline, F&B, kiosk, and storage units all on the same platform.",
+              "الوحدات الرئيسية والداخلية والمطاعم والأكشاك ووحدات التخزين، جميعها على منصة واحدة."
+            ),
+          },
+          {
+            icon: "chart",
+            title: L("Real-time occupancy & collection reporting", "تقارير الإشغال والتحصيل الفورية"),
+            body: L(
+              "See vacancy, tenant mix, and collection rates across the whole center at a glance.",
+              "اطّلع على الشواغر ومزيج المستأجرين ومعدلات التحصيل في المركز بأكمله بنظرة واحدة."
+            ),
+          },
+          {
+            icon: "refresh",
+            title: L("Faster lease renewals", "تجديد عقود أسرع"),
+            body: L(
+              "Automated reminders before option periods lapse, so renewals don't fall through.",
+              "تذكيرات تلقائية قبل انتهاء فترات الخيار حتى لا تفوت فرص التجديد."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Bilingual tenant communication", "تواصل ثنائي اللغة مع المستأجرين"),
+            body: L(
+              "Notices, invoices, and renewal offers sent in Arabic and English.",
+              "الإشعارات والفواتير وعروض التجديد تُرسل بالعربية والإنجليزية."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "faq",
+        heading: L("Got Questions? We've Got Answers", "أسئلة شائعة"),
+        items: [
+          {
+            q: L("Can Atar handle percentage or turnover rent?", "هل يدعم أتار الإيجار كنسبة من المبيعات؟"),
+            a: L(
+              "Yes. Set a base rent plus a percentage of reported sales, and Atar calculates and bills the variable portion automatically each period.",
+              "نعم. حدد إيجاراً أساسياً بالإضافة إلى نسبة من المبيعات المُبلغ عنها، ويحتسب أتار الجزء المتغير ويفوتره تلقائياً كل فترة."
+            ),
+          },
+          {
+            q: L("Does it support CAM and service charge allocation across tenants?", "هل يدعم توزيع تكاليف المناطق المشتركة والخدمات على المستأجرين؟"),
+            a: L(
+              "Yes. Common-area maintenance and service charges are split across tenants by area or another allocation basis, then billed alongside rent.",
+              "نعم. تُوزَّع تكاليف صيانة المناطق المشتركة ورسوم الخدمات على المستأجرين حسب المساحة أو أساس توزيع آخر، ثم تُفوتر مع الإيجار."
+            ),
+          },
+          {
+            q: L("Is it Ejar-compliant for commercial leases?", "هل هو متوافق مع إيجار للعقود التجارية؟"),
+            a: L(
+              "Yes. Commercial lease contracts are generated and registered in line with Ejar requirements.",
+              "نعم. تُنشأ عقود الإيجار التجارية وتُسجَّل بما يتوافق مع متطلبات منصة إيجار."
+            ),
+          },
+          {
+            q: L(
+              "Can we track tenant mix and lease expiries across a whole mall or portfolio?",
+              "هل يمكننا تتبع مزيج المستأجرين ومواعيد انتهاء العقود عبر المركز أو المحفظة بأكملها؟"
+            ),
+            a: L(
+              "Yes. A single dashboard shows occupancy, tenant category mix, and upcoming lease expiries across every center in your portfolio.",
+              "نعم. توضّح لوحة تحكم واحدة الإشغال ومزيج فئات المستأجرين ومواعيد انتهاء العقود القادمة عبر كل مركز في محفظتك."
+            ),
+          },
+          {
+            q: L("How long does onboarding take for a retail portfolio?", "كم يستغرق تأهيل محفظة تجزئة؟"),
+            a: L(
+              "Most retail portfolios go live within two to four weeks, depending on the number of centers and tenants being migrated.",
+              "تنطلق معظم محافظ التجزئة خلال أسبوعين إلى أربعة أسابيع، حسب عدد المراكز والمستأجرين المطلوب ترحيلهم."
+            ),
+          },
         ],
       },
     ],
@@ -1473,17 +1646,187 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     eyebrow: MARKETS,
     title: L("Office", "مكاتب"),
     body: L(
-      "Run office portfolios with the lease complexity, common-area management, and investor-ready reporting the asset class demands.",
-      "أدر محافظ المكاتب بما يتطلبه هذا النوع من الأصول من تعقيد في الإيجار وإدارة للمناطق المشتركة وتقارير جاهزة للمستثمرين."
+      "Run office portfolios with the lease escalation clauses, common-area billing, and investor-ready reporting the asset class demands.",
+      "أدر محافظ المكاتب بما يتطلبه هذا النوع من الأصول من شروط تصعيد إيجارية وفوترة للمناطق المشتركة وتقارير جاهزة للمستثمرين."
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
+        heading: L("Everything Office Needs", "كل ما يحتاجه قطاع المكاتب"),
+        subtitle: L(
+          "From a single-tenant floor to a fully multi-tenant tower, one system for the whole building.",
+          "من طابق لمستأجر واحد إلى برج متعدد المستأجرين بالكامل، نظام واحد للمبنى بأكمله."
+        ),
         items: [
-          L("Multi-tenant office lease management", "إدارة عقود إيجار المكاتب متعددة المستأجرين"),
-          L("Shared facility and common-area billing", "فوترة المرافق والمناطق المشتركة"),
-          L("Investor-ready financial reporting", "تقارير مالية جاهزة للمستثمرين"),
-          L("Online payments and collections", "مدفوعات وتحصيل إلكتروني"),
+          {
+            icon: "users",
+            title: L("Multi-tenant lease management", "إدارة عقود متعددة المستأجرين"),
+            body: L(
+              "Manage floor-by-floor leases across single- and multi-tenant office buildings.",
+              "أدر عقود الإيجار طابقاً بطابق عبر مباني المكاتب أحادية ومتعددة المستأجرين."
+            ),
+          },
+          {
+            icon: "file",
+            title: L("Escalation & rent review clauses", "شروط التصعيد ومراجعة الإيجار"),
+            body: L(
+              "Automate annual increases and review clauses instead of tracking them manually.",
+              "أتمتة الزيادات السنوية وشروط المراجعة بدلاً من تتبعها يدوياً."
+            ),
+          },
+          {
+            icon: "riyal",
+            title: L("CAM & service charge billing", "فوترة المناطق المشتركة والخدمات"),
+            body: L(
+              "Allocate shared facility costs across tenants by leased area, automatically.",
+              "وزّع تكاليف المرافق المشتركة على المستأجرين حسب المساحة المؤجرة تلقائياً."
+            ),
+          },
+          {
+            icon: "chart",
+            title: L("Investor-ready reporting", "تقارير جاهزة للمستثمرين"),
+            body: L(
+              "Real-time NOI, occupancy, and collection reports ready to share with owners and investors.",
+              "تقارير فورية لصافي الدخل التشغيلي والإشغال والتحصيل جاهزة لمشاركتها مع الملاك والمستثمرين."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Tenant & landlord communication", "تواصل مع المستأجرين والملاك"),
+            body: L(
+              "Centralize maintenance requests, notices, and renewal conversations in one thread.",
+              "مركز طلبات الصيانة والإشعارات ومحادثات التجديد في محادثة واحدة."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "iconFeatures",
+        heading: L("Built for Saudi Regulation", "مصممة للأنظمة السعودية"),
+        items: [
+          {
+            icon: "file",
+            title: L("Ejar-ready commercial contracts", "عقود تجارية جاهزة لإيجار"),
+            body: L(
+              "Generate and register office lease contracts compliant with Ejar.",
+              "أنشئ وسجّل عقود إيجار المكاتب المتوافقة مع منصة إيجار."
+            ),
+          },
+          {
+            icon: "riyal",
+            title: L("SADAD & ZATCA invoicing", "الفوترة عبر سداد وهيئة الزكاة والضريبة"),
+            body: L(
+              "Collect rent and service charges via SADAD with ZATCA-compliant e-invoices.",
+              "حصّل الإيجار ورسوم الخدمات عبر سداد مع فواتير إلكترونية متوافقة مع هيئة الزكاة والضريبة والجمارك."
+            ),
+          },
+          {
+            icon: "idCard",
+            title: L("Nafath verification", "التحقق عبر نفاذ"),
+            body: L(
+              "Verify tenant identity digitally for contract signing and onboarding.",
+              "تحقق من هوية المستأجر إلكترونياً لتوقيع العقود والانضمام."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Data residency", "إقامة البيانات"),
+            body: L(
+              "Tenant and portfolio data hosted within Saudi Arabia.",
+              "بيانات المستأجرين والمحفظة مستضافة داخل المملكة العربية السعودية."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "stats",
+        heading: L("Backed by Real Numbers", "مدعومة بأرقام حقيقية"),
+        items: [
+          { value: "400M+", label: L("SAR rental value managed", "ريال قيمة إيجارية مُدارة") },
+          { value: "400+", label: L("Units sold on the platform", "وحدة مباعة عبر المنصة") },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Office", "لماذا أتار لقطاع المكاتب"),
+        subtitle: L(
+          "Built for buildings with escalation clauses, shared costs, and owners who expect real numbers.",
+          "مصممة للمباني ذات شروط التصعيد والتكاليف المشتركة والملاك الذين يتوقعون أرقاماً حقيقية."
+        ),
+        cards: [
+          {
+            icon: "layers",
+            title: L("One system, whole building", "نظام واحد للمبنى بأكمله"),
+            body: L(
+              "From ground-floor retail to top-floor offices, all on the same platform.",
+              "من التجزئة في الطابق الأرضي إلى المكاتب في الطابق العلوي، جميعها على منصة واحدة."
+            ),
+          },
+          {
+            icon: "chart",
+            title: L("Real-time NOI & occupancy reporting", "تقارير فورية لصافي الدخل والإشغال"),
+            body: L(
+              "See net operating income, occupancy, and collection rates whenever owners ask.",
+              "اطّلع على صافي الدخل التشغيلي والإشغال ومعدلات التحصيل متى طلب الملاك ذلك."
+            ),
+          },
+          {
+            icon: "refresh",
+            title: L("Faster rent reviews & renewals", "مراجعات إيجار وتجديدات أسرع"),
+            body: L(
+              "Automated reminders before escalation clauses and lease terms come due.",
+              "تذكيرات تلقائية قبل استحقاق شروط التصعيد ومواعيد انتهاء العقود."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Bilingual tenant communication", "تواصل ثنائي اللغة مع المستأجرين"),
+            body: L(
+              "Notices, invoices, and renewal offers sent in Arabic and English.",
+              "الإشعارات والفواتير وعروض التجديد تُرسل بالعربية والإنجليزية."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "faq",
+        heading: L("Got Questions? We've Got Answers", "أسئلة شائعة"),
+        items: [
+          {
+            q: L("Can Atar handle rent escalation clauses?", "هل يدعم أتار شروط تصعيد الإيجار؟"),
+            a: L(
+              "Yes. Set annual increase percentages or fixed-amount escalations per lease, and Atar applies them automatically at renewal.",
+              "نعم. حدد نسب الزيادة السنوية أو مبالغ التصعيد الثابتة لكل عقد، ويطبقها أتار تلقائياً عند التجديد."
+            ),
+          },
+          {
+            q: L("Does it support CAM allocation by leased area?", "هل يدعم توزيع تكاليف المناطق المشتركة حسب المساحة المؤجرة؟"),
+            a: L(
+              "Yes. Common-area maintenance costs are split across tenants proportional to their leased area, then billed alongside rent.",
+              "نعم. تُوزَّع تكاليف صيانة المناطق المشتركة على المستأجرين بما يتناسب مع مساحتهم المؤجرة، ثم تُفوتر مع الإيجار."
+            ),
+          },
+          {
+            q: L("Is it Ejar-compliant for office leases?", "هل هو متوافق مع إيجار لعقود المكاتب؟"),
+            a: L(
+              "Yes. Office lease contracts are generated and registered in line with Ejar requirements.",
+              "نعم. تُنشأ عقود إيجار المكاتب وتُسجَّل بما يتوافق مع متطلبات منصة إيجار."
+            ),
+          },
+          {
+            q: L("Can we get investor-ready reports out of the box?", "هل يمكننا الحصول على تقارير جاهزة للمستثمرين مباشرة؟"),
+            a: L(
+              "Yes. NOI, occupancy, and collection reports are built in and exportable, no manual spreadsheet work needed.",
+              "نعم. تقارير صافي الدخل التشغيلي والإشغال والتحصيل مدمجة وقابلة للتصدير، دون الحاجة لعمل يدوي في جداول البيانات."
+            ),
+          },
+          {
+            q: L("How long does onboarding take for an office portfolio?", "كم يستغرق تأهيل محفظة مكاتب؟"),
+            a: L(
+              "Most office portfolios go live within two to four weeks, depending on the number of buildings and tenants being migrated.",
+              "تنطلق معظم محافظ المكاتب خلال أسبوعين إلى أربعة أسابيع، حسب عدد المباني والمستأجرين المطلوب ترحيلهم."
+            ),
+          },
         ],
       },
     ],
@@ -1493,17 +1836,187 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     eyebrow: MARKETS,
     title: L("Compounds & Communities", "المجمّعات والمجتمعات السكنية"),
     body: L(
-      "Coordinate shared amenities, service charges, and community rules across gated compounds and master-planned communities.",
-      "نسّق المرافق المشتركة ورسوم الخدمة وأنظمة المجتمع عبر المجمعات المسوّرة والمجتمعات المخططة."
+      "Coordinate shared amenities, service charges, and community rules across gated compounds and master-planned communities — with residents self-serving instead of calling the office.",
+      "نسّق المرافق المشتركة ورسوم الخدمة وأنظمة المجتمع عبر المجمعات المسوّرة والمجتمعات المخططة، مع تمكين السكان من الخدمة الذاتية بدلاً من الاتصال بالمكتب."
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
+        heading: L("Everything Compounds & Communities Need", "كل ما تحتاجه المجمعات والمجتمعات"),
+        subtitle: L(
+          "From resident directory to gate access, one system for the whole community.",
+          "من دليل السكان إلى دخول البوابة، نظام واحد للمجتمع بأكمله."
+        ),
         items: [
-          L("Residential compound management", "إدارة المجمعات السكنية"),
-          L("Service-charge automation", "أتمتة رسوم الخدمة"),
-          L("Community announcements and directory", "إعلانات ودليل للمجتمع"),
-          L("Visitor and access management", "إدارة الزوار والدخول"),
+          {
+            icon: "users",
+            title: L("Resident & household management", "إدارة السكان والأسر"),
+            body: L(
+              "Manage every unit, owner, and household member in one directory.",
+              "أدر كل وحدة ومالك وفرد من أفراد الأسرة في دليل واحد."
+            ),
+          },
+          {
+            icon: "riyal",
+            title: L("Service-charge automation", "أتمتة رسوم الخدمة"),
+            body: L(
+              "Bill and collect annual service charges automatically, with owners'-association-ready reporting.",
+              "احتسب رسوم الخدمة السنوية وحصّلها تلقائياً، مع تقارير جاهزة لجمعية الملاك."
+            ),
+          },
+          {
+            icon: "bell",
+            title: L("Community announcements", "إعلانات المجتمع"),
+            body: L(
+              "Push notices, event updates, and emergency alerts to every resident instantly.",
+              "أرسل الإشعارات وتحديثات الفعاليات والتنبيهات الطارئة لكل ساكن فورياً."
+            ),
+          },
+          {
+            icon: "idCard",
+            title: L("Visitor & access management", "إدارة الزوار والدخول"),
+            body: L(
+              "Pre-approve guests and manage gate access digitally.",
+              "اعتمد الزوار مسبقاً وأدر دخول البوابة إلكترونياً."
+            ),
+          },
+          {
+            icon: "facility",
+            title: L("Amenity booking", "حجز المرافق"),
+            body: L(
+              "Let residents book pools, gyms, and community halls online.",
+              "مكّن السكان من حجز المسابح والصالات الرياضية وقاعات المجتمع عبر الإنترنت."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "iconFeatures",
+        heading: L("Built for Saudi Regulation", "مصممة للأنظمة السعودية"),
+        items: [
+          {
+            icon: "file",
+            title: L("Ejar-ready residential contracts", "عقود سكنية جاهزة لإيجار"),
+            body: L(
+              "Generate and register residential lease contracts compliant with Ejar.",
+              "أنشئ وسجّل عقود الإيجار السكنية المتوافقة مع منصة إيجار."
+            ),
+          },
+          {
+            icon: "riyal",
+            title: L("SADAD & ZATCA invoicing", "الفوترة عبر سداد وهيئة الزكاة والضريبة"),
+            body: L(
+              "Collect service charges via SADAD with ZATCA-compliant e-invoices.",
+              "حصّل رسوم الخدمة عبر سداد مع فواتير إلكترونية متوافقة مع هيئة الزكاة والضريبة والجمارك."
+            ),
+          },
+          {
+            icon: "idCard",
+            title: L("Nafath verification", "التحقق عبر نفاذ"),
+            body: L(
+              "Verify resident identity digitally for contract signing and onboarding.",
+              "تحقق من هوية الساكن إلكترونياً لتوقيع العقود والانضمام."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Data residency", "إقامة البيانات"),
+            body: L(
+              "Resident and community data hosted within Saudi Arabia.",
+              "بيانات السكان والمجتمع مستضافة داخل المملكة العربية السعودية."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "stats",
+        heading: L("Backed by Real Numbers", "مدعومة بأرقام حقيقية"),
+        items: [
+          { value: "400M+", label: L("SAR rental value managed", "ريال قيمة إيجارية مُدارة") },
+          { value: "400+", label: L("Units sold on the platform", "وحدة مباعة عبر المنصة") },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Compounds & Communities", "لماذا أتار للمجمعات والمجتمعات"),
+        subtitle: L(
+          "Built for communities where residents expect self-service and owners associations expect transparency.",
+          "مصممة للمجتمعات التي يتوقع فيها السكان الخدمة الذاتية وتتوقع فيها جمعيات الملاك الشفافية."
+        ),
+        cards: [
+          {
+            icon: "layers",
+            title: L("One system for every household", "نظام واحد لكل أسرة"),
+            body: L(
+              "Owners, tenants, and household members all managed on the same platform.",
+              "الملاك والمستأجرون وأفراد الأسرة، جميعهم يُدارون على المنصة نفسها."
+            ),
+          },
+          {
+            icon: "chart",
+            title: L("Transparent service-charge reporting", "تقارير شفافة لرسوم الخدمة"),
+            body: L(
+              "Owners associations get clear, real-time reporting on collections and spend.",
+              "تحصل جمعيات الملاك على تقارير واضحة وفورية عن التحصيل والإنفاق."
+            ),
+          },
+          {
+            icon: "bell",
+            title: L("Instant community-wide communication", "تواصل فوري على مستوى المجتمع"),
+            body: L(
+              "Reach every resident in seconds for routine notices or emergencies.",
+              "تواصل مع كل ساكن خلال ثوانٍ للإشعارات الروتينية أو الطارئة."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Bilingual resident support", "دعم ثنائي اللغة للسكان"),
+            body: L(
+              "Notices, invoices, and requests handled in Arabic and English.",
+              "الإشعارات والفواتير والطلبات تُدار بالعربية والإنجليزية."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "faq",
+        heading: L("Got Questions? We've Got Answers", "أسئلة شائعة"),
+        items: [
+          {
+            q: L("Can residents pay service charges online?", "هل يمكن للسكان دفع رسوم الخدمة إلكترونياً؟"),
+            a: L(
+              "Yes. Residents receive service-charge invoices and pay directly through SADAD, no cash or manual collection needed.",
+              "نعم. يستلم السكان فواتير رسوم الخدمة ويدفعونها مباشرة عبر سداد، دون الحاجة للتحصيل النقدي أو اليدوي."
+            ),
+          },
+          {
+            q: L("Does it support visitor and gate access management?", "هل يدعم إدارة الزوار ودخول البوابة؟"),
+            a: L(
+              "Yes. Residents can pre-approve guests digitally, and gate staff verify entry against the approved list.",
+              "نعم. يمكن للسكان اعتماد الزوار إلكترونياً مسبقاً، ويتحقق موظفو البوابة من الدخول مقابل القائمة المعتمدة."
+            ),
+          },
+          {
+            q: L("Can owners associations get transparent financial reporting?", "هل يمكن لجمعيات الملاك الحصول على تقارير مالية شفافة؟"),
+            a: L(
+              "Yes. Collections, expenses, and reserve fund balances are visible in real time and exportable for board meetings.",
+              "نعم. التحصيلات والمصروفات وأرصدة صندوق الاحتياطي مرئية فورياً وقابلة للتصدير لاجتماعات المجلس."
+            ),
+          },
+          {
+            q: L("Is resident data kept private and secure?", "هل تُحفظ بيانات السكان بخصوصية وأمان؟"),
+            a: L(
+              "Yes. Resident data is hosted within Saudi Arabia with role-based access, so only authorized staff see personal information.",
+              "نعم. تُستضاف بيانات السكان داخل المملكة العربية السعودية مع صلاحيات وصول محددة الأدوار، بحيث لا يطّلع عليها سوى الموظفين المخوّلين."
+            ),
+          },
+          {
+            q: L("How long does onboarding take for a compound?", "كم يستغرق تأهيل مجمع سكني؟"),
+            a: L(
+              "Most compounds and communities go live within two to four weeks, depending on the number of units and residents being migrated.",
+              "تنطلق معظم المجمعات والمجتمعات خلال أسبوعين إلى أربعة أسابيع، حسب عدد الوحدات والسكان المطلوب ترحيلهم."
+            ),
+          },
         ],
       },
     ],
@@ -1513,17 +2026,193 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
     eyebrow: MARKETS,
     title: L("Mixed-use Developments", "المشاريع متعددة الاستخدامات"),
     body: L(
-      "Coordinate residential, retail, and office components of one master-planned development on a single connected platform.",
-      "نسّق المكونات السكنية والتجارية والمكتبية لمشروع مخطط واحد على منصة واحدة متصلة."
+      "Coordinate residential, retail, and office components of one master-planned development on a single connected platform — one system instead of three.",
+      "نسّق المكونات السكنية والتجارية والمكتبية لمشروع مخطط واحد على منصة واحدة متصلة، نظام واحد بدلاً من ثلاثة."
     ),
     sections: [
       {
-        kind: "bullets",
+        kind: "iconFeatures",
+        heading: L("Everything Mixed-Use Needs", "كل ما تحتاجه المشاريع متعددة الاستخدامات"),
+        subtitle: L(
+          "One platform underneath every component of the development, instead of a different system per asset type.",
+          "منصة واحدة أسفل كل مكوّن من مكونات المشروع، بدلاً من نظام مختلف لكل نوع أصل."
+        ),
         items: [
-          L("One platform across residential, retail and office", "منصة واحدة عبر السكني والتجزئة والمكاتب"),
-          L("Shared facility and common-area management", "إدارة المرافق والمناطق المشتركة"),
-          L("Consolidated reporting across every asset type", "تقارير موحّدة عبر كل نوع من الأصول"),
-          L("Community engagement across every resident and tenant", "تفاعل مجتمعي مع كل ساكن ومستأجر"),
+          {
+            icon: "layers",
+            title: L("One platform, every asset type", "منصة واحدة لكل نوع أصل"),
+            body: L(
+              "Residential, retail, and office components managed side by side on the same system.",
+              "تُدار المكونات السكنية والتجارية والمكتبية جنباً إلى جنب على النظام نفسه."
+            ),
+          },
+          {
+            icon: "riyal",
+            title: L("Consolidated service-charge & CAM billing", "فوترة موحّدة لرسوم الخدمة والمناطق المشتركة"),
+            body: L(
+              "Allocate shared costs fairly across residential, retail, and office units in the same development.",
+              "وزّع التكاليف المشتركة بعدالة بين الوحدات السكنية والتجارية والمكتبية في المشروع نفسه."
+            ),
+          },
+          {
+            icon: "chart",
+            title: L("Consolidated reporting", "تقارير موحّدة"),
+            body: L(
+              "See performance across every asset type in the development from one dashboard, not three.",
+              "اطّلع على الأداء عبر كل نوع أصل في المشروع من لوحة تحكم واحدة، لا ثلاث."
+            ),
+          },
+          {
+            icon: "bell",
+            title: L("Shared amenity & facility management", "إدارة المرافق والمناطق المشتركة"),
+            body: L(
+              "Manage common areas, amenities, and maintenance requests across the whole development.",
+              "أدر المناطق المشتركة والمرافق وطلبات الصيانة عبر المشروع بأكمله."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Communication across every use type", "تواصل عبر كل نوع استخدام"),
+            body: L(
+              "Reach residents, retail tenants, and office tenants from the same communication tools.",
+              "تواصل مع السكان ومستأجري التجزئة والمكاتب من أدوات التواصل نفسها."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "iconFeatures",
+        heading: L("Built for Saudi Regulation", "مصممة للأنظمة السعودية"),
+        items: [
+          {
+            icon: "file",
+            title: L("Ejar-ready contracts, every use type", "عقود جاهزة لإيجار لكل نوع استخدام"),
+            body: L(
+              "Generate and register residential and commercial lease contracts compliant with Ejar.",
+              "أنشئ وسجّل عقود الإيجار السكنية والتجارية المتوافقة مع منصة إيجار."
+            ),
+          },
+          {
+            icon: "riyal",
+            title: L("SADAD & ZATCA invoicing", "الفوترة عبر سداد وهيئة الزكاة والضريبة"),
+            body: L(
+              "Collect rent and service charges via SADAD with ZATCA-compliant e-invoices.",
+              "حصّل الإيجار ورسوم الخدمات عبر سداد مع فواتير إلكترونية متوافقة مع هيئة الزكاة والضريبة والجمارك."
+            ),
+          },
+          {
+            icon: "idCard",
+            title: L("Nafath verification", "التحقق عبر نفاذ"),
+            body: L(
+              "Verify resident and tenant identity digitally for contract signing and onboarding.",
+              "تحقق من هوية الساكن والمستأجر إلكترونياً لتوقيع العقود والانضمام."
+            ),
+          },
+          {
+            icon: "shield",
+            title: L("Data residency", "إقامة البيانات"),
+            body: L(
+              "Resident, tenant, and portfolio data hosted within Saudi Arabia.",
+              "بيانات السكان والمستأجرين والمحفظة مستضافة داخل المملكة العربية السعودية."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "stats",
+        heading: L("Backed by Real Numbers", "مدعومة بأرقام حقيقية"),
+        items: [
+          { value: "400M+", label: L("SAR rental value managed", "ريال قيمة إيجارية مُدارة") },
+          { value: "400+", label: L("Units sold on the platform", "وحدة مباعة عبر المنصة") },
+        ],
+      },
+      {
+        kind: "whyAtar",
+        heading: L("Why Atar for Mixed-Use Developments", "لماذا أتار للمشاريع متعددة الاستخدامات"),
+        subtitle: L(
+          "Built for developments where residential, retail, and office can't run on three disconnected systems.",
+          "مصممة للمشاريع التي لا يمكن فيها تشغيل السكني والتجاري والمكتبي على ثلاثة أنظمة منفصلة."
+        ),
+        cards: [
+          {
+            icon: "layers",
+            title: L("One system, every asset type", "نظام واحد لكل نوع أصل"),
+            body: L(
+              "Residential, retail, and office all run on the same platform, with the same data model.",
+              "يعمل السكني والتجاري والمكتبي جميعاً على المنصة نفسها، بنموذج البيانات نفسه."
+            ),
+          },
+          {
+            icon: "chart",
+            title: L("Consolidated reporting", "تقارير موحّدة"),
+            body: L(
+              "One set of reports across the whole development instead of stitching three together.",
+              "مجموعة واحدة من التقارير عبر المشروع بأكمله بدلاً من دمج ثلاث مجموعات معاً."
+            ),
+          },
+          {
+            icon: "refresh",
+            title: L("Faster leasing & renewals, every use type", "تأجير وتجديد أسرع لكل نوع استخدام"),
+            body: L(
+              "The same fast renewal workflow applies whether the unit is residential, retail, or office.",
+              "ينطبق سير عمل التجديد السريع نفسه سواء كانت الوحدة سكنية أو تجارية أو مكتبية."
+            ),
+          },
+          {
+            icon: "message",
+            title: L("Bilingual communication, every resident and tenant", "تواصل ثنائي اللغة لكل ساكن ومستأجر"),
+            body: L(
+              "Notices, invoices, and renewal offers sent in Arabic and English across every use type.",
+              "الإشعارات والفواتير وعروض التجديد تُرسل بالعربية والإنجليزية عبر كل نوع استخدام."
+            ),
+          },
+        ],
+      },
+      {
+        kind: "faq",
+        heading: L("Got Questions? We've Got Answers", "أسئلة شائعة"),
+        items: [
+          {
+            q: L(
+              "Can Atar manage residential, retail, and office in the same development?",
+              "هل يمكن لأتار إدارة السكني والتجاري والمكتبي في المشروع نفسه؟"
+            ),
+            a: L(
+              "Yes. All three run on the same platform and data model, so nothing needs to be reconciled between separate systems.",
+              "نعم. تعمل الأنواع الثلاثة على المنصة ونموذج البيانات نفسه، دون الحاجة لتسوية أي شيء بين أنظمة منفصلة."
+            ),
+          },
+          {
+            q: L("Does reporting consolidate across asset types, or stay separate?", "هل تُدمج التقارير عبر أنواع الأصول أم تبقى منفصلة؟"),
+            a: L(
+              "Reporting can be viewed consolidated across the whole development or filtered down to a single asset type — the choice is yours.",
+              "يمكن عرض التقارير موحّدة عبر المشروع بأكمله أو تصفيتها إلى نوع أصل واحد، الخيار لك."
+            ),
+          },
+          {
+            q: L("Can service charges be split fairly across mixed uses?", "هل يمكن توزيع رسوم الخدمة بعدالة عبر الاستخدامات المختلطة؟"),
+            a: L(
+              "Yes. Shared costs are allocated by area, unit count, or another basis you define, across residential, retail, and office alike.",
+              "نعم. تُوزَّع التكاليف المشتركة حسب المساحة أو عدد الوحدات أو أساس آخر تحدده، عبر السكني والتجاري والمكتبي على حد سواء."
+            ),
+          },
+          {
+            q: L(
+              "Is it Ejar-compliant across both residential and commercial leases?",
+              "هل هو متوافق مع إيجار لكل من العقود السكنية والتجارية؟"
+            ),
+            a: L(
+              "Yes. Both residential and commercial lease contracts are generated and registered in line with Ejar requirements.",
+              "نعم. تُنشأ عقود الإيجار السكنية والتجارية وتُسجَّل بما يتوافق مع متطلبات منصة إيجار."
+            ),
+          },
+          {
+            q: L("How long does onboarding take for a mixed-use development?", "كم يستغرق تأهيل مشروع متعدد الاستخدامات؟"),
+            a: L(
+              "Most mixed-use developments go live within three to six weeks, depending on the number of asset types and units being migrated.",
+              "تنطلق معظم المشاريع متعددة الاستخدامات خلال ثلاثة إلى ستة أسابيع، حسب عدد أنواع الأصول والوحدات المطلوب ترحيلها."
+            ),
+          },
         ],
       },
     ],

@@ -51,6 +51,11 @@ import propertyPortfolioFinancialsMockup from "./illustrations/property-portfoli
 // as the Community Engagement & Access Solutions page's hero visual. No
 // name/email/phone/national ID appears in this one, so no pixelation needed.
 import communityEngagementMockup from "./illustrations/community-engagement-mockup.webp";
+// Real photo of Riyadh's King Abdullah Financial District (KAFD) skyline at
+// dusk — used as the shared hero visual across all five Markets/asset-class
+// pages (Residential, Retail, Office, Compounds & Communities, Mixed-use
+// Developments) in place of each page's dummy placeholder graphic.
+import marketsSkyline from "./illustrations/riyadh-kafd-skyline.webp";
 
 export {
   atarLogo,
@@ -67,6 +72,7 @@ export {
   realEstateCrmMockup,
   propertyPortfolioFinancialsMockup,
   communityEngagementMockup,
+  marketsSkyline,
 };
 
 const clientGlob = import.meta.glob("./clients/*.{svg,png}", {

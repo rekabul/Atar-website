@@ -26,6 +26,7 @@ import {
   marketsSkyline,
 } from "../assets";
 import Reveal from "../components/ui/Reveal";
+import StaggerReveal from "../components/ui/StaggerReveal";
 import LifecycleCardRail, { type LifecycleCardItem } from "../components/ui/LifecycleCardRail";
 import Button from "../components/ui/Button";
 import Clients from "../components/Clients";
@@ -70,8 +71,10 @@ import {
   BarChartIcon,
   CpuIcon,
   Share2Icon,
+  Close,
 } from "../components/ui/Icon";
 import { prefersReducedMotion } from "../hooks/useInView";
+import { teamMembers, type TeamMember } from "../data/team";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 import {
@@ -193,6 +196,10 @@ export default function PlaceholderPage() {
     "/markets/compounds-communities",
     "/markets/mixed-use-developments",
   ].includes(pathname);
+  // Leadership gets its own bespoke editorial layout (founder spotlight,
+  // board, executive team, profile drawer) instead of the generic
+  // team/quote sections — see isLeadershipPage below.
+  const isLeadershipPage = pathname === "/company/leadership";
   // This content lives in the same copy.sections array as every other
   // placeholder page (unchanged), but these pages render each section with
   // their own bespoke, more crafted component instead of the generic
@@ -494,7 +501,9 @@ export default function PlaceholderPage() {
 
       {isListingWebsite && <ListingWebsiteFeatureGrid locale={locale} />}
 
-      {isBespokeMarket ? (
+      {isLeadershipPage ? (
+        <LeadershipContent locale={locale} />
+      ) : isBespokeMarket ? (
         <>
           <Clients maxWidthClassName="max-w-5xl" />
           {residentialIconFeatureSections[0] && (
@@ -1901,7 +1910,7 @@ function ResidentialFeatureGrid({ section, locale }: { section: Extract<PageSect
  */
 function ResidentialCompliance({ section, locale }: { section: Extract<PageSection, { kind: "iconFeatures" }>; locale: "en" | "ar" }) {
   return (
-    <section className="relative overflow-hidden bg-secondary-darker py-16 lg:py-24">
+    <section className="relative w-full overflow-hidden bg-secondary-darker py-16 lg:py-24">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" aria-hidden="true" />
       <div className="mx-auto max-w-5xl px-5 lg:px-8">
         {section.heading && (
@@ -1909,7 +1918,11 @@ function ResidentialCompliance({ section, locale }: { section: Extract<PageSecti
             <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-primary-light">
               {locale === "ar" ? "الامتثال" : "Compliance"}
             </p>
-            <h2 className="mx-auto mt-3 max-w-xl text-center text-3xl font-medium tracking-tight text-white sm:text-4xl">
+            {/* Matches the text-2xl/sm:text-3xl scale used by this same
+                page's Stats + FAQ headings — was 3xl/4xl, which read
+                noticeably larger than every other section heading on the
+                same Markets page. */}
+            <h2 className="mx-auto mt-3 max-w-xl text-center text-2xl font-medium text-white sm:text-3xl">
               {pick(section.heading, locale)}
             </h2>
           </Reveal>
@@ -2116,6 +2129,485 @@ function ResidentialFaq({ section, locale }: { section: Extract<PageSection, { k
             );
           })}
         </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Leadership page — replaces the generic team/quote sections with an
+ * editorial layout: a large founder spotlight, a compact Board of Directors
+ * grid, and a premium Executive Team grid whose cards open a right-side
+ * profile drawer. All content is sourced from data/team.ts's real roster
+ * (real photos, real names/titles) — no invented bios or stats; the founder
+ * statement and drawer copy are clearly generic/placeholder per the brief.
+ */
+/**
+ * "How we think about property" — same bordered spotlight-hover card style as
+ * the Markets pages' "Everything Residential Needs" grid (icon badge, title,
+ * body, bg-grey-100/40 rounded-2xl border), per the user's reference
+ * screenshot and "used the market section cards" instruction.
+ */
+function LeadershipPhilosophy({ locale }: { locale: "en" | "ar" }) {
+  const items: { icon: SolutionIcon; title: string; body: string }[] = [
+    {
+      icon: "layers",
+      title: locale === "ar" ? "جعل التعقيد يبدو بسيطاً" : "Make complexity feel simple",
+      body:
+        locale === "ar"
+          ? "عمليات العقارات تتضمن أطرافاً وأنظمة وجداول زمنية متعددة. نصمم أتار لتُظهر ما يهم فقط، في الوقت المناسب."
+          : "Property operations involve many parties, systems, and timelines. We design Atar to surface only what matters, when it matters.",
+    },
+    {
+      icon: "compound",
+      title: locale === "ar" ? "البناء حول الواقع" : "Build around reality",
+      body:
+        locale === "ar"
+          ? "السوق السعودي له لوائحه وأنظمته الخاصة. نبني حول هذا الواقع بدلاً من فرض نموذج عام لا يلائمه."
+          : "The Saudi market has its own regulations and systems. We build around that reality instead of forcing a generic model onto it.",
+    },
+    {
+      icon: "refresh",
+      title: locale === "ar" ? "التفكير أبعد من الصفقة" : "Think beyond the transaction",
+      body:
+        locale === "ar"
+          ? "علاقة المالك بالمستأجر تستمر لسنوات. نبني أدوات تدعم دورة الحياة الكاملة، لا لحظة التوقيع فقط."
+          : "The relationship between an owner and a tenant lasts years. We build tools that support the full lifecycle, not just the signing moment.",
+    },
+    {
+      icon: "cpu",
+      title: locale === "ar" ? "البناء لما هو قادم" : "Build for what's next",
+      body:
+        locale === "ar"
+          ? "القطاع يتغيّر بسرعة. نبني أتار بحيث يتوسع مع نمو العمليات ومتطلبات الغد، لا احتياجات اليوم فقط."
+          : "The sector is changing fast. We build Atar to scale with tomorrow's requirements, not just today's needs.",
+    },
+  ];
+
+  return (
+    <section className="bg-white py-16 dark:bg-secondary-darker lg:py-24" aria-labelledby="leadership-philosophy">
+      <div className="mx-auto max-w-5xl px-5 lg:px-8">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <h2 id="leadership-philosophy" className="text-2xl font-medium tracking-tight text-ink dark:text-white sm:text-3xl">
+            {locale === "ar" ? "كيف ننظر إلى إدارة العقارات" : "How we think about property"}
+          </h2>
+          <p className="mt-3 leading-relaxed text-ink-soft dark:text-white/70">
+            {locale === "ar"
+              ? "عمليات العقارات معقدة. نؤمن أن التقنية وراءها يجب ألا تكون كذلك."
+              : "Property operations are complex. We believe the technology behind them shouldn't be."}
+          </p>
+        </Reveal>
+        <StaggerReveal className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" y={16} stagger={0.06}>
+          {items.map((item) => {
+            const Icon = solutionIconMap[item.icon];
+            return (
+              <SpotlightCard
+                key={item.title}
+                className="h-full rounded-2xl border border-grey-100 bg-grey-100/40 p-6 dark:border-white/10 dark:bg-white/5"
+              >
+                <span className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary dark:bg-primary/20">
+                  <Icon size={20} />
+                </span>
+                <h3 className="relative z-10 mt-4 font-medium text-ink dark:text-white">{item.title}</h3>
+                <p className="relative z-10 mt-1.5 text-sm leading-relaxed text-ink-soft dark:text-white/70">{item.body}</p>
+              </SpotlightCard>
+            );
+          })}
+        </StaggerReveal>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * "Atar at a Glance" — left-aligned heading + subtitle, with a 2x2 grid of
+ * teal-accented label pairs below (matching the reference layout: a start-side
+ * border rather than a boxed card, no counters — these are fixed labels, not
+ * animated stats).
+ */
+function LeadershipAtGlance({ locale }: { locale: "en" | "ar" }) {
+  const items: { label: string; sub: string }[] = [
+    {
+      label: locale === "ar" ? "المملكة العربية السعودية" : "Saudi Arabia",
+      sub: locale === "ar" ? "سوقنا الأول" : "Our starting market",
+    },
+    {
+      label: locale === "ar" ? "شامل بالكامل" : "End-to-end",
+      sub: locale === "ar" ? "دورة حياة العقار" : "Property lifecycle",
+    },
+    {
+      label: locale === "ar" ? "ويب وجوال" : "Web + Mobile",
+      sub: locale === "ar" ? "نظام متصل" : "Connected ecosystem",
+    },
+    {
+      label: locale === "ar" ? "مبني للتوسع" : "Built to scale",
+      sub: locale === "ar" ? "منصة للمؤسسات" : "Enterprise platform",
+    },
+  ];
+
+  return (
+    <section className="w-full bg-primary-lighter py-20 dark:bg-white/5 lg:py-28" aria-labelledby="leadership-at-glance">
+      <div className="mx-auto max-w-6xl px-5 lg:px-8">
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <h2 id="leadership-at-glance" className="text-2xl font-medium tracking-tight text-ink dark:text-white sm:text-3xl">
+            {locale === "ar" ? "بُنيت في السعودية. صُممت لمستقبل العقارات." : "Built in Saudi Arabia. Designed for the future of property."}
+          </h2>
+          <p className="mt-3 leading-relaxed text-ink-soft dark:text-white/70">
+            {locale === "ar"
+              ? "تبدأ أتار بواقع السوق العقاري السعودي، مع بناء منصة مصممة للتوسع مع أعمال العقارات الحديثة عالمياً."
+              : "Atar starts with the realities of the Saudi property market while building a platform designed to scale with modern property businesses globally."}
+          </p>
+        </Reveal>
+        <StaggerReveal className="mt-14 grid grid-cols-2 gap-x-10 gap-y-10 text-start lg:grid-cols-4" y={16} stagger={0.06}>
+          {items.map((item) => (
+            <div key={item.label} className="border-s-2 border-primary ps-5">
+              <p className="text-lg font-semibold text-ink dark:text-white">{item.label}</p>
+              <p className="mt-1 text-ink-soft dark:text-white/60">{item.sub}</p>
+            </div>
+          ))}
+        </StaggerReveal>
+      </div>
+    </section>
+  );
+}
+
+function LeadershipContent({ locale }: { locale: "en" | "ar" }) {
+  const [activeMember, setActiveMember] = useState<(typeof teamMembers)[number] | null>(null);
+  const founder = teamMembers.find((m) => m.founder);
+  // Two separate headed sections (Board of Directors / Executive Team) —
+  // no per-card tag chip needed since the section heading already carries
+  // that distinction. The founder is listed in both groups (same as the
+  // Company Profile PDF's own roster) in addition to his own spotlight above.
+  const board: TaggedMember[] = teamMembers.filter((m) => m.board).map((m) => ({ member: m, tags: [] }));
+  const executives: TaggedMember[] = teamMembers
+    .filter((m) => m.executive)
+    .map((m) => ({ member: m, tags: [] }));
+
+  return (
+    <>
+      {founder && <FounderSpotlight member={founder} locale={locale} />}
+      <LeadershipPhilosophy locale={locale} />
+      <LeadershipGrid
+        id="board-of-directors"
+        heading={locale === "ar" ? "مجلس الإدارة" : "Board of Directors"}
+        subtitle={
+          locale === "ar"
+            ? "توفير الإشراف الاستراتيجي والتوجيه طويل الأمد لأتار."
+            : "Providing strategic oversight and long-term direction for Atar."
+        }
+        members={board}
+        locale={locale}
+        onSelect={setActiveMember}
+      />
+      <LeadershipGrid
+        id="executive-team"
+        heading={locale === "ar" ? "الفريق التنفيذي" : "Executive Team"}
+        subtitle={
+          locale === "ar"
+            ? "الأشخاص الذين يحوّلون رؤية أتار إلى منتجات وشراكات وتجارب."
+            : "The people turning Atar's vision into products, partnerships, and experiences."
+        }
+        members={executives}
+        locale={locale}
+        onSelect={setActiveMember}
+      />
+      <LeadershipAtGlance locale={locale} />
+      <LeadershipFinalCta locale={locale} />
+      <ProfileDrawer member={activeMember} locale={locale} onClose={() => setActiveMember(null)} />
+    </>
+  );
+}
+
+function FounderSpotlight({ member, locale }: { member: (typeof teamMembers)[number]; locale: "en" | "ar" }) {
+  const statement =
+    locale === "ar"
+      ? "بناء أتار حول فكرة بسيطة: عمليات إدارة العقارات يجب أن تكون متصلة وشفافة وأسهل في الإدارة."
+      : "Building Atar around a simple belief: property operations should be connected, transparent, and easier to manage.";
+
+  return (
+    <section className="bg-white pb-16 pt-6 dark:bg-secondary-darker lg:pb-24 lg:pt-8" aria-labelledby="founder-spotlight">
+      <div className="mx-auto max-w-5xl px-5 lg:px-8">
+        {/* Bordered two-column frame with a divider between photo and copy,
+            per the reference wireframe — a defined card rather than the
+            photo floating on its own with a soft shadow. */}
+        <Reveal className="grid overflow-hidden rounded-2xl border border-grey-200 dark:border-white/10 lg:grid-cols-2">
+          <div className="aspect-square w-full bg-grey-100 dark:bg-white/5">
+            <img src={member.photo} alt={member.name} className="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div className="flex flex-col justify-center gap-1 border-t border-grey-200 p-8 dark:border-white/10 lg:border-s lg:border-t-0 lg:p-12">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              {locale === "ar" ? "المؤسس" : "Founder"}
+            </p>
+            <h2 id="founder-spotlight" className="mt-3 text-3xl font-medium tracking-tight text-ink dark:text-white sm:text-4xl">
+              {member.name}
+            </h2>
+            <p className="mt-1 text-ink-soft dark:text-white/60">{pick(member.title, locale)}</p>
+            <p className="mt-6 max-w-md text-lg leading-relaxed text-ink dark:text-white/90">{statement}</p>
+            {member.linkedin ? (
+              <a
+                href={member.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-1.5 font-medium text-primary transition-colors hover:text-secondary dark:hover:text-primary-light"
+              >
+                <span>LinkedIn</span>
+                <ArrowRight size={16} />
+              </a>
+            ) : (
+              // No real profile URL on file — a "#" link that goes nowhere on
+              // click is a worse experience than an honest, non-interactive
+              // placeholder (WCAG 2.4.4-style: a link's behavior should match
+              // what it visually promises).
+              <p className="mt-6 text-sm text-ink-muted dark:text-white/40">
+                {locale === "ar" ? "الملف الشخصي على لينكدإن قريباً" : "LinkedIn profile coming soon"}
+              </p>
+            )}
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+type TaggedMember = { member: TeamMember; tags: string[] };
+
+/**
+ * Single merged Board + Executive roster — previously two separate headed
+ * sections of 2 cards each, which read as padding rather than a meaningful
+ * split for a team this size. Each card now carries its own small tag chip
+ * (Board / Executive, or both) instead of a whole section devoted to that
+ * distinction.
+ */
+function LeadershipGrid({
+  id,
+  heading,
+  subtitle,
+  members,
+  locale,
+  onSelect,
+}: {
+  id: string;
+  heading: string;
+  subtitle: string;
+  members: TaggedMember[];
+  locale: "en" | "ar";
+  onSelect: (m: TeamMember) => void;
+}) {
+  // A grid sized for 4 columns with only 1-3 real cards leaves an
+  // asymmetric gap on the end — cap the column count (and center the row)
+  // to the actual number of people instead of always reserving 4 slots.
+  const count = members.length;
+  const gridClass =
+    count <= 1
+      ? "mx-auto max-w-xs grid-cols-1"
+      : count === 2
+        ? "mx-auto max-w-md grid-cols-2"
+        : count === 3
+          ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          : "grid-cols-2 lg:grid-cols-4";
+
+  return (
+    <section className="bg-[#F6F7F8] py-16 dark:bg-white/5 lg:py-20" aria-labelledby={id}>
+      <div className="mx-auto max-w-5xl px-5 lg:px-8">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <h2 id={id} className="text-2xl font-medium tracking-tight text-ink dark:text-white sm:text-3xl">
+            {heading}
+          </h2>
+          <p className="mt-3 leading-relaxed text-ink-soft dark:text-white/70">{subtitle}</p>
+        </Reveal>
+        <StaggerReveal className={`mt-10 grid gap-4 ${gridClass}`} y={16} stagger={0.06}>
+          {members.map(({ member: m, tags }) => (
+            // Same photo/card treatment as the About page's team section
+            // (mx-auto aspect-square, rounded-[28px], centered text) — the
+            // two rosters should look like the same design system, not two
+            // different card styles for the same people. Photo sized up a
+            // touch from About's 180px and the grid gap tightened, so the
+            // cards read as one deliberate row rather than spaced-out tiles.
+            <button
+              key={m.name}
+              type="button"
+              onClick={() => onSelect(m)}
+              className="group text-center transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 motion-safe:hover:-translate-y-1"
+              aria-haspopup="dialog"
+            >
+              <div className="mx-auto aspect-square w-full max-w-[220px] overflow-hidden rounded-[28px] bg-grey-100 dark:bg-white/5">
+                <img
+                  src={m.photo}
+                  alt={m.name}
+                  className="h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-safe:group-hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
+              {tags.length > 0 && (
+                <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-primary">
+                  {tags.join(" · ")}
+                </p>
+              )}
+              <p className={`${tags.length > 0 ? "mt-1" : "mt-4"} font-medium text-ink dark:text-white`}>{m.name}</p>
+              <p className="mt-0.5 text-sm text-ink-soft dark:text-white/60">{pick(m.title, locale)}</p>
+            </button>
+          ))}
+        </StaggerReveal>
+      </div>
+    </section>
+  );
+}
+
+function ProfileDrawer({
+  member,
+  locale,
+  onClose,
+}: {
+  member: TeamMember | null;
+  locale: "en" | "ar";
+  onClose: () => void;
+}) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+
+  // Move focus into the drawer on open, trap Tab/Shift+Tab within it while
+  // open (a background card or nav link shouldn't be reachable behind an
+  // open modal), and return focus to whatever card opened it on close —
+  // WCAG 2.4.3 (focus order) / 2.1.2 (no keyboard trap the wrong way round).
+  useEffect(() => {
+    if (member) {
+      triggerRef.current = document.activeElement as HTMLElement;
+      closeBtnRef.current?.focus();
+    } else {
+      triggerRef.current?.focus();
+    }
+  }, [member]);
+
+  useEffect(() => {
+    if (!member) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab" || !panelRef.current) return;
+      const focusable = panelRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [member, onClose]);
+
+  const isOpen = !!member;
+
+  return (
+    <div
+      className={`fixed inset-0 z-50 ${isOpen ? "" : "pointer-events-none"}`}
+      aria-hidden={!isOpen}
+    >
+      <div
+        onClick={onClose}
+        className={`absolute inset-0 bg-secondary-darker/40 backdrop-blur-sm transition-opacity duration-200 ${
+          isOpen ? "opacity-100" : "opacity-0"
+        }`}
+      />
+      <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={member?.name}
+        className={`absolute inset-y-0 end-0 flex w-full max-w-sm flex-col overflow-y-auto bg-white shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] dark:bg-secondary-darker ${
+          isOpen ? "translate-x-0" : locale === "ar" ? "-translate-x-full" : "translate-x-full"
+        }`}
+      >
+        {member && (
+          <>
+            <div className="flex items-center justify-end p-4">
+              <button
+                ref={closeBtnRef}
+                type="button"
+                onClick={onClose}
+                aria-label={locale === "ar" ? "إغلاق" : "Close"}
+                className="flex h-10 w-10 items-center justify-center rounded-full text-ink-soft transition-colors hover:bg-grey-100 hover:text-ink dark:text-white/60 dark:hover:bg-white/10 dark:hover:text-white"
+              >
+                <Close size={20} />
+              </button>
+            </div>
+            <div className="px-6 pb-8">
+              <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-grey-100 dark:bg-white/5">
+                <img src={member.photo} alt={member.name} className="h-full w-full object-cover" />
+              </div>
+              <h3 className="mt-6 text-xl font-medium text-ink dark:text-white">{member.name}</h3>
+              <p className="mt-1 text-ink-soft dark:text-white/60">{pick(member.title, locale)}</p>
+              {member.focus && member.focus.length > 0 && (
+                <div className="mt-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-ink-muted dark:text-white/40">
+                    {locale === "ar" ? "التركيز" : "Focus"}
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {member.focus.map((f, i) => (
+                      <span
+                        key={i}
+                        className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary dark:bg-white/10 dark:text-primary-light"
+                      >
+                        {pick(f, locale)}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {member.linkedin ? (
+                <a
+                  href={member.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex items-center gap-1.5 font-medium text-primary transition-colors hover:text-secondary dark:hover:text-primary-light"
+                >
+                  <span>LinkedIn</span>
+                  <ArrowRight size={16} />
+                </a>
+              ) : (
+                <p className="mt-8 text-sm text-ink-muted dark:text-white/40">
+                  {locale === "ar" ? "الملف الشخصي على لينكدإن قريباً" : "LinkedIn profile coming soon"}
+                </p>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function LeadershipFinalCta({ locale }: { locale: "en" | "ar" }) {
+  return (
+    <section className="bg-white py-16 dark:bg-secondary-darker lg:py-24" aria-label="Talk to us">
+      <div className="mx-auto max-w-3xl px-5 lg:px-8">
+        <Reveal>
+          <div className="rounded-[28px] border border-grey-100 bg-[#F6F7F8] p-8 text-center dark:border-white/10 dark:bg-white/5 lg:p-10">
+            <p className="leading-relaxed text-ink-soft dark:text-white/70">
+              {locale === "ar"
+                ? "هل تحتاج إلى مزيد من المعلومات؟ احجز عرضاً توضيحياً لمعرفة المزيد"
+                : "Need more information? Book a demo to learn more"}
+            </p>
+            <a
+              href="https://meetings.hubspot.com/atar/demo-meeting"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-medium text-white transition-all duration-150 hover:bg-secondary active:bg-secondary motion-safe:active:scale-[0.97]"
+            >
+              <span>{locale === "ar" ? "احجز عرضاً توضيحياً" : "Book a Demo"}</span>
+              <ArrowRight />
+            </a>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

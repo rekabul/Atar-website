@@ -166,9 +166,7 @@ export const en = {
       items: [
         { label: "Enterprise accounts" },
         { label: "SAR property sales enabled" },
-        { label: "SAR rental value managed" },
         { label: "End users" },
-        { label: "Units under management" },
         { label: "Tickets processed" },
       ],
     },
@@ -203,12 +201,12 @@ export const en = {
     newsSubtitle: "Partnerships and milestones from across the Kingdom.",
     newsCta: "Read more",
     news: [
-      { date: "2024-10-28", body: "We are pleased to announce that Wathba Investment Company has chosen the Atar platform to be its partner in its journey towards digital transformation in real estate and residential community management." },
-      { date: "2024-10-30", body: "We are pleased to announce that Rafeh Real Estate Development Company has chosen Atar platform to be its partner in its journey towards digital transformation in the management of real estate and residential communities." },
-      { date: "2024-11-04", body: "We are pleased to announce that Mushid Company has selected the Atar platform to be the primary partner in its digital transformation journey for managing real estate and residential communities." },
-      { date: "2023-03-09", body: "Under the patronage of the Minister of Municipalities and Housing, Mr. Majid Al-Hogail, and the Chairman of the Board of Directors of the Riyadh Chamber, Mr. Ajlan Al-Ajlan, we are pleased to announce the signing of an agreement with Safa Investment Company to provide a real estate and residential communities management system." },
-      { date: "2023-09-12", body: "On the sidelines of the #Cityscape_World exhibition, a cooperation agreement was signed between Atar Real Estate Services Company, in the presence of CEO / Hasib Mohammed, and Al Sulaiman Real Estate Company, in the presence of Business Development Manager / Othman Al Sulaiman." },
-      { date: "2024-11-08", body: "We are very pleased to proudly announce the launch of the Khawaled Real Estate Company platform in a record time of no more than 48 hours. The platform aims to provide all property and residential community management services and raise the quality of life for residents." },
+      { date: "2024-10-28", category: "Partnership", title: "Atar partners with Wathba Investment Company", body: "We are pleased to announce that Wathba Investment Company has chosen the Atar platform to be its partner in its journey towards digital transformation in real estate and residential community management." },
+      { date: "2024-10-30", category: "Partnership", title: "Atar partners with Rafeh Real Estate Development", body: "We are pleased to announce that Rafeh Real Estate Development Company has chosen Atar platform to be its partner in its journey towards digital transformation in the management of real estate and residential communities." },
+      { date: "2024-11-04", category: "Partnership", title: "Atar partners with Mushid Company", body: "We are pleased to announce that Mushid Company has selected the Atar platform to be the primary partner in its digital transformation journey for managing real estate and residential communities." },
+      { date: "2023-03-09", category: "Milestone", title: "Atar signs agreement with Safa Investment Company", body: "Under the patronage of the Minister of Municipalities and Housing, Mr. Majid Al-Hogail, and the Chairman of the Board of Directors of the Riyadh Chamber, Mr. Ajlan Al-Ajlan, we are pleased to announce the signing of an agreement with Safa Investment Company to provide a real estate and residential communities management system." },
+      { date: "2023-09-12", category: "Partnership", title: "Atar signs cooperation agreement with Al Sulaiman Real Estate", body: "On the sidelines of the #Cityscape_World exhibition, a cooperation agreement was signed between Atar Real Estate Services Company, in the presence of CEO / Hasib Mohammed, and Al Sulaiman Real Estate Company, in the presence of Business Development Manager / Othman Al Sulaiman." },
+      { date: "2024-11-08", category: "Product Launch", title: "Atar launches Khawaled Real Estate platform in 48 hours", body: "We are very pleased to proudly announce the launch of the Khawaled Real Estate Company platform in a record time of no more than 48 hours. The platform aims to provide all property and residential community management services and raise the quality of life for residents." },
     ],
   },
   footer: {

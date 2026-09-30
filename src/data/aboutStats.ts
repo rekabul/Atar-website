@@ -9,8 +9,6 @@ import type { StatConfig } from "./stats";
 export const aboutStatsConfig: StatConfig[] = [
   { target: 20, comma: false, suffix: "+" },
   { target: 300, comma: false, suffix: "M+", currency: true },
-  { target: 400, comma: false, suffix: "M+", currency: true },
   { target: 10000, comma: true, suffix: "+" },
-  { target: 14000, comma: true, suffix: "+" },
   { target: 30000, comma: true, suffix: "+" },
 ];

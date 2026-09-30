@@ -2477,45 +2477,19 @@ export const placeholderPages: Record<string, PlaceholderCopy> = {
   // ---- Company > Leadership -----------------------------------------
   "/company/leadership": {
     eyebrow: L("Company", "الشركة"),
-    title: L("Leadership", "القيادة"),
+    title: L("The People Behind Atar", "الأشخاص وراء أتار"),
     body: L(
-      "Built inside the problem: from founding in 2021 to platform scale in 2025, built alongside the operators who use it.",
-      "بُني من داخل المشكلة: من التأسيس عام 2021 إلى منصة على نطاق واسع عام 2025، بالتعاون مع المشغّلين الذين يستخدمونه."
+      "Meet the people shaping Atar's vision, strategy, and the technology behind modern property operations.",
+      "تعرّف على الأشخاص الذين يشكّلون رؤية أتار واستراتيجيتها والتقنية وراء عمليات إدارة العقارات الحديثة."
     ),
-    sections: [
-      {
-        kind: "team",
-        heading: L("Board of Directors", "مجلس الإدارة"),
-        items: [
-          { name: "Bassam AlBassam", title: L("Chairman of the Board", "رئيس مجلس الإدارة") },
-          { name: "Ahmed Mirghani", title: L("Board Member", "عضو مجلس الإدارة") },
-          { name: "Haseeb Shaikh", title: L("Founder, Managing Director", "المؤسس والمدير الإداري") },
-        ],
-      },
-      {
-        kind: "team",
-        heading: L("Executive Team", "الفريق التنفيذي"),
-        items: [
-          { name: "Haseeb Shaikh", title: L("Founder, Managing Director", "المؤسس والمدير الإداري") },
-          { name: "Ghassan Dardas", title: L("Chief Commercial Officer", "الرئيس التجاري") },
-          { name: "Ahmed Sharaf", title: L("Chief Technology Officer", "الرئيس التقني") },
-        ],
-      },
-      {
-        // Placeholder — swap for a real customer quote + headshot later.
-        kind: "quote",
-        items: [
-          {
-            quote: L(
-              "Add a real customer quote here: this is placeholder text.",
-              "أضف اقتباساً حقيقياً من عميل هنا: هذا نص مؤقت."
-            ),
-            name: "Haseeb Mohammed",
-            title: L("Title, Company", "المسمى الوظيفي، الشركة"),
-          },
-        ],
-      },
-    ],
+    // This page's Board/Executive/Founder content and the profile-drawer
+    // interaction are rendered by bespoke components (see isLeadershipPage
+    // in PlaceholderPage.tsx), sourced from data/team.ts's real roster —
+    // not from `sections`, so it's left empty here.
+    sections: [],
+    // minimalFooter skips the generic "Talk to us" CTA block — the
+    // Leadership page renders its own compact final CTA instead.
+    minimalFooter: true,
   },
 
   // ---- Resources > Blog -----------------------------------------------

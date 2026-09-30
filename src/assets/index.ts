@@ -56,6 +56,9 @@ import communityEngagementMockup from "./illustrations/community-engagement-mock
 // pages (Residential, Retail, Office, Compounds & Communities, Mixed-use
 // Developments) in place of each page's dummy placeholder graphic.
 import marketsSkyline from "./illustrations/riyadh-kafd-skyline.webp";
+// Client-provided desktop + mobile dashboard mockup — used as the About
+// page's "Who We Are" hero visual (text left, product mockup right).
+import aboutHeroMockup from "./illustrations/about-hero-mockup.webp";
 
 export {
   atarLogo,
@@ -73,6 +76,7 @@ export {
   propertyPortfolioFinancialsMockup,
   communityEngagementMockup,
   marketsSkyline,
+  aboutHeroMockup,
 };
 
 const clientGlob = import.meta.glob("./clients/*.{svg,png}", {
